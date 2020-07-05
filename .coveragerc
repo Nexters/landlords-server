@@ -1,0 +1,17 @@
+# https://coverage.readthedocs.io/en/coverage-4.2/config.html#
+
+[run]
+branch=False
+source = src
+omit = 
+    .venv/*
+    tests/*
+
+[pytest]
+junit_family=xunit1
+
+[html]
+directory = public/coverage
+
+[xml]
+output = cov.xml
