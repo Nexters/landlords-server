@@ -4,7 +4,7 @@
         "type": "git",
         "url": "https://github.com/Nexters/landlords-server"
     },
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "NEXTERS 17th - 건물주들 서버",
     "main": "src/asgi.py",
     "license": "MIT",
