@@ -1,0 +1,66 @@
+---
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
+jobs:
+  release:
+    if: github.event.pull_request.merged == true
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          git fetch --prune --unshallow
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.20.1
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm install yarn
+          yarn install
+      - name: Commit files
+        env:
+          HUSKY_SKIP_HOOKS: 1 
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          export DESCRIPTION=$(yarn run standard-version --dry-run --silent | grep -v yarn | grep -v Done | grep -v "\-\-\-" | grep -v standard-version)
+          export VERSION=$(npm run next-version | tail -1)
+          echo "::set-env name=DESCRIPTION::$DESCRIPTION"
+          echo "::set-env name=VERSION::$VERSION"
+          yarn release
+          git push --follow-tags origin master
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
+      - name: Create Github Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: Release v${{ env.VERSION }}
+          body: |
+            ${{ env.DESCRIPTION }}
+          draft: false
+          prerelease: false
+        uses: docker/build-push-action@v1.1.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: nexters/landlords-server:latest
+          dockerfile: Dockerfile
+          tags: v${{ env.VERSION }}, latest
