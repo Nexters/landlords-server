@@ -6,6 +6,7 @@ source = src
 omit = 
     .venv/*
     tests/*
+    src/asgi.py
 
 [pytest]
 junit_family=xunit1
