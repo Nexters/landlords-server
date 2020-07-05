@@ -1,0 +1,42 @@
+{
+    "name": "landlord-server",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Nexters/landlords-server"
+    },
+    "version": "1.0.0",
+    "description": "NEXTERS 17th - 건물주들 서버",
+    "main": "src/asgi.py",
+    "license": "MIT",
+    "scripts": {
+        "start": "pipenv run uvicorn src.asgi:app --host 0.0.0.0 --port 5000",
+        "build": "make docker",
+        "lint": "make lint",
+        "test": "make test",
+        "release": "standard-version",
+        "version": "echo v$npm_package_version",
+        "next-version": "node ./get-next-version.js"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^8.3.5",
+        "@commitlint/config-conventional": "^8.3.4",
+        "husky": "^4.2.5",
+        "standard-version": "^7.1.0"
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "husky": {
+        "skipCI": false,
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "pre-commit": "npm run lint && npm run test && npm run build",
+            "pre-push": "npm run lint"
+        }
+    },
+    "dependencies": {
+        "yarn": "^1.22.4"
+    }
+}
