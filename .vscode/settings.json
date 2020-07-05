@@ -1,0 +1,44 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/.mypy_cache": true,
+        "**/.benchmarks": true,
+        "**/.venv": true,
+        "**/node_modules": true,
+        "**/public": true,
+        "**/.pytest_cache": true,
+        "**/__pycache__": true
+    },
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.formatOnSave": true,
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.testing.pytestEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.pycodestyleArgs": [
+        "--max-line-length=80"
+    ],
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.pylintArgs": [
+        "--errors-only", // mypy, pycodestyle
+        "--disable=no-member", // mypy
+        "--enable=unused-import" // 이것 때문에 씀..
+    ],
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "-l",
+        "80"
+    ],
+    "explorer.sortOrder": "modified",
+    "editor.formatOnSaveTimeout": 3000,
+    "editor.codeActionsOnSaveTimeout": 3000,
+    "editor.fontFamily": "D2Coding"
+}
