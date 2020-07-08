@@ -32,7 +32,7 @@ jobs:
         env:
           HUSKY_SKIP_HOOKS: 1 
         run: |
-          git branch -n
+          git tag -n
 #          git config --local user.email "action@github.com"
 #          git config --local user.name "GitHub Action"
 #          VERSION=$(npm run next-version | tail -1)
