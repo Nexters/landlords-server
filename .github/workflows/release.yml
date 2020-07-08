@@ -33,15 +33,17 @@ jobs:
           HUSKY_SKIP_HOOKS: 1 
         run: |
           git tag -n
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"
-#          VERSION=$(npm run next-version | tail -1)
-#          DESCRIPTION=$(yarn run standard-version --dry-run --silent | grep -v yarn | grep -v Done | grep -v "\-\-\-" | grep -v standard-version)
-#          DESCRIPTION="${DESCRIPTION//'%'/'%25'}"
-#          DESCRIPTION="${DESCRIPTION//$'\n'/'%0A'}"
-#          DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
-#          echo "::set-env name=DESCRIPTION::$DESCRIPTION"
-#          echo "::set-env name=VERSION::$VERSION"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          VERSION=$(npm run next-version | tail -1)
+          DESCRIPTION=$(yarn run standard-version --dry-run --silent | grep -v yarn | grep -v Done | grep -v "\-\-\-" | grep -v standard-version)
+          DESCRIPTION="${DESCRIPTION//'%'/'%25'}"
+          DESCRIPTION="${DESCRIPTION//$'\n'/'%0A'}"
+          DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
+          echo "::set-env name=DESCRIPTION::$DESCRIPTION"
+          echo "::set-env name=VERSION::$VERSION"
+          echo "${VERSION}"
+          echo "${DESCRIPTION}"
 #          yarn release
 #          git push --follow-tags origin master
 #       - name: Push changes
