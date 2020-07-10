@@ -79,9 +79,11 @@ test: ref venv-dev
 	--disable-warnings
 .PHONY: test-coverage
 
+VERSION := $(shell npm run next-version | tail -1)
 docker: requirements
 	@/bin/sh -c "echo \"${GREEN}[docker image 빌드를 시작합니다]${NC}\""
 	@set -ex && docker build --rm -t ${APP_NAME}:latest "."
+	@set -ex && docker build --rm -t ${APP_NAME}:${VERSION} "."
 .PHONY: docker
 
 requirements: ref venv-dev
