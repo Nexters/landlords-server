@@ -2,13 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.1.1](https://github.com/Nexters/landlords-server/compare/v1.1.0...v1.1.1) (2020-07-05)
-
-
-### Bug Fixes
-
-* **release:** 릴리즈 상세설명 줄 바꿈 버그 수정, docker 레포 경로 수정 ([446d7db](https://github.com/Nexters/landlords-server/commit/446d7dbd9f6a1232ace9a5dd6f66f7aed71d1ae5))
-* **version:** 다음 릴리즈 버전 계산 스크립트 추가 ([95cb142](https://github.com/Nexters/landlords-server/commit/95cb142ad8f724e1c2eb624d3ceae56a18cb18d8))
 
 ## 1.1.0 (2020-07-05)
 
