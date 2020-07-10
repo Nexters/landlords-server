@@ -67,4 +67,4 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: nexters/landlords-server
           dockerfile: Dockerfile
-          tags: v${{ env.VERSION }}, latest
+          tags: ${{ env.VERSION }}, latest
