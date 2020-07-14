@@ -25,3 +25,5 @@ RUN apk del build-base libffi-dev libressl-dev openssl-dev musl-dev
 
 # -- Install Application into container:
 COPY src src
+
+CMD [ "uvicorn", "src.asgi:asgi", "--host", "0.0.0.0", "--port", "7279" ]
