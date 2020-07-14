@@ -1,0 +1,35 @@
+# docker는 개발 환경 구축 및 테스트 용도로 사용
+version: "3.7"
+services:
+  database:
+    image: mysql:8.0
+    hostname: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    env_file:
+      - ./infra/mysql/.env
+    volumes:
+      - type: bind
+        source: ./infra/mysql/files
+        target: /var/lib/mysql-files
+      - type: bind
+        source: ./infra/mysql/my.cnf
+        target: /etc/mysql/my.cnf
+  app:
+    image: nexters/landlords-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: landlords-server
+    container_name: landlords-server
+    env_file: 
+      - ./infra/mysql/.env
+    command: uvicorn src.asgi:app --host 0.0.0.0 --port 5000
+    tty: true
+    restart: always
+    depends_on:
+      - "database"
+    ports:
+      - 5000:5000
+
