@@ -2,5 +2,6 @@
 .vscode
 .dockergnore
 .gitignore
+node_modules
 README.md
 .venv
