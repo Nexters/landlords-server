@@ -41,6 +41,9 @@ jobs:
           DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
           echo "::set-env name=DESCRIPTION::$DESCRIPTION"
           echo "::set-env name=VERSION::$VERSION"
+          sed -i "s/__version__ = .*/__version__ = \"${VERSION}\"/g" src/__init__.py
+          git add src/__init__.py
+          git commit --no-verify -m "chore: change version"
           yarn release
           git push --follow-tags origin master
       - name: Push changes
