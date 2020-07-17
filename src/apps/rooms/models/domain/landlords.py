@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field
 
-from .entity import Address, Description, Uid
+from ..entity import Address, Description, Uid
 
 
 class RoomItem(BaseModel):
