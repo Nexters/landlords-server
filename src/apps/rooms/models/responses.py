@@ -1,21 +1,15 @@
 from typing import List
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-from .entity import Address, Description, Uid
+from .domain import RoomItem
 
 
-class RoomItemResponse(BaseModel):
-    uid: str = Field(max_length=Uid.max_length)
-    deposit: int = Field(...)
-    monthly_rent: int = Field(...)
-    is_jeonse: bool = Field(...)
-    address: str = Field(max_length=Address.max_length)
-    description: str = Field(max_length=Description.max_length)
-
-    class Config:
-        orm_mode = True
+class RoomItemResponse(RoomItem):
+    """ 방 매물 정보 response """
 
 
 class RoomItemsResponse(BaseModel):
-    rooms: List[RoomItemResponse]
+    """ 방 매물 정보 리스트 response """
+
+    rooms: List[RoomItem]
