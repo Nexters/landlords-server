@@ -1,4 +1,4 @@
-from .domain import RoomItem
+from .domain.landlords import RoomItem
 
 
 class RoomItemCreateRequest(RoomItem):
