@@ -40,5 +40,10 @@
     "explorer.sortOrder": "modified",
     "editor.formatOnSaveTimeout": 3000,
     "editor.codeActionsOnSaveTimeout": 3000,
-    "editor.fontFamily": "D2Coding"
+    "editor.fontFamily": "D2Coding",
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    }
 }
