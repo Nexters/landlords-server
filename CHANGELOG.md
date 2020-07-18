@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Nexters/landlords-server/compare/v1.2.1...v1.3.0) (2020-07-18)
+
+
+### Features
+
+* **room:** 방 매물 정보 crud 추가 ([80c3e44](https://github.com/Nexters/landlords-server/commit/80c3e4402c0091aa392021175b4daa265761392f))
+
 ### [1.2.1](https://github.com/Nexters/landlords-server/compare/v1.2.0...v1.2.1) (2020-07-16)
 
 ## [1.2.0](https://github.com/Nexters/landlords-server/compare/v1.1.2...v1.2.0) (2020-07-14)
