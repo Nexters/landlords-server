@@ -3,12 +3,13 @@ from enum import IntEnum
 from sqlalchemy import Column, text
 from sqlalchemy.dialects import mysql
 from sqlalchemy.sql import func
+from sqlalchemy.types import Enum
 
 from .....core.database import Base
 
 
 class Description(IntEnum):
-    max_length = 200
+    max_length = 1000
 
 
 class Uid(IntEnum):
@@ -17,6 +18,16 @@ class Uid(IntEnum):
 
 class Address(IntEnum):
     max_length = 100
+
+
+class Title(IntEnum):
+    max_length = 100
+
+
+class BuildingType(IntEnum):
+    OneRoom = 0
+    Officetel = 1
+    Apartment = 2
 
 
 class Room(Base):
@@ -71,6 +82,15 @@ class Room(Base):
         comment="주소",
     )
 
+    title = Column(
+        "title",
+        mysql.VARCHAR(Title.max_length),
+        nullable=False,
+        default="0",
+        server_default=text("0"),
+        comment="제목",
+    )
+
     description = Column(
         "description",
         mysql.VARCHAR(Description.max_length),
@@ -78,6 +98,10 @@ class Room(Base):
         default="0",
         server_default=text("0"),
         comment="방에 대한 간략한 설명",
+    )
+
+    building_type = Column(
+        "building_type", Enum(BuildingType), nullable=False, comment="방 유형"
     )
 
     created = Column(
@@ -104,11 +128,15 @@ class Room(Base):
         monthly_rent: int,
         is_jeonse: bool,
         address: str,
+        title: str,
         description: str,
+        building_type: BuildingType,
     ) -> None:
         self.uid = uid
         self.deposit = deposit
         self.monthly_rent = monthly_rent
         self.is_jeonse = int(is_jeonse)
         self.address = address
+        self.title = title
         self.description = description
+        self.building_type = building_type
