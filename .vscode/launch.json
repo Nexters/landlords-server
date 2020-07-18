@@ -11,7 +11,8 @@
                 "--host",
                 "0.0.0.0",
                 "--port",
-                "5000"
+                "5000",
+                "--reload"
             ],
             "console": "integratedTerminal",
             "subProcess": true,
