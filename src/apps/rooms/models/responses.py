@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from .domain import RoomItem
+from .domain.landlords import RoomItem
 
 
 class RoomItemResponse(RoomItem):
