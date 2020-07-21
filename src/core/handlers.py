@@ -3,6 +3,7 @@
 """
 from typing import Union
 
+from authlib.integrations.base_client.errors import OAuthError
 from fastapi import status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.openapi.constants import REF_PREFIX
@@ -10,6 +11,10 @@ from fastapi.openapi.utils import validation_error_response_definition
 from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
+
+
+async def oauth_exception_handler(_: Request, exc: OAuthError) -> JSONResponse:
+    return JSONResponse(content=exc.error, status_code=exc.status_code)
 
 
 async def http_exception_handler(
