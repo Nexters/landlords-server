@@ -21,3 +21,4 @@ public
 # infra volumes
 infra/mysql
 infra/mysql-files
+*.env
