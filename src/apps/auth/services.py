@@ -1,11 +1,11 @@
 import os
 import time
 from http import HTTPStatus
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Optional
 
 import jwt
 import requests
-from fastapi.param_functions import Depends, Security
+from fastapi.param_functions import Security
 from fastapi.security.oauth2 import (
     OAuth2AuthorizationCodeBearer,
     SecurityScopes,
@@ -61,17 +61,17 @@ async def decode_token(token: str) -> Optional[TokenData]:
         payload = jwt.decode(
             token, settings.PUBLIC_KEY, algorithms=settings.JWT_ALGORITHM
         )
-        id = payload.get("id", None)
+        id_ = payload.get("id", None)
         email = payload.get("email", None)
         fullname = payload.get("fullname", None)
         profile = payload.get("profile", None)
         token_data = TokenData(
-            id=id, email=email, fullname=fullname, profile=profile
+            id=id_, email=email, fullname=fullname, profile=profile
         )
     except jwt.PyJWTError as err:
         raise err
-    finally:
-        return token_data
+
+    return token_data
 
 
 async def get_current_user(

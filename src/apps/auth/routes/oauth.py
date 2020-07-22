@@ -1,4 +1,3 @@
-import token
 from typing import Dict
 
 from fastapi.param_functions import Security

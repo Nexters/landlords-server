@@ -3,7 +3,6 @@
 """
 from typing import Union
 
-from authlib.integrations.base_client.errors import OAuthError
 from fastapi import status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.openapi.constants import REF_PREFIX
@@ -13,6 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from ..apps.auth.exceptions import AuthError
 from ..apps.rooms.exceptions import RoomNotFoundException
 
 NotImplementedResponse = JSONResponse(
@@ -42,7 +42,7 @@ async def database_exception_handler(
     return response
 
 
-async def oauth_exception_handler(_: Request, exc: OAuthError) -> JSONResponse:
+async def oauth_exception_handler(_: Request, exc: AuthError) -> JSONResponse:
     return JSONResponse(content=exc.error, status_code=exc.status_code)
 
 
