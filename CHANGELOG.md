@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/Nexters/landlords-server/compare/v1.4.0...v1.5.0) (2020-07-22)
+
+
+### Features
+
+* **oauth:** 구글 oauth2 인증을 통한 회원 인증 기능 추가 ([#17](https://github.com/Nexters/landlords-server/issues/17)) ([024dbc7](https://github.com/Nexters/landlords-server/commit/024dbc7d0c2c9bc1ff8a3b9533b138fd02e60f36))
+
 ## [1.4.0](https://github.com/Nexters/landlords-server/compare/v1.3.0...v1.4.0) (2020-07-20)
 
 
