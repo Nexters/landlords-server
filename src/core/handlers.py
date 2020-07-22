@@ -12,6 +12,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
+from ..apps.auth.exceptions import AuthError
 from ..apps.rooms.exceptions import RoomNotFoundException
 
 NotImplementedResponse = JSONResponse(
@@ -39,6 +40,10 @@ async def database_exception_handler(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
     return response
+
+
+async def oauth_exception_handler(_: Request, exc: AuthError) -> JSONResponse:
+    return JSONResponse(content=exc.error, status_code=exc.status_code)
 
 
 async def http_exception_handler(

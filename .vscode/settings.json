@@ -45,5 +45,6 @@
         "editor.codeActionsOnSave": {
             "source.organizeImports": true
         }
-    }
+    },
+    "files.insertFinalNewline": true
 }

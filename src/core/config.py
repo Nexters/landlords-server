@@ -1,5 +1,5 @@
 # pylint: disable=no-self-argument
-from pydantic import BaseSettings
+from pydantic import BaseSettings, validator
 
 
 class SQLAlchemySettings(BaseSettings):
@@ -27,6 +27,20 @@ class Settings(BaseSettings):
     """
 
     API_VERSION_PREFIX: str = "/api/v1"
+    PRIVATE_KEY: str = ""
+    PUBLIC_KEY: str = ""
+    JWT_ALGORITHM: str = "RS256"
+    SECRET_KEY: str = ""
+
+    ACCESS_TOKEN_EXPIRE_SECONDS: int = 86400 * 7
+
+    @validator("PRIVATE_KEY", pre=True)
+    def __set_private_key(cls, path: str) -> str:  # noqa
+        return open(path).read()
+
+    @validator("PUBLIC_KEY", pre=True)
+    def __set_public_key(cls, path: str) -> str:  # noqa
+        return open(path).read()
 
     class Config:
         """ setting의 부가 설정 """
