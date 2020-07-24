@@ -7,12 +7,12 @@ from fastapi import status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.openapi.constants import REF_PREFIX
 from fastapi.openapi.utils import validation_error_response_definition
+from jwt import PyJWTError
 from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from ..apps.auth.exceptions import AuthError
 from ..apps.rooms.exceptions import RoomNotFoundException
 
 NotImplementedResponse = JSONResponse(
@@ -42,10 +42,6 @@ async def database_exception_handler(
     return response
 
 
-async def oauth_exception_handler(_: Request, exc: AuthError) -> JSONResponse:
-    return JSONResponse(content=exc.error, status_code=exc.status_code)
-
-
 async def http_exception_handler(
     _: Request, exc: HTTPException
 ) -> JSONResponse:
@@ -59,6 +55,12 @@ async def validation_exception_handler(
     """ client request exception handling """
     return JSONResponse(
         {"errors": exc.errors()}, status_code=status.HTTP_400_BAD_REQUEST
+    )
+
+
+async def auth_exception_handler(_: Request, exc: PyJWTError) -> JSONResponse:
+    return JSONResponse(
+        {"error": str(exc)}, status_code=status.HTTP_401_UNAUTHORIZED
     )
 
 

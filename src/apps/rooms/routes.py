@@ -2,11 +2,13 @@ from enum import Enum
 from typing import List
 
 from fastapi import BackgroundTasks, status
-from fastapi.param_functions import Depends, Path
+from fastapi.param_functions import Depends, Path, Security
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
+from ..oauth.models import UserInfo
+from ..oauth.services import get_current_user
 from .exceptions import RoomNotFoundException
 from .models.domain.dabang import Dabang
 from .models.entity import Room
@@ -25,7 +27,9 @@ __valid_uid = Path(..., min_length=1, description="고유 ID")
     response_model=RoomItemResponse,
 )
 async def get_room(
-    uid: str = __valid_uid, session: Session = Depends(get_database_session)
+    uid: str = __valid_uid,
+    current_user: UserInfo = Security(get_current_user),
+    session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = session.query(Room).filter(Room.uid == uid).first()
     if not room_orm:
@@ -40,7 +44,8 @@ async def get_room(
     response_model=RoomItemsResponse,
 )
 async def get_rooms(
-    session: Session = Depends(get_database_session)
+    current_user: UserInfo = Security(get_current_user),
+    session: Session = Depends(get_database_session),
 ) -> RoomItemsResponse:
     rooms_orm: List[Room] = session.query(Room).all()
     if not rooms_orm:
@@ -58,6 +63,7 @@ async def get_rooms(
 )
 async def post_room(
     request: RoomItemCreateRequest,
+    current_user: UserInfo = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = Room(**request.dict())
@@ -76,6 +82,7 @@ async def post_room(
 async def update_room(
     update_request: RoomItemUpdateRequest,
     uid: str = __valid_uid,
+    current_user: UserInfo = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room = session.query(Room).filter(Room.uid == uid).first()
@@ -96,7 +103,9 @@ async def update_room(
     path="/{uid}", name="방 매물 정보 삭제", status_code=status.HTTP_204_NO_CONTENT
 )
 async def delete_room(
-    uid: str = __valid_uid, session: Session = Depends(get_database_session)
+    uid: str = __valid_uid,
+    current_user: UserInfo = Security(get_current_user),
+    session: Session = Depends(get_database_session),
 ) -> None:
     room = session.query(Room).filter(Room.uid == uid).first()
     if not room:
@@ -120,6 +129,7 @@ async def crawling_room(
     background_tasks: BackgroundTasks,
     room_id: str = __valid_uid,
     crawling_target: CrawlingTarget = CrawlingTarget.Dabang,
+    current_user: UserInfo = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     room = (
