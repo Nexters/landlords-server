@@ -28,6 +28,9 @@ uvicorn = "*"
 # auth
 python-multipart = "*"
 pyjwt = "*"
+authlib = "*"
+httpx = "*"
+itsdangerous = "*"
 # encrypt
 passlib = "*"
 bcrypt = "*"

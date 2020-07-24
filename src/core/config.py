@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     application 설정 (환경변수 최우선)
     """
 
-    API_VERSION_PREFIX: str = "/api/v1"
+    API_VERSION_PREFIX: str = "/v1"
     PRIVATE_KEY: str = ""
     PUBLIC_KEY: str = ""
     JWT_ALGORITHM: str = "RS256"
