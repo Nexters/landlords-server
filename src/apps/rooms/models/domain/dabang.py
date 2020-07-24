@@ -9,6 +9,14 @@ from ..entity import BuildingType
 from .landlords import RoomItem
 
 
+class CrawlingError(Exception):
+    """ 크롤링 에러 """
+
+
+class NoneTypeError(CrawlingError):
+    """ 값이 없습니다 """
+
+
 class SellingType(IntEnum):
     MonthlyRent = 0  # 월세
     Jeonse = 1  # 전세
@@ -22,81 +30,126 @@ class Agent:
     name: Optional[str]
     facename: Optional[str]
     address: Optional[str]
-    location: Any
+    location: Optional[Any]
     reg_id: Optional[str]
     business_id: Optional[str]
-    saved_time: datetime
-    active: bool
-    is_primary: bool
+    saved_time: Optional[datetime]
+    active: Optional[bool]
+    is_primary: Optional[bool]
     user_name: Optional[str]
     user_phone: Optional[str]
     user_safe_phone: Optional[str]
     user_tel: Optional[str]
-    users_idx: int
-    sub_emails: Any
-    is_premium: bool
-    review_best_count: int
-    review_count: int
-    is_messenger_actived: bool
+    users_idx: Optional[int]
+    sub_emails: Optional[Any]
+    is_premium: Optional[bool]
+    review_best_count: Optional[int]
+    review_count: Optional[int]
+    is_messenger_actived: Optional[bool]
     profile_url: Optional[str]
     message: Optional[str]
     since: Optional[str]
-    is_awards: bool
-    emails: List[str]
+    is_awards: Optional[bool]
+    emails: Optional[List[str]]
     role_type: Optional[str]
+
+
+@dataclass
+class School:
+    code: Optional[str] = None
+    hakgudo_name: Optional[str] = None
+    name: Optional[str] = None
+    establish_divide: Optional[str] = None
+    avg_students_per_class: Optional[str] = None
+    distance: Optional[int] = None
+    enter_seoul_university: Optional[str] = None
+    enter_university: Optional[str] = None
+
+
+@dataclass
+class MiddleSchool:
+    code: Optional[str] = None
+    hakgudo_name: Optional[str] = None
+    establish_divide: Optional[str] = None
+    name: Optional[str] = None
+    avg_students_per_class: Optional[str] = None
+    total_enter_special_high_school: Optional[str] = None
+    total_enter_autonomous_high_school: Optional[str] = None
+    total_enter_special_high_school2: Optional[str] = None
+    total_enter_autonomous_high_school2: Optional[str] = None
+    distance: Optional[int] = None
+
+
+@dataclass
+class NurserySchool:
+    code: Optional[str] = None
+    type: Optional[str] = None
+    name: Optional[str] = None
+    child_per_teacher: Optional[str] = None
+    certification_score: Optional[str] = None
+    distance: Optional[int] = None
+
+
+@dataclass
+class Education:
+    elementary_school: Optional[List[School]] = None
+    nursery_school: Optional[List[NurserySchool]] = None
+    middle_school: Optional[List[MiddleSchool]] = None
+    high_school: Optional[List[School]] = None
+    kinder_school: Optional[List[Any]] = None
 
 
 @dataclass
 class Image:
     image: Optional[str]
     image_title: Optional[str]
-    image_desc: Any
-    location: List[float]
+    image_desc: Optional[Any]
+    location: Optional[List[float]]
 
 
 @dataclass
 class Complex:
     complex_id: Optional[str]
-    complex_type: int
+    complex_type: Optional[int]
     complex_name: Optional[str]
-    household_num: int
-    building_num: int
-    parking_num: int
+    household_num: Optional[int]
+    building_num: Optional[int]
+    parking_num: Optional[int]
     manage_tel: Optional[str]
-    complex_lowest_floor: int
-    complex_highest_floor: int
-    build_cov_ratio: int
-    floor_area_index: int
+    complex_lowest_floor: Optional[int]
+    complex_highest_floor: Optional[int]
+    build_cov_ratio: Optional[int]
+    floor_area_index: Optional[int]
     provider_name: Optional[str]
     address: Optional[str]
     jibun_address: Optional[str]
     road_address: Optional[str]
-    location: List[float]
-    parking_average: float
-    is_favorited: Any
-    favorited_count: int
-    is_default_image: bool
+    location: Optional[List[float]]
+    parking_average: Optional[float]
+    is_favorited: Optional[Any]
+    favorited_count: Optional[int]
+    is_default_image: Optional[bool]
     complex_type_str: Optional[str]
-    parking_type_str: Any
+    parking_type_str: Optional[Any]
     heat_type_str: Optional[str]
     fuel_type_str: Optional[str]
     enter_date_str: Optional[str]
     represent_image: Optional[str]
-    entrance_type_str: Any
-    real_price_max_trade: Any
-    real_price_min_trade: Any
-    real_price_max_lease: Any
-    real_price_min_lease: Any
+    entrance_type_str: Optional[Any]
+    real_price_max_trade: Optional[Any]
+    real_price_min_trade: Optional[Any]
+    real_price_max_lease: Optional[Any]
+    real_price_min_lease: Optional[Any]
     maintenance_standard: Optional[str]
-    maintenance_last_price: Any
-    maintenance_total_price: Any
-    maintenance_summer_total_price: Any
-    maintenance_winter_total_price: Any
-    trade_region_average_pyeong_price: Any
-    lease_region_average_pyeong_price: Any
-    trade_average_pyeong_price: Any
-    lease_average_pyeong_price: Any
-    images: List[Image]
+    maintenance_last_price: Optional[Any]
+    maintenance_total_price: Optional[Any]
+    maintenance_summer_total_price: Optional[Any]
+    maintenance_winter_total_price: Optional[Any]
+    trade_region_average_pyeong_price: Optional[Any]
+    lease_region_average_pyeong_price: Optional[Any]
+    trade_average_pyeong_price: Optional[Any]
+    lease_average_pyeong_price: Optional[Any]
+    images: Optional[List[Image]]
 
 
 @dataclass
@@ -109,49 +162,49 @@ class Contact:
 
 @dataclass
 class DetailShop:
-    use: bool
+    use: Optional[bool]
     link: Optional[str]
 
 
 @dataclass
 class OtherRoom:
-    is_favorited: Any
-    seq: int
+    is_favorited: Optional[Any]
+    seq: Optional[int]
     id: Optional[str]
     user_id: Optional[str]
-    status: int
-    deleted: bool
+    status: Optional[int]
+    deleted: Optional[bool]
     name: Optional[str]
     title: Optional[str]
-    room_type: int
-    location: List[float]
-    random_location: List[float]
-    premium_badge: Any
-    hash_tags: List[str]
+    room_type: Optional[int]
+    location: Optional[List[float]]
+    random_location: Optional[List[float]]
+    premium_badge: Optional[Any]
+    hash_tags: Optional[List[str]]
     room_type_str: Optional[str]
     room_desc: Optional[str]
     img_url: Optional[str]
-    img_urls: List[str]
-    is_pano: bool
+    img_urls: Optional[List[str]]
+    is_pano: Optional[bool]
     price_title: Optional[str]
     selling_type: SellingType
-    is_confirm: bool
-    confirm_type: Any
+    is_confirm: Optional[bool]
+    confirm_type: Optional[Any]
     confirm_date_str: Optional[str]
-    is_quick: bool
-    is_messenger_actived: bool
-    complex_name: Optional[str] = None
+    is_quick: Optional[bool]
+    is_messenger_actived: Optional[bool]
+    complex_name: Optional[str]
 
 
 @dataclass
 class ReviewElement:
-    id: int
-    room_id: Any
+    id: Optional[int]
+    room_id: Optional[Any]
     agent_id: Optional[str]
     review_text: Optional[str]
     user_id: Optional[str]
-    grade: int
-    has_comment: bool
+    grade: Optional[int]
+    has_comment: Optional[bool]
     agent_name: Optional[str]
     comment_user_id: Optional[str]
     comment_text: Optional[str]
@@ -162,17 +215,17 @@ class ReviewElement:
     saved_time: Optional[datetime]
     edited_time: Optional[datetime]
     comment_saved_time: Optional[datetime]
-    seq: Any
-    user_active: bool
+    seq: Optional[Any]
+    user_active: Optional[bool]
     agent_profile_url: Optional[str]
     user_profile_url: Optional[str]
 
 
 @dataclass
 class DabangReview:
-    review_count_good: int
-    reviews: List[ReviewElement]
-    review_count: int
+    review_count_good: Optional[int]
+    reviews: Optional[List[ReviewElement]]
+    review_count: Optional[int]
 
 
 @dataclass
@@ -183,9 +236,9 @@ class DeungbonSummary:
     regCommentTagMapList: Optional[List[Any]] = Field(
         ..., title="reg_comment_tag_map_list", alias="regCommentTagMapList"
     )  # noqa
-    grade: int = Field(...)
+    grade: Optional[int] = Field(...)
     grade_message: Optional[str] = Field(...)
-    report_url: Any = Field(...)
+    report_url: Optional[Any] = Field(...)
     report_date: Optional[str] = Field(...)
 
 
@@ -197,176 +250,183 @@ class Photo:
 
 @dataclass
 class RoomOption:
-    seq: int
+    seq: Optional[int]
     name: Optional[str]
 
 
 @dataclass
 class Room:
-    is_favorited: Any
-    favorited_count: int
-    seq: int
-    id: Optional[str]
-    user_id: Optional[str]
-    status: int
-    title: Optional[str]
-    memo: Optional[str]
-    private_memo: Any
-    room_type: int
-    maintenance_option: int
-    room_size: float
-    provision_size: Any
-    pano: Any
-    moving_date: Optional[str]
-    card: bool
-    photos: List[str]
-    photo: List[Photo]
-    price_info: List[List[int]]
-    address: Optional[str]
-    location: List[float]
-    random_location: List[float]
-    shorten_url: Optional[str]
-    agent_id: Optional[str]
-    division: bool
-    duplex: bool
-    full_option: bool
-    complex_id: Optional[str]
-    dong: Optional[str]
-    ho: Optional[str]
-    contract_size: Optional[float]
-    enter_date: Optional[int]
-    room_type_str: Optional[str]
-    room_type_main_str: Optional[str]
-    maintenance_items_str: List[str]
-    heating: Optional[str]
-    room_floor_str: Optional[str]
-    building_floor_str: Optional[str]
-    maintenance_cost_str: Optional[str]
-    full_options: List[str]
-    etc_options: List[str]
-    price_hash_tags: List[str]
-    option_hash_tags: List[str]
-    detail_hash_tags: List[str]
-    hash_tags: List[str]
-    price_title: Optional[str]
-    price_info_str: List[List[str]]
-    animal_str: Optional[str]
-    parking_str: Optional[str]
-    elevator_str: Optional[str]
-    loan_str: Optional[str]
-    built_in_str: Optional[str]
-    balcony_str: Optional[str]
-    duplex_str: Optional[str]
-    division_str: Any
-    short_lease_str: Optional[str]
-    is_show: bool
-    is_show_new: bool
-    is_confirm: bool
-    confirm_type: Any
-    confirm_date_str: Optional[str]
-    is_quick: Any
     selling_type: SellingType
-    month_total_str: Optional[str]
-    month_total_cost_str: Optional[str]
-    building_use: Any
-    deungbon_summary: Optional[DeungbonSummary]
-    beds_num: int
-    bath_num: int
-    show_watermark: bool
-    room_options: List[RoomOption]
-    safeties: List[RoomOption]
+    is_favorited: Optional[Any] = None
+    favorited_count: Optional[int] = None
+    seq: Optional[int] = None
+    id: Optional[str] = None
+    user_id: Optional[str] = None
+    status: Optional[int] = None
+    title: Optional[str] = None
+    memo: Optional[str] = None
+    private_memo: Optional[Any] = None
+    room_type: Optional[int] = None
+    maintenance_option: Optional[int] = None
+    room_size: Optional[float] = None
+    provision_size: Optional[Any] = None
+    pano: Optional[Any] = None
+    moving_date: Optional[str] = None
+    card: Optional[bool] = None
+    photos: Optional[List[str]] = None
+    photo: Optional[List[Photo]] = None
+    price_info: Optional[List[List[int]]] = None
+    address: Optional[str] = None
+    location: Optional[List[float]] = None
+    random_location: Optional[List[float]] = None
+    shorten_url: Optional[str] = None
+    agent_id: Optional[str] = None
+    division: Optional[bool] = None
+    duplex: Optional[bool] = None
+    full_option: Optional[bool] = None
+    complex_id: Optional[str] = None
+    dong: Optional[str] = None
+    ho: Optional[str] = None
+    contract_size: Optional[float] = None
+    enter_date: Optional[int] = None
+    room_type_str: Optional[str] = None
+    room_type_main_str: Optional[str] = None
+    maintenance_items_str: Optional[List[str]] = None
+    heating: Optional[str] = None
+    room_floor_str: Optional[str] = None
+    building_floor_str: Optional[str] = None
+    maintenance_cost_str: Optional[str] = None
+    full_options: Optional[List[str]] = None
+    etc_options: Optional[List[str]] = None
+    price_hash_tags: Optional[List[str]] = None
+    option_hash_tags: Optional[List[str]] = None
+    detail_hash_tags: Optional[List[str]] = None
+    hash_tags: Optional[List[str]] = None
+    price_title: Optional[str] = None
+    price_info_str: Optional[List[List[str]]] = None
+    animal_str: Optional[str] = None
+    parking_str: Optional[str] = None
+    elevator_str: Optional[str] = None
+    loan_str: Optional[str] = None
+    built_in_str: Optional[str] = None
+    balcony_str: Optional[str] = None
+    duplex_str: Optional[str] = None
+    division_str: Optional[Any] = None
+    short_lease_str: Optional[str] = None
+    is_show: Optional[bool] = None
+    is_show_new: Optional[bool] = None
+    is_confirm: Optional[bool] = None
+    confirm_type: Optional[Any] = None
+    confirm_date_str: Optional[str] = None
+    is_quick: Optional[Any] = None
+    month_total_str: Optional[str] = None
+    month_total_cost_str: Optional[str] = None
+    building_use: Optional[Any] = None
+    deungbon_summary: Optional[DeungbonSummary] = None
+    beds_num: Optional[int] = None
+    bath_num: Optional[int] = None
+    show_watermark: Optional[bool] = None
+    room_options: Optional[List[RoomOption]] = None
+    safeties: Optional[List[RoomOption]] = None
 
 
 @dataclass
 class Average:
-    price: float
-    options: int
-    near: int
-    maintenance: int
-    traffic: int
+    price: Optional[float] = None
+    options: Optional[int] = None
+    near: Optional[int] = None
+    maintenance: Optional[int] = None
+    traffic: Optional[int] = None
 
 
 @dataclass
 class Score:
-    average: Average
-    total: float
-    message: Optional[str]
-    room: Average
+    average: Optional[Average] = None
+    total: Optional[float] = None
+    message: Optional[str] = None
+    room: Optional[Average] = None
 
 
 @dataclass
 class Shinhanbank:
-    deposit: int
-    location: int
+    deposit: Optional[int] = None
+    location: Optional[int] = None
 
 
 @dataclass
 class Space:
-    space_seq: int
-    pyeong_type: Optional[str]
-    pyeong: int
-    household_num: int
-    beds_num: int
-    bath_num: int
-    exclusive_space: float
-    supply_space: Any
-    contract_space: float
-    entrance_type_str: Optional[str]
-    real_price_max_trade: Any
-    real_price_min_trade: Any
-    real_price_max_lease: Any
-    real_price_min_lease: Any
-    has_trade_real_price: bool
-    has_lease_real_price: bool
-    maintenance_last_price: Any
-    maintenance_total_price: Any
-    maintenance_summer_total_price: Any
-    maintenance_winter_total_price: Any
-    maintenance_total_price_str: Optional[str]
-    layout_image: Optional[str]
-    extend_layout_image: Any
+    space_seq: Optional[int] = None
+    pyeong_type: Optional[str] = None
+    pyeong: Optional[int] = None
+    household_num: Optional[int] = None
+    beds_num: Optional[int] = None
+    bath_num: Optional[int] = None
+    exclusive_space: Optional[float] = None
+    supply_space: Optional[Any] = None
+    contract_space: Optional[float] = None
+    entrance_type_str: Optional[str] = None
+    real_price_max_trade: Optional[Any] = None
+    real_price_min_trade: Optional[Any] = None
+    real_price_max_lease: Optional[Any] = None
+    real_price_min_lease: Optional[Any] = None
+    has_trade_real_price: Optional[bool] = None
+    has_lease_real_price: Optional[bool] = None
+    maintenance_last_price: Optional[Any] = None
+    maintenance_total_price: Optional[Any] = None
+    maintenance_summer_total_price: Optional[Any] = None
+    maintenance_winter_total_price: Optional[Any] = None
+    maintenance_total_price_str: Optional[str] = None
+    layout_image: Optional[str] = None
+    extend_layout_image: Optional[Any] = None
 
 
 @dataclass
 class User:
-    idx: int
-    email: Optional[str]
-    name: Optional[str]
-    active: bool
-    inquery_phone: Optional[str]
-    phone: Optional[str]
-    tel: Optional[str]
-    safe_phone: Optional[str]
-    yellow_id: Any
-    is_subscribe: bool
-    position: Any
-    profile_url: Optional[str]
-    message: Optional[str]
-    role_type: Optional[str]
+    idx: Optional[int] = None
+    email: Optional[str] = None
+    name: Optional[str] = None
+    active: Optional[bool] = None
+    inquery_phone: Optional[str] = None
+    phone: Optional[str] = None
+    tel: Optional[str] = None
+    safe_phone: Optional[str] = None
+    yellow_id: Optional[Any] = None
+    is_subscribe: Optional[bool] = None
+    position: Optional[Any] = None
+    profile_url: Optional[str] = None
+    message: Optional[str] = None
+    role_type: Optional[str] = None
 
 
 @dataclass
 class Dabang:
-    is_messenger_sender_agented: bool
-    ios_score_height: int
-    agent: Agent
-    detail_shop: DetailShop
-    bubble_image: Any
-    room: Room
-    is_messenger_actived: bool
-    score: Score
-    review: DabangReview
-    is_messenger_receipted: bool
-    contact: Contact
-    other_rooms: List[OtherRoom]
-    shinhanbank: Shinhanbank
-    messenger_send_alimtalk_contents: Optional[str]
-    user: User
-    messenger_bubble_contents: Optional[str]
+    is_messenger_sender_agented: Optional[bool] = None
+    ios_score_height: Optional[int] = None
+    agent: Optional[Agent] = None
+    education: Optional[Education] = None
+    detail_shop: Optional[DetailShop] = None
+    bubble_image: Optional[Any] = None
+    room: Optional[Room] = None
+    is_messenger_actived: Optional[bool] = None
+    score: Optional[Score] = None
+    review: Optional[DabangReview] = None
+    is_messenger_receipted: Optional[bool] = None
+    contact: Optional[Contact] = None
+    other_rooms: Optional[List[OtherRoom]] = None
+    shinhanbank: Optional[Shinhanbank] = None
+    messenger_send_alimtalk_contents: Optional[str] = None
+    user: Optional[User] = None
+    messenger_bubble_contents: Optional[str] = None
     complex: Optional[Complex] = None
     space: Optional[Space] = None
 
     def to_room(self) -> RoomItem:
+        if self.room is None:
+            raise NoneTypeError("방 정보가 없습니다")
+        if self.room.room_type is None:
+            raise NoneTypeError("방 유형이 없습니다")
+        if self.room.price_info is None:
+            raise NoneTypeError("방 가격 정보가 없습니다")
         deposit, monthly_rent, _ = self.room.price_info.pop()
         return RoomItem(
             uid=f"Dabang::{self.room.id}",

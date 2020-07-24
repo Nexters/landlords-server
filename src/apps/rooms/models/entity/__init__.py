@@ -26,8 +26,10 @@ class Title(IntEnum):
 
 class BuildingType(IntEnum):
     OneRoom = 0
-    Officetel = 1
-    Apartment = 2
+    TwoRoom = 1
+    ThreeRoom = 2
+    Officetel = 3
+    Apartment = 4
 
 
 class Room(Base):
