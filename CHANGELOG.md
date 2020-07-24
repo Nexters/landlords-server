@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.5.2](https://github.com/Nexters/landlords-server/compare/v1.5.1...v1.5.2) (2020-07-24)
+
+
+### Bug Fixes
+
+* **rooms:** 방 크롤링 예외처리 추가 ([#19](https://github.com/Nexters/landlords-server/issues/19)) ([085ebe3](https://github.com/Nexters/landlords-server/commit/085ebe38b3b49e9cc15095007f12a7de50a79eea))
+
 ### [1.5.1](https://github.com/Nexters/landlords-server/compare/v1.5.0...v1.5.1) (2020-07-24)
 
 ## [1.5.0](https://github.com/Nexters/landlords-server/compare/v1.4.0...v1.5.0) (2020-07-22)
