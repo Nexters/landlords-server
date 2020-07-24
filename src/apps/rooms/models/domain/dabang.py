@@ -5,16 +5,9 @@ from typing import Any, List, Optional
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
+from ...exceptions import NoneTypeError
 from ..entity import BuildingType
 from .landlords import RoomItem
-
-
-class CrawlingError(Exception):
-    """ 크롤링 에러 """
-
-
-class NoneTypeError(CrawlingError):
-    """ 값이 없습니다 """
 
 
 class SellingType(IntEnum):
