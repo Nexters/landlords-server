@@ -32,15 +32,11 @@ def create_access_token(
 
 
 def decode_token(token: str) -> UserInfo:
-    try:
-        payload = jwt.decode(
-            token, settings.PUBLIC_KEY, algorithms=settings.JWT_ALGORITHM
-        )
-        token_data = UserInfo(**payload)
-    except jwt.PyJWTError as err:
-        raise err
-    else:
-        return token_data
+    payload = jwt.decode(
+        token, settings.PUBLIC_KEY, algorithms=settings.JWT_ALGORITHM
+    )
+    token_data = UserInfo(**payload)
+    return token_data
 
 
 AUTH_HEADER = APIKeyHeader(name="Authorization")
