@@ -13,7 +13,7 @@ from starlette.responses import JSONResponse
 
 from ...core.config import settings
 from ...core.database import get_database_session
-from .entity import User
+from .entity import OAuthType, User
 from .models import GoogleUserInfo
 from .services import create_access_token
 
@@ -63,6 +63,7 @@ async def sign_in(
     if not user:
         user = User(
             at_hash=google_user_info.at_hash,
+            oauth_type=OAuthType.Google,
             email=google_user_info.email,
             full_name=google_user_info.name,
             profile=google_user_info.picture,
