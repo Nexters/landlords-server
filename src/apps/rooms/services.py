@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 import requests
 
+from ...core.exceptions import CrawlingException
 from .models.domain.dabang import Dabang
 
 dabang_detail_api = (
@@ -13,10 +14,6 @@ dabang_detail_api = (
     "&use_map={use_map}"
     "&version=1"
 )
-
-
-class DabangCrawlingException(Exception):
-    """ 다방 크롤링 예외 """
 
 
 class MapType(str, Enum):
@@ -31,5 +28,5 @@ def get_dabang_room_detail(
         dabang_detail_api.format(room_id=room_id, use_map=use_map)
     )
     if response.status_code != HTTPStatus.OK:
-        raise DabangCrawlingException(f"error: {response.reason}")
+        raise CrawlingException(f"error: {response.reason}")
     return Dabang(**response.json())

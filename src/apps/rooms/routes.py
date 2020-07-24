@@ -2,11 +2,13 @@ from enum import Enum
 from typing import List
 
 from fastapi import BackgroundTasks, status
+from fastapi.logger import logger
 from fastapi.param_functions import Depends, Path, Security
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
+from ...core.exceptions import CrawlingException
 from ..oauth.models import UserInfo
 from ..oauth.services import get_current_user
 from .exceptions import RoomNotFoundException
@@ -132,6 +134,7 @@ async def crawling_room(
     current_user: UserInfo = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
+    """ 추후 websocket으로 결과 notification """
     room = (
         session.query(Room)
         .filter(Room.uid == f"{crawling_target.value}::{room_id}")
@@ -151,9 +154,12 @@ def __crawling_room(
 ) -> None:
     uid = f"{crawling_target.value}::{room_id}"
     if crawling_target == CrawlingTarget.Dabang:
-        dabang: Dabang = get_dabang_room_detail(room_id=room_id)
-        room = dabang.to_room()
-        room_orm = Room(**room.dict())
-        session.add(room_orm)
-        session.commit()
-        session.refresh(room_orm)
+        try:
+            dabang: Dabang = get_dabang_room_detail(room_id=room_id)
+        except CrawlingException as err:
+            logger.error(f"{type(err).__name__}: {err}")
+        else:
+            room = dabang.to_room()
+            room_orm = Room(**room.dict())
+            session.add(room_orm)
+            session.commit()

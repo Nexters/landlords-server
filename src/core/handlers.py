@@ -13,7 +13,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from ..apps.rooms.exceptions import RoomNotFoundException
+from .exceptions import RepositoryException
 
 NotImplementedResponse = JSONResponse(
     {"errors": "not implemented"}, status_code=status.HTTP_501_NOT_IMPLEMENTED
@@ -24,7 +24,7 @@ async def database_exception_handler(
     _: Request, exc: SQLAlchemyError
 ) -> JSONResponse:
     response = NotImplementedResponse
-    if isinstance(exc, RoomNotFoundException):
+    if isinstance(exc, RepositoryException):
         response = JSONResponse(
             {"errors": str(exc)}, status_code=status.HTTP_404_NOT_FOUND
         )
