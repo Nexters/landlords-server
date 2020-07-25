@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
 from ...core.exceptions import CrawlingException
-from ..oauth.models import UserInfo
+from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
 from .exceptions import RoomNotFoundException
 from .models.domain.dabang import Dabang
@@ -30,7 +30,7 @@ __valid_uid = Path(..., min_length=1, description="고유 ID")
 )
 async def get_room(
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = session.query(Room).filter(Room.uid == uid).first()
@@ -46,7 +46,7 @@ async def get_room(
     response_model=RoomItemsResponse,
 )
 async def get_rooms(
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemsResponse:
     rooms_orm: List[Room] = session.query(Room).all()
@@ -65,7 +65,7 @@ async def get_rooms(
 )
 async def post_room(
     request: RoomItemCreateRequest,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = Room(**request.dict())
@@ -84,7 +84,7 @@ async def post_room(
 async def update_room(
     update_request: RoomItemUpdateRequest,
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room = session.query(Room).filter(Room.uid == uid).first()
@@ -106,7 +106,7 @@ async def update_room(
 )
 async def delete_room(
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     room = session.query(Room).filter(Room.uid == uid).first()
@@ -131,7 +131,7 @@ async def crawling_room(
     background_tasks: BackgroundTasks,
     room_id: str = __valid_uid,
     crawling_target: CrawlingTarget = CrawlingTarget.Dabang,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     """ 추후 websocket으로 결과 notification """
