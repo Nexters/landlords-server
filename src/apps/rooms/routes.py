@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import Any, List
 
 from fastapi import BackgroundTasks, status
 from fastapi.logger import logger
@@ -12,11 +12,10 @@ from ...core.exceptions import CrawlingException
 from ..oauth.models import UserInfo
 from ..oauth.services import get_current_user
 from .exceptions import RoomNotFoundException
-from .models.domain.dabang import Dabang
 from .models.entity import Room
 from .models.requests import RoomItemCreateRequest, RoomItemUpdateRequest
 from .models.responses import RoomItemResponse, RoomItemsResponse
-from .services import get_dabang_room_detail
+from .services import CrawlingTarget, get_room_detail
 
 router = APIRouter()
 __valid_uid = Path(..., min_length=1, description="고유 ID")
@@ -116,12 +115,6 @@ async def delete_room(
     session.commit()
 
 
-class CrawlingTarget(str, Enum):
-    """ 크롤링 대상 """
-
-    Dabang = "Dabang"
-
-
 @router.put(
     path="/{room_id}",
     name="방 매물 정보 크롤링",
@@ -153,13 +146,14 @@ def __crawling_room(
     room_id: str, crawling_target: CrawlingTarget, session: Session
 ) -> None:
     uid = f"{crawling_target.value}::{room_id}"
-    if crawling_target == CrawlingTarget.Dabang:
-        try:
-            dabang: Dabang = get_dabang_room_detail(room_id=room_id)
-        except CrawlingException as err:
-            logger.error(f"{type(err).__name__}: {err}")
-        else:
-            room = dabang.to_room()
-            room_orm = Room(**room.dict())
-            session.add(room_orm)
-            session.commit()
+    try:
+        bang: Any = get_room_detail(
+            room_id=room_id, crawling_target=crawling_target
+        )
+    except CrawlingException as err:
+        logger.error(f"{type(err).__name__}: {err}")
+    else:
+        room = bang.to_room()
+        room_orm = Room(**room.dict())
+        session.add(room_orm)
+        session.commit()
