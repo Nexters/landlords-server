@@ -6,6 +6,7 @@ import requests
 
 from ...core.exceptions import CrawlingException
 from .models.domain.dabang import Dabang
+from .models.domain.landlords import CrawlingTarget
 from .models.domain.zigbang import Zigbang
 
 dabang_detail_api = (
@@ -22,13 +23,6 @@ zigbang_description_api = "https://apis.zigbang.com/v1/items/{room_id}/read"
 
 class MapType(str, Enum):
     Kakao = "kakao"
-
-
-class CrawlingTarget(str, Enum):
-    """ 크롤링 대상 """
-
-    Dabang = "Dabang"
-    Zigbang = "Zigbang"
 
 
 def get_room_detail(room_id: str, crawling_target: CrawlingTarget) -> Any:
