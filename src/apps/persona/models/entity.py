@@ -101,7 +101,7 @@ class QuestionAnswer(Base):
         ForeignKey("users.uid", ondelete="CASCADE", onupdate="CASCADE"),
         primary_key=True,
     )
-    respondent: Optional[User] = relationship(
+    respondent: User = relationship(
         "User",
         uselist=False,
         primaryjoin="QuestionAnswer.user_id==User.uid",
@@ -120,6 +120,7 @@ class QuestionAnswer(Base):
         uselist=False,
         primaryjoin="QuestionAnswer.choice_id==ChoiceItem.uid",
         backref="persona_answer",
+        lazy="joined",
     )
 
     created = Column(

@@ -7,7 +7,7 @@ from ..oauth.models import UserInfo
 from .models.domain import ChoiceItem as ChoiceItemDto
 from .models.domain import Persona
 from .models.domain import QuestionAnswer as QuestionAnswerDto
-from .models.entity import ChoiceItem, QuestionAnswer
+from .models.entity import QuestionAnswer
 
 
 def get_persona(answers: List[ChoiceItemDto]) -> Persona:
@@ -19,10 +19,10 @@ def get_user_choices(
     user_info: UserInfo, session: Session
 ) -> List[ChoiceItemDto]:
     answers: List[QuestionAnswer] = (
-        session.query(QuestionAnswer)
-        .join(User, User.uid == QuestionAnswer.user_id)
-        .join(ChoiceItem, QuestionAnswer.choice_id == ChoiceItem.uid)
-        .filter(User.email == user_info.email)
+        session.query(User)
+        .filter_by(email=user_info.email)
+        .outerjoin(QuestionAnswer, QuestionAnswer.user_id == User.uid)
+        .with_entities(QuestionAnswer)
         .all()
     )
     answers_: List[ChoiceItemDto] = [
