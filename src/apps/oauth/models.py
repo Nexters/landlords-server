@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 
+from .entity import OAuthType
+
 
 class GoogleUserInfo(BaseModel):
     iss: str
@@ -22,7 +24,17 @@ class GoogleUserInfo(BaseModel):
 
 class UserInfo(BaseModel):
     email: str
-    picture: str
     name: str
     given_name: str
     family_name: str
+    picture: str
+
+
+class UserInDB(UserInfo):
+    uid: int
+    oauth_type: OAuthType
+    at_hash: str
+    disabled: bool
+
+    class Config:
+        orm_mode = True
