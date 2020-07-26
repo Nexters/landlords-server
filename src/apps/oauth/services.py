@@ -1,9 +1,7 @@
 import time
-from http import HTTPStatus
 from typing import Optional
 
 import jwt
-from fastapi.exceptions import HTTPException
 from fastapi.param_functions import Depends
 from fastapi.security.api_key import APIKeyHeader
 from sqlalchemy.orm import Session
@@ -11,6 +9,7 @@ from sqlalchemy.orm import Session
 from ...core.config import settings
 from ...core.database import get_database_session
 from .entity import User
+from .exceptions import UserNotFound
 from .models import GoogleUserInfo, UserInDB, UserInfo
 
 
@@ -57,9 +56,7 @@ async def get_current_user(
         User.email == user_info.email
     ).first()
     if not user or user.disabled:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND, detail="해당하는 유저가 없습니다"
-        )
+        raise UserNotFound
 
     return UserInDB(
         uid=user.uid,
