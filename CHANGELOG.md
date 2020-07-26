@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/Nexters/landlords-server/compare/v1.5.2...v1.6.0) (2020-07-26)
+
+
+### Features
+
+* **persona:** 임차인 페르소나 분석을 위한 API 추가 (질문 리스트, 응답 저장, 페르소나 반환) ([#20](https://github.com/Nexters/landlords-server/issues/20)) ([f69c564](https://github.com/Nexters/landlords-server/commit/f69c56487ffb9f161990286e30bdf80b2de4fc9b))
+
 ### [1.5.2](https://github.com/Nexters/landlords-server/compare/v1.5.1...v1.5.2) (2020-07-24)
 
 
