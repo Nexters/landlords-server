@@ -1,4 +1,6 @@
 # pylint: disable=no-self-argument
+from typing import Any, Dict, Optional
+
 from pydantic import BaseSettings, validator
 
 
@@ -7,13 +9,14 @@ class SQLAlchemySettings(BaseSettings):
     MYSQL_PASSWORD: str = ""
     MYSQL_ROOT_PASSWORD: str = ""
     MYSQL_HOST: str = ""
+    MYSQL_PORT: int = 3306
     MYSQL_DATABASE: str = ""
+    MYSQL_QUERY: Optional[Dict[str, Any]] = None
 
     SQLALCHEMY_POOL_SIZE: int = 5
     SQLALCHEMY_POOL_TIMEOUT: int = 10
     SQLALCHEMY_POOL_RECYCLE: int = 3600
     SQLALCHEMY_ECHO: bool = False
-    SQLALCHEMY_DATABASE_URL: str = "mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}"  # noqa
 
     class Config:
         """ setting의 부가 설정 """
@@ -35,12 +38,12 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 86400 * 7
 
     @validator("PRIVATE_KEY", pre=True)
-    def __set_private_key(cls, path: str) -> str:  # noqa
-        return open(path).read()
+    def __set_private_key(cls, value: str) -> str:  # noqa
+        return value.replace("\\n", "\n")
 
     @validator("PUBLIC_KEY", pre=True)
-    def __set_public_key(cls, path: str) -> str:  # noqa
-        return open(path).read()
+    def __set_public_key(cls, value: str) -> str:  # noqa
+        return value.replace("\\n", "\n")
 
     class Config:
         """ setting의 부가 설정 """
