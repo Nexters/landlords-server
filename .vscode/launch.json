@@ -15,7 +15,7 @@
             ],
             "console": "integratedTerminal",
             "subProcess": true,
-            "envFile": "${workspaceFolder}/dev.env"
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

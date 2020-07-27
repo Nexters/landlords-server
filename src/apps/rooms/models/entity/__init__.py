@@ -30,6 +30,7 @@ class BuildingType(IntEnum):
     ThreeRoom = 2
     Officetel = 3
     Apartment = 4
+    Villa = 5
 
 
 class Room(Base):
