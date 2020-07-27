@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import List, Union
 
 from fastapi import BackgroundTasks, status
 from fastapi.logger import logger
@@ -11,10 +11,13 @@ from ...core.exceptions import CrawlingException
 from ..oauth.models import UserInfo
 from ..oauth.services import get_current_user
 from .exceptions import RoomNotFoundException
+from .models.domain.dabang import Dabang
+from .models.domain.landlords import CrawlingTarget
+from .models.domain.zigbang import Zigbang
 from .models.entity import Room
 from .models.requests import RoomItemCreateRequest, RoomItemUpdateRequest
 from .models.responses import RoomItemResponse, RoomItemsResponse
-from .services import CrawlingTarget, get_room_detail
+from .services import get_room_detail
 
 router = APIRouter()
 __valid_uid = Path(..., min_length=1, description="고유 ID")
@@ -146,7 +149,7 @@ def __crawling_room(
 ) -> None:
     uid = f"{crawling_target.value}::{room_id}"
     try:
-        bang: Any = get_room_detail(
+        bang: Union[Zigbang, Dabang] = get_room_detail(
             room_id=room_id, crawling_target=crawling_target
         )
     except CrawlingException as err:

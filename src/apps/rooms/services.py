@@ -1,6 +1,6 @@
 from enum import Enum
 from http import HTTPStatus
-from typing import Any
+from typing import Union
 
 import requests
 
@@ -25,11 +25,16 @@ class MapType(str, Enum):
     Kakao = "kakao"
 
 
-def get_room_detail(room_id: str, crawling_target: CrawlingTarget) -> Any:
+def get_room_detail(
+    room_id: str, crawling_target: CrawlingTarget
+) -> Union[Zigbang, Dabang]:
+    result: Union[Zigbang, Dabang]
     if crawling_target == CrawlingTarget.Dabang:
-        return get_dabang_room_detail(room_id)
+        result = get_dabang_room_detail(room_id)
     elif crawling_target == CrawlingTarget.Zigbang:
-        return get_zigbang_room_detail(room_id=int(room_id))
+        result = get_zigbang_room_detail(room_id=int(room_id))
+
+    return result
 
 
 def get_dabang_room_detail(
