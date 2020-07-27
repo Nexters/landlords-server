@@ -1,8 +1,16 @@
+from enum import Enum
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
 from ..entity import Address, BuildingType, Description, Title, Uid
+
+
+class CrawlingTarget(str, Enum):
+    """ 크롤링 대상 """
+
+    Dabang = "Dabang"
+    Zigbang = "Zigbang"
 
 
 class RoomItem(BaseModel):

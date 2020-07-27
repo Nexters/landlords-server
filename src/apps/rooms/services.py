@@ -1,11 +1,12 @@
 from enum import Enum
 from http import HTTPStatus
-from typing import Any
+from typing import Any, Union
 
 import requests
 
 from ...core.exceptions import CrawlingException
 from .models.domain.dabang import Dabang
+from .models.domain.landlords import CrawlingTarget
 from .models.domain.zigbang import Zigbang
 
 dabang_detail_api = (
@@ -24,18 +25,16 @@ class MapType(str, Enum):
     Kakao = "kakao"
 
 
-class CrawlingTarget(str, Enum):
-    """ 크롤링 대상 """
-
-    Dabang = "Dabang"
-    Zigbang = "Zigbang"
-
-
-def get_room_detail(room_id: str, crawling_target: CrawlingTarget) -> Any:
+def get_room_detail(
+    room_id: str, crawling_target: CrawlingTarget
+) -> Union[Zigbang, Dabang]:
+    result: Union[Zigbang, Dabang]
     if crawling_target == CrawlingTarget.Dabang:
-        return get_dabang_room_detail(room_id)
+        result = get_dabang_room_detail(room_id)
     elif crawling_target == CrawlingTarget.Zigbang:
-        return get_zigbang_room_detail(room_id=int(room_id))
+        result = get_zigbang_room_detail(room_id=int(room_id))
+
+    return result
 
 
 def get_dabang_room_detail(

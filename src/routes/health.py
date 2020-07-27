@@ -2,6 +2,7 @@
 router
 """
 from typing import Dict
+
 from fastapi.routing import APIRouter
 
 health = APIRouter()
