@@ -37,12 +37,10 @@ class Settings(BaseSettings):
 
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 86400 * 7
 
-    @classmethod
     @validator("PRIVATE_KEY", pre=True)
     def __set_private_key(cls, value: str) -> str:  # noqa
         return value.replace("\\n", "\n")
 
-    @classmethod
     @validator("PUBLIC_KEY", pre=True)
     def __set_public_key(cls, value: str) -> str:  # noqa
         return value.replace("\\n", "\n")
