@@ -56,7 +56,7 @@ class CheckItem(Base):
     question: Optional["CheckQuestion"] = relationship(
         "CheckQuestion",
         uselist=False,
-        primaryjoin="CheckItem.question_id==Checklist.uid",
+        primaryjoin="CheckItem.question_id==CheckQuestion.uid",
         backref="checklist_questions",
     )
 
@@ -75,7 +75,7 @@ class CheckItem(Base):
         self.uid = uid
 
 
-class ChecklistAnswer(Base):
+class CheckAnswer(Base):
     """ 문제에 대한 선택 """
 
     __tablename__ = "checklist_answers"
@@ -89,11 +89,11 @@ class ChecklistAnswer(Base):
     respondent: User = relationship(
         "User",
         uselist=False,
-        primaryjoin="ChecklistAnswer.user_id==User.uid",
+        primaryjoin="CheckAnswer.user_id==User.uid",
         backref="checklist_answers",
     )
 
-    room_id: int = Column(
+    room_id: str = Column(
         "room_id",
         ForeignKey("rooms.uid", ondelete="CASCADE", onupdate="CASCADE"),
         primary_key=True,
@@ -101,7 +101,7 @@ class ChecklistAnswer(Base):
     room: Room = relationship(
         "Room",
         uselist=False,
-        primaryjoin="ChecklistAnswer.room_id==Room.uid",
+        primaryjoin="CheckAnswer.room_id==Room.uid",
         backref="checklist_answers",
     )
 
@@ -115,7 +115,7 @@ class ChecklistAnswer(Base):
     check: CheckItem = relationship(
         "CheckItem",
         uselist=False,
-        primaryjoin="ChecklistAnswer.check_id==CheckItem.uid",
+        primaryjoin="CheckAnswer.check_id==CheckItem.uid",
         backref="checklist_answers",
     )
 
@@ -127,7 +127,7 @@ class ChecklistAnswer(Base):
         comment="생성일자",
     )
 
-    def __init__(self, user_id: int, check_id: int, room_id: int) -> None:
+    def __init__(self, user_id: int, check_id: int, room_id: str) -> None:
         self.user_id = user_id
         self.check_id = check_id
         self.room_id = room_id
@@ -136,7 +136,7 @@ class ChecklistAnswer(Base):
 class CheckQuestion(Base):
     """ 체크리스트 """
 
-    __tablename__ = "chceklist_questions"
+    __tablename__ = "checklist_questions"
     __table_args__ = {"mysql_collate": "utf8mb4_unicode_ci"}
 
     uid: int = Column(
@@ -166,11 +166,11 @@ class CheckQuestion(Base):
         nullable=False,
         comment="페르소나 결과와 연결되는 카테고리",
     )
-    items: List[CheckItem] = relationship(
+    checks: List[CheckItem] = relationship(
         "CheckItem",
         uselist=True,
-        primaryjoin="Checklist.uid==ChecklistItem.checklist_id",
-        backref="checklist",
+        primaryjoin="CheckQuestion.uid==CheckItem.question_id",
+        backref="checklist_questions",
     )
 
     def __init__(self, title: str, type_: QuestionType) -> None:

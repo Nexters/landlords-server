@@ -10,44 +10,33 @@ from ..oauth.entity import User
 from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
 from ..persona.services import get_user_choices
+from ..rooms.models.entity import Room
 from . import services
-from .models.domain import CheckItem, ChecklistAnswer, CheckQuestion
-from .models.responses import ChecklistAnswerResponse
+from .models.domain import CheckAnswer as CheckAnswerDto
+from .models.domain import CheckItem as CheckItemDto
+from .models.domain import Checklist
+from .models.domain import CheckQuestion as CheckQuestionDto
+from .models.entity import CheckAnswer, CheckItem, CheckQuestion
 
 router = APIRouter()
-
-
-# @router.get(
-#     path="/answers",
-#     name="체크리스트 답변 리스트",
-#     status_code=status.HTTP_200_OK,
-#     response_model=ChecklistAnswerResponse,
-# )
-# async def get_checklist_answers(
-#     current_user: UserInDB = Security(get_current_user),
-#     session: Session = Depends(get_database_session),
-# ) -> ChecklistAnswerResponse:
-#     answers = (
-#         session.query(ChecklistAnswer)
-#         .join(User, User.uid == ChecklistAnswer.user_id)
-#         .all()
-#     )
-#     return ChecklistAnswerResponse()
 
 
 @router.get(
     path="",
     name="나의 체크리스트",
     status_code=status.HTTP_200_OK,
-    response_model=List[CheckQuestion],
+    response_model=Checklist,
 )
 async def get_checklist(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
-) -> List[CheckQuestion]:
+) -> Checklist:
 
-    checklist = services.get_checklist(
+    checklist: Checklist = services.get_checklist(
         answers=get_user_choices(user_info=current_user, session=session),
         session=session,
     )
-    return checklist
+
+    return Checklist(
+        questions=[CheckQuestionDto.from_orm(check) for check in checklist]
+    )

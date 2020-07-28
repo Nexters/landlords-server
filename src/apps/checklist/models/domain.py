@@ -19,11 +19,11 @@ class CheckItem(OrmModel):
     contents: str
 
 
-class ChecklistAnswer(OrmModel):
+class CheckAnswer(OrmModel):
     """ 선택한 체크항목 """
 
     user_id: int
-    room_id: int
+    room_id: str
     check: CheckItem
 
 
@@ -36,3 +36,7 @@ class CheckQuestion(OrmModel):
     label: str
     category: QuestionCategory
     checks: List[CheckItem]
+
+
+class Checklist(BaseModel):
+    questions: List[CheckQuestion]
