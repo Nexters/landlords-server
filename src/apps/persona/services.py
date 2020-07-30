@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
@@ -18,14 +18,16 @@ def get_persona(answers: List[ChoiceItemDto]) -> Persona:
 def get_user_choices(
     user_info: UserInfo, session: Session
 ) -> List[ChoiceItemDto]:
-    answers: List[QuestionAnswer] = (
+    answers: List[Optional[QuestionAnswer]] = (
         session.query(User)
         .filter_by(email=user_info.email)
         .outerjoin(QuestionAnswer, QuestionAnswer.user_id == User.uid)
         .with_entities(QuestionAnswer)
         .all()
     )
-    answers_: List[ChoiceItemDto] = [
-        QuestionAnswerDto.from_orm(answer).choice for answer in answers
-    ]
+    answers_: List[ChoiceItemDto] = (
+        []
+        if None in answers
+        else [QuestionAnswerDto.from_orm(answer).choice for answer in answers]
+    )
     return answers_
