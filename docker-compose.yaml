@@ -4,6 +4,7 @@ services:
   database:
     image: mysql:8.0
     hostname: mysql
+    container_name: landlords-mysql
     restart: always
     ports:
       - 3306:3306
@@ -17,16 +18,16 @@ services:
         source: ./infra/mysql/my.cnf
         target: /etc/mysql/my.cnf
   app:
-    image: nexters/landlords-server
+    image: nexters/landlords-server:latest
     build:
       context: .
       dockerfile: Dockerfile
     hostname: landlords-server
     container_name: landlords-server
-    env_file: 
-      - ./infra/mysql/.env
-    command: uvicorn src.asgi:app --host 0.0.0.0 --port 5000
-    tty: true
+    env_file:
+      - ./.env
+    # command: uvicorn src.asgi:app --host 0.0.0.0 --port 5000
+    # tty: true
     restart: always
     depends_on:
       - "database"
