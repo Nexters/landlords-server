@@ -184,7 +184,7 @@ async def delete_checklist_answer(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
-    checkAnswer_orm = (
+    answer_orm = (
         session.query(CheckAnswer)
         .filter(
             and_(
@@ -196,10 +196,10 @@ async def delete_checklist_answer(
         .first()
     )
 
-    if not checkAnswer_orm:
+    if not answer_orm:
         raise AnswerNotFoundException("체크되지 않은 응답입니다.")
 
-    session.delete(checkAnswer_orm)
+    session.delete(answer_orm)
     session.commit()
 
 

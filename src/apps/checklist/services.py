@@ -21,16 +21,16 @@ def get_checklist(
     )
 
     if not user_checklist:
-        userChecklist = get_checklist_by_persona(
+        user_checklist = get_checklist_by_persona(
             answers=get_user_choices(user_info=user_info, session=session),
             session=session,
         )
 
-        for question in userChecklist:
-            userChecklist_: UserChecklist = UserChecklist(
+        for question in user_checklist:
+            user_checklist_: UserChecklist = UserChecklist(
                 user_id=user_info.uid, question_id=question.uid
             )
-            session.add(userChecklist_)
+            session.add(user_checklist_)
         session.commit()
 
     return user_checklist
