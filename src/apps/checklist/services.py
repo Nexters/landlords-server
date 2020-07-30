@@ -13,14 +13,14 @@ def get_checklist(
     user_info: UserInDB, session: Session
 ) -> List[CheckQuestionDto]:
     """사용자의 체크리스트 가져오기"""
-    userChecklist: List[CheckQuestionDto] = (
+    user_checklist: List[CheckQuestionDto] = (
         session.query(CheckQuestion)
         .join(UserChecklist, CheckQuestion.uid == UserChecklist.question_id)
         .filter(UserChecklist.user_id == user_info.uid)
         .all()
     )
 
-    if not userChecklist:
+    if not user_checklist:
         userChecklist = get_checklist_by_persona(
             answers=get_user_choices(user_info=user_info, session=session),
             session=session,
@@ -33,7 +33,7 @@ def get_checklist(
             session.add(userChecklist_)
         session.commit()
 
-    return userChecklist
+    return user_checklist
 
 
 def get_checklist_by_persona(

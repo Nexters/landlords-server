@@ -85,11 +85,10 @@ async def get_checklist_answers(
     if not results:
         raise AnswerNotFoundException("체크리스트에 응답한 목록이 없습니다.")
 
-    checkItemList: List[CheckItemDto] = []
+    check_items: List[CheckItemDto] = []
     for _, _, _, check_item in results:
-        checkItemList.append(CheckItemDto.from_orm(check_item))
-    return checkItemList
-    # return [CheckAnswerDto.from_orm(answer).check for answer in results.check]
+        check_items.append(CheckItemDto.from_orm(check_item))
+    return check_items
 
 
 @router.post(
