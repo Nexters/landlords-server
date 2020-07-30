@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import List
 
 from pydantic import BaseModel
@@ -38,5 +37,6 @@ class CheckQuestion(OrmModel):
     checks: List[CheckItem]
 
 
-class Checklist(BaseModel):
+class UserChecklist(OrmModel):
+    user_id: int
     questions: List[CheckQuestion]

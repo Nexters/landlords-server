@@ -1,5 +1,4 @@
 import time
-from http import HTTPStatus
 from typing import Optional
 
 import jwt

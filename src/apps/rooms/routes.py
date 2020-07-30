@@ -15,7 +15,7 @@ from ..checklist.models.entity import CheckAnswer
 from ..oauth.entity import User
 from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
-from .exceptions import RoomNotFoundException
+from .exceptions import RoomNotFoundException, AnswerNotFoundException
 from .models.domain.dabang import Dabang
 from .models.domain.landlords import CrawlingTarget
 from .models.domain.zigbang import Zigbang
@@ -74,7 +74,7 @@ async def get_checklist_answers(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> List[CheckItemDto]:
-    answers = (
+    answers_orm: List[CheckAnswer] = (
         session.query(CheckAnswer)
         .filter_by(user_id=current_user.uid)
         .join(User, User.uid == CheckAnswer.user_id)
@@ -82,7 +82,10 @@ async def get_checklist_answers(
         .all()
     )
 
-    return [CheckAnswerDto.from_orm(answer).check for answer in answers]
+    if not answers_orm:
+        raise AnswerNotFoundException("체크리스트에 응답한 목록이 없습니다.")
+
+    return [CheckAnswerDto.from_orm(answer).check for answer in answers_orm]
 
 
 @router.post(
@@ -116,14 +119,14 @@ async def post_checklist_answer(
     session: Session = Depends(get_database_session),
 ) -> CheckItemDto:
 
-    answer = CheckAnswer(
+    answer_orm = CheckAnswer(
         user_id=current_user.uid, room_id=room_id, check_id=check_id
     )
 
-    session.add(answer)
+    session.add(answer_orm)
     session.commit()
-    session.refresh(answer)
-    return CheckItemDto.from_orm(answer.check)
+    session.refresh(answer_orm)
+    return CheckItemDto.from_orm(answer_orm.check)
 
 
 @router.patch(
@@ -178,7 +181,7 @@ async def delete_checklist_answer(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
-    checkAnswer = (
+    checkAnswer_orm = (
         session.query(CheckAnswer)
         .filter(
             and_(
@@ -190,7 +193,10 @@ async def delete_checklist_answer(
         .first()
     )
 
-    session.delete(checkAnswer)
+    if not checkAnswer_orm:
+        raise AnswerNotFoundException("체크되지 않은 응답입니다.")
+
+    session.delete(checkAnswer_orm)
     session.commit()
 
 

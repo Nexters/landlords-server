@@ -1,6 +1,6 @@
 from enum import Enum
 from http import HTTPStatus
-from typing import Any, Union
+from typing import Union
 
 import requests
 

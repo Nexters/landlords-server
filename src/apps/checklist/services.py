@@ -2,19 +2,43 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..oauth.entity import User
-from ..oauth.models import UserInfo
-from ..persona.models.domain import ChoiceItem, QuestionCategory, QuestionType
-from .models.domain import Checklist
-from .models.entity import CheckItem, CheckQuestion
+from ..oauth.models import UserInDB
+from ..persona.models.domain import ChoiceItem
+from ..persona.services import get_user_choices
+from .models.domain import CheckQuestion as CheckQuestionDto
+from .models.entity import CheckQuestion, UserChecklist
 
 
-def get_checklist(answers: List[ChoiceItem], session: Session) -> Checklist:
-    """페르소나 태그를 통해 체크리스트 질문 필터링"""
-
-    checkQuestions: Checklist = (
+def get_checklist(
+    user_info: UserInDB, session: Session
+) -> List[CheckQuestionDto]:
+    """사용자의 체크리스트 가져오기"""
+    userChecklist: List[CheckQuestionDto] = (
         session.query(CheckQuestion)
-        .join(CheckItem, CheckItem.question_id == CheckQuestion.uid)
+        .join(UserChecklist, CheckQuestion.uid == UserChecklist.question_id)
+        .filter(UserChecklist.user_id == user_info.uid)
         .all()
     )
-    return checkQuestions
+
+    if not userChecklist:
+        userChecklist = get_checklist_by_persona(
+            answers=get_user_choices(user_info=user_info, session=session),
+            session=session,
+        )
+
+        for question in userChecklist:
+            userChecklist_: UserChecklist = UserChecklist(
+                user_id=user_info.uid, question_id=question.uid
+            )
+            session.add(userChecklist_)
+        session.commit()
+
+    return userChecklist
+
+
+def get_checklist_by_persona(
+    answers: List[ChoiceItem], session: Session
+) -> List[CheckQuestionDto]:
+    """페르소나 태그를 통해 체크리스트 질문 필터링"""
+    checklist: List[CheckQuestionDto] = (session.query(CheckQuestion).all())
+    return checklist
