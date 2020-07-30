@@ -18,7 +18,8 @@ name: Build and Deploy to Google Compute Engine
 on:
   push:
     tags:
-      - '*'
+    - 'v[0-9]+.[0-9]+.[0-9]+*'
+    
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
