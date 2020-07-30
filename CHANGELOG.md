@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/Nexters/landlords-server/compare/v1.6.3...v1.7.0) (2020-07-30)
+
+
+### Features
+
+* **deploy:** gcp cloud 자동 배포 추가 ([0e73321](https://github.com/Nexters/landlords-server/commit/0e7332102b89328e02ba0d27755a0b349e90d993))
+
 ### [1.6.3](https://github.com/Nexters/landlords-server/compare/v1.6.2...v1.6.3) (2020-07-30)
 
 
