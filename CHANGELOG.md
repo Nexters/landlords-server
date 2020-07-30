@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/Nexters/landlords-server/compare/v1.7.0...v1.8.0) (2020-07-30)
+
+
+### Features
+
+* **jwk:** jwk 추가 ([913fa1e](https://github.com/Nexters/landlords-server/commit/913fa1e7b7dc79df94826197fc4da6c10d9bf6cf))
+
 ## [1.7.0](https://github.com/Nexters/landlords-server/compare/v1.6.3...v1.7.0) (2020-07-30)
 
 
