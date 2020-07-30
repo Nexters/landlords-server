@@ -173,9 +173,17 @@ class CheckQuestion(Base):
         backref="checklist_questions",
     )
 
-    def __init__(self, title: str, type_: QuestionType) -> None:
+    def __init__(
+        self,
+        title: str,
+        type_: QuestionType,
+        label: str,
+        category: QuestionCategory,
+    ) -> None:
         self.title = title
         self.type_ = type_
+        self.label = label
+        self.category = category
 
 
 class UserChecklist(Base):
@@ -206,3 +214,7 @@ class UserChecklist(Base):
         primaryjoin="UserChecklist.question_id==CheckQuestion.uid",
         backref="users_checklist",
     )
+
+    def __init__(self, user_id: int, question_id: int) -> None:
+        self.user_id = user_id
+        self.question_id = question_id

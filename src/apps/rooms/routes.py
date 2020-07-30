@@ -9,13 +9,12 @@ from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
 from ...core.exceptions import CrawlingException
-from ..checklist.models.domain import CheckAnswer as CheckAnswerDto
 from ..checklist.models.domain import CheckItem as CheckItemDto
-from ..checklist.models.entity import CheckAnswer
+from ..checklist.models.entity import CheckAnswer, CheckItem
 from ..oauth.entity import User
 from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
-from .exceptions import RoomNotFoundException, AnswerNotFoundException
+from .exceptions import AnswerNotFoundException, RoomNotFoundException
 from .models.domain.dabang import Dabang
 from .models.domain.landlords import CrawlingTarget
 from .models.domain.zigbang import Zigbang
@@ -74,18 +73,23 @@ async def get_checklist_answers(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> List[CheckItemDto]:
-    answers_orm: List[CheckAnswer] = (
-        session.query(CheckAnswer)
+    results = (
+        session.query(CheckAnswer, User, Room, CheckItem)
         .filter_by(user_id=current_user.uid)
         .join(User, User.uid == CheckAnswer.user_id)
         .join(Room, Room.uid == room_id)
+        .join(CheckItem, CheckItem.uid == CheckAnswer.check_id)
         .all()
     )
 
-    if not answers_orm:
+    if not results:
         raise AnswerNotFoundException("체크리스트에 응답한 목록이 없습니다.")
 
-    return [CheckAnswerDto.from_orm(answer).check for answer in answers_orm]
+    checkItemList: List[CheckItemDto] = []
+    for _, _, _, check_item in results:
+        checkItemList.append(CheckItemDto.from_orm(check_item))
+    return checkItemList
+    # return [CheckAnswerDto.from_orm(answer).check for answer in results.check]
 
 
 @router.post(

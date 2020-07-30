@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session
 from ...core.database import get_database_session
 from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
-from ..persona.services import get_user_choices
 from . import services
 from .models.domain import CheckQuestion as CheckQuestionDto
 from .models.responses import ChecklistResponse
