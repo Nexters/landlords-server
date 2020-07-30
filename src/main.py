@@ -1,9 +1,9 @@
 """
 main.py
 """
+from authlib.common.errors import AuthlibBaseError
 from fastapi.applications import FastAPI
 from fastapi.exceptions import RequestValidationError
-from jwt import PyJWTError
 from pydantic.error_wrappers import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
@@ -36,5 +36,5 @@ def create_app() -> FastAPI:
         RepositoryException, handler=database_exception_handler
     )
     app.add_exception_handler(HTTPException, handler=http_exception_handler)
-    app.add_exception_handler(PyJWTError, handler=auth_exception_handler)
+    app.add_exception_handler(AuthlibBaseError, handler=auth_exception_handler)
     return app

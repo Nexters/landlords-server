@@ -1,4 +1,4 @@
--i https://pypi.org/simple/
+-i https://pypi.org/simple
 authlib==0.14.3
 bcrypt==3.1.7
 certifi==2020.6.20
@@ -20,7 +20,6 @@ itsdangerous==1.1.0
 passlib==1.7.2
 pycparser==2.20
 pydantic==1.6.1
-pyjwt==1.7.1
 pymysql==0.10.0
 python-multipart==0.0.5
 requests==2.24.0
