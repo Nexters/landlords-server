@@ -3,11 +3,11 @@
 """
 from typing import Union
 
+from authlib.common.errors import AuthlibBaseError
 from fastapi import status
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.openapi.constants import REF_PREFIX
 from fastapi.openapi.utils import validation_error_response_definition
-from jwt import PyJWTError
 from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.requests import Request
@@ -58,7 +58,9 @@ async def validation_exception_handler(
     )
 
 
-async def auth_exception_handler(_: Request, exc: PyJWTError) -> JSONResponse:
+async def auth_exception_handler(
+    _: Request, exc: AuthlibBaseError
+) -> JSONResponse:
     return JSONResponse(
         {"error": str(exc)}, status_code=status.HTTP_401_UNAUTHORIZED
     )

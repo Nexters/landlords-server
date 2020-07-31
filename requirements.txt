@@ -2,7 +2,7 @@
 authlib==0.14.3
 bcrypt==3.1.7
 certifi==2020.6.20
-cffi==1.14.0
+cffi==1.14.1
 chardet==3.0.4
 click==7.1.2
 cryptography==3.0
@@ -10,9 +10,9 @@ fastapi==0.60.1
 h11==0.9.0
 h2==3.2.0
 hpack==3.0.0
-hstspreload==2020.7.22
+hstspreload==2020.7.29
 httpcore==0.9.1
-httptools==0.1.1 ; sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'
+httptools==0.1.1; sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'
 httpx==0.13.3
 hyperframe==5.2.0
 idna==2.10
@@ -20,7 +20,6 @@ itsdangerous==1.1.0
 passlib==1.7.2
 pycparser==2.20
 pydantic==1.6.1
-pyjwt==1.7.1
 pymysql==0.10.0
 python-multipart==0.0.5
 requests==2.24.0
@@ -30,6 +29,6 @@ sniffio==1.1.0
 sqlalchemy==1.3.18
 starlette==0.13.6
 urllib3==1.25.10
-uvicorn==0.11.6
+uvicorn==0.11.7
 uvloop==0.14.0 ; sys_platform != 'win32' and sys_platform != 'cygwin' and platform_python_implementation != 'PyPy'
 websockets==8.1

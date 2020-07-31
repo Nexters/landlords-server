@@ -1,18 +1,21 @@
 from typing import Generator
 
 from sqlalchemy import create_engine
+from sqlalchemy.engine.url import URL as SQLAlchemyURL
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session, sessionmaker
 
 from .config import sqlalchemy_settings
 
 engine = create_engine(
-    sqlalchemy_settings.SQLALCHEMY_DATABASE_URL.format(
-        MYSQL_USER=sqlalchemy_settings.MYSQL_USER,
-        MYSQL_PASSWORD=sqlalchemy_settings.MYSQL_PASSWORD,
-        MYSQL_ROOT_PASSWORD=sqlalchemy_settings.MYSQL_ROOT_PASSWORD,
-        MYSQL_HOST=sqlalchemy_settings.MYSQL_HOST,
-        MYSQL_DATABASE=sqlalchemy_settings.MYSQL_DATABASE,
+    SQLAlchemyURL(
+        drivername="mysql+pymysql",
+        username=sqlalchemy_settings.MYSQL_USER,
+        password=sqlalchemy_settings.MYSQL_PASSWORD,
+        host=sqlalchemy_settings.MYSQL_HOST,
+        port=sqlalchemy_settings.MYSQL_PORT,
+        database=sqlalchemy_settings.MYSQL_DATABASE,
+        query=sqlalchemy_settings.MYSQL_QUERY,
     ),
     pool_size=sqlalchemy_settings.SQLALCHEMY_POOL_SIZE,
     pool_recycle=sqlalchemy_settings.SQLALCHEMY_POOL_RECYCLE,

@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Any, List, Union
 
 from fastapi import BackgroundTasks, status
 from fastapi.logger import logger
@@ -8,13 +8,21 @@ from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
 from ...core.exceptions import CrawlingException
-from ..oauth.models import UserInfo
+from ..checklist.models.domain import CheckItem as CheckItemDto
+from ..checklist.models.entity import CheckAnswer, CheckItem
+from ..checklist.models.requests import AnswerCreateRequest
+from ..checklist.models.responses import CheckItemResponse, CheckItemsResponse
+from ..oauth.entity import User
+from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
-from .exceptions import RoomNotFoundException
+from .exceptions import AnswerNotFoundException, RoomNotFoundException
+from .models.domain.dabang import Dabang
+from .models.domain.landlords import CrawlingTarget
+from .models.domain.zigbang import Zigbang
 from .models.entity import Room
 from .models.requests import RoomItemCreateRequest, RoomItemUpdateRequest
 from .models.responses import RoomItemResponse, RoomItemsResponse
-from .services import CrawlingTarget, get_room_detail
+from .services import get_room_detail
 
 router = APIRouter()
 __valid_uid = Path(..., min_length=1, description="고유 ID")
@@ -28,7 +36,7 @@ __valid_uid = Path(..., min_length=1, description="고유 ID")
 )
 async def get_room(
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = session.query(Room).filter(Room.uid == uid).first()
@@ -44,7 +52,7 @@ async def get_room(
     response_model=RoomItemsResponse,
 )
 async def get_rooms(
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemsResponse:
     rooms_orm: List[Room] = session.query(Room).all()
@@ -52,6 +60,37 @@ async def get_rooms(
         raise RoomNotFoundException("등록된 방 매물이 없습니다")
     return RoomItemsResponse(
         rooms=[RoomItemResponse.from_orm(room) for room in rooms_orm]
+    )
+
+
+@router.get(
+    path="/{room_id}/answers",
+    name="체크리스트 응답리스트 불러오기",
+    status_code=status.HTTP_200_OK,
+    response_model=CheckItemsResponse,
+)
+async def get_checklist_answers(
+    room_id: str = __valid_uid,
+    current_user: UserInDB = Security(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> CheckItemsResponse:
+    results = (
+        session.query(CheckAnswer, CheckItem)
+        .filter(
+            (CheckAnswer.user_id == current_user.uid)
+            & (CheckAnswer.room_id == room_id)
+        )
+        .join(CheckItem, CheckItem.uid == CheckAnswer.check_id)
+        .all()
+    )
+
+    if not results:
+        raise AnswerNotFoundException("체크리스트에 응답한 목록이 없습니다.")
+
+    return CheckItemsResponse(
+        check_items=[
+            CheckItemDto.from_orm(check_item) for _, check_item in results
+        ]
     )
 
 
@@ -63,7 +102,7 @@ async def get_rooms(
 )
 async def post_room(
     request: RoomItemCreateRequest,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room_orm = Room(**request.dict())
@@ -71,6 +110,29 @@ async def post_room(
     session.commit()
     session.refresh(room_orm)
     return RoomItemResponse.from_orm(room_orm)
+
+
+@router.post(
+    path="/{room_id}/answers",
+    name="체크리스트 응답 저장",
+    status_code=status.HTTP_201_CREATED,
+    response_model=CheckItemDto,
+)
+async def post_checklist_answer(
+    request: AnswerCreateRequest,
+    room_id: str = __valid_uid,
+    current_user: UserInDB = Security(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> CheckItemResponse:
+
+    answer_orm = CheckAnswer(
+        user_id=current_user.uid, room_id=room_id, check_id=request.check_id
+    )
+
+    session.add(answer_orm)
+    session.commit()
+    session.refresh(answer_orm)
+    return CheckItemResponse.from_orm(answer_orm.check)
 
 
 @router.patch(
@@ -82,7 +144,7 @@ async def post_room(
 async def update_room(
     update_request: RoomItemUpdateRequest,
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
     room = session.query(Room).filter(Room.uid == uid).first()
@@ -104,13 +166,41 @@ async def update_room(
 )
 async def delete_room(
     uid: str = __valid_uid,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     room = session.query(Room).filter(Room.uid == uid).first()
     if not room:
         raise RoomNotFoundException(f"{uid}에 해당하는 방 매물이 없습니다")
     session.delete(room)
+    session.commit()
+
+
+@router.delete(
+    path="/{room_id}/answers",
+    name="체크리스트 응답 삭제",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_checklist_answer(
+    check_id: int,
+    room_id: str = __valid_uid,
+    current_user: UserInDB = Security(get_current_user),
+    session: Session = Depends(get_database_session),
+) -> None:
+    answer_orm = (
+        session.query(CheckAnswer)
+        .filter(
+            (CheckAnswer.check_id == check_id)
+            & (User.uid == current_user.uid)
+            & (CheckAnswer.room_id == room_id)
+        )
+        .first()
+    )
+
+    if not answer_orm:
+        raise AnswerNotFoundException("체크되지 않은 응답입니다.")
+
+    session.delete(answer_orm)
     session.commit()
 
 
@@ -123,7 +213,7 @@ async def crawling_room(
     background_tasks: BackgroundTasks,
     room_id: str = __valid_uid,
     crawling_target: CrawlingTarget = CrawlingTarget.Dabang,
-    current_user: UserInfo = Security(get_current_user),
+    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     """ 추후 websocket으로 결과 notification """
@@ -146,7 +236,7 @@ def __crawling_room(
 ) -> None:
     uid = f"{crawling_target.value}::{room_id}"
     try:
-        bang: Any = get_room_detail(
+        bang: Union[Zigbang, Dabang] = get_room_detail(
             room_id=room_id, crawling_target=crawling_target
         )
     except CrawlingException as err:

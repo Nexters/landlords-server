@@ -1,11 +1,27 @@
 import time
+from typing import Generator, Optional
 
-import jwt
+from authlib.jose import jwk, jwt
+from cryptography.hazmat.backends.openssl.rsa import _RSAPublicKey
 from fastapi.param_functions import Depends
 from fastapi.security.api_key import APIKeyHeader
+from sqlalchemy.orm import Session
 
 from ...core.config import settings
-from .models import GoogleUserInfo, UserInfo
+from ...core.database import get_database_session
+from .entity import User
+from .exceptions import UserNotFound
+from .models import GoogleUserInfo, JsonWebKey, UserInDB, UserInfo
+
+
+def get_jwk(key: str) -> JsonWebKey:
+    header = {"alg": "RS256", "kid": "landlords-1", "use": "sig"}
+    jwk_dict = jwk.dumps(key, **header, kty="RSA")
+    return JsonWebKey(**jwk_dict)
+
+
+def get_public_key() -> Generator[_RSAPublicKey, None, None]:
+    yield jwk.loads(get_jwk(settings.PUBLIC_KEY).dict())
 
 
 def create_access_token(
@@ -15,6 +31,7 @@ def create_access_token(
     """ 액세스 토큰 생성 (JWT) """
     iat = int(time.time())
     exp = iat + expiration
+    headers = {"alg": "RS256", "kid": "landlords-1"}
     jwt_body = google_user_info.dict(
         exclude={
             "iss",
@@ -27,14 +44,14 @@ def create_access_token(
         }
     )
     jwt_body.update({"iat": iat, "exp": exp})
-    token = jwt.encode(jwt_body, settings.PRIVATE_KEY, settings.JWT_ALGORITHM)
+    token = jwt.encode(
+        header=headers, payload=jwt_body, key=settings.PRIVATE_KEY
+    )
     return str(token, "utf-8")
 
 
-def decode_token(token: str) -> UserInfo:
-    payload = jwt.decode(
-        token, settings.PUBLIC_KEY, algorithms=settings.JWT_ALGORITHM
-    )
+def decode_token(token: str, public_key: _RSAPublicKey) -> UserInfo:
+    payload = jwt.decode(token, public_key)
     token_data = UserInfo(**payload)
     return token_data
 
@@ -42,5 +59,22 @@ def decode_token(token: str) -> UserInfo:
 AUTH_HEADER = APIKeyHeader(name="Authorization")
 
 
-async def get_current_user(token: str = Depends(AUTH_HEADER)) -> UserInfo:
-    return decode_token(token)
+async def get_current_user(
+    token: str = Depends(AUTH_HEADER),
+    session: Session = Depends(get_database_session),
+    public_key: _RSAPublicKey = Depends(get_public_key),
+) -> UserInDB:
+    user_info = decode_token(token, public_key)
+    user: Optional[User] = session.query(User).filter(
+        User.email == user_info.email
+    ).first()
+    if not user or user.disabled:
+        raise UserNotFound
+
+    return UserInDB(
+        uid=user.uid,
+        oauth_type=user.oauth_type,
+        at_hash=user.at_hash,
+        disabled=user.disabled,
+        **user_info.dict()
+    )

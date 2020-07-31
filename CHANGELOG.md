@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/Nexters/landlords-server/compare/v1.8.0...v1.9.0) (2020-07-31)
+
+
+### Features
+
+* **checklist:** 체크리스트 생성, 응답내역 불러오기 및 체크삭제 api 추가 ([#26](https://github.com/Nexters/landlords-server/issues/26)) ([2faec56](https://github.com/Nexters/landlords-server/commit/2faec561d1678bf3c510bd7942482a92941ff956))
+
+## [1.8.0](https://github.com/Nexters/landlords-server/compare/v1.7.0...v1.8.0) (2020-07-30)
+
+
+### Features
+
+* **jwk:** jwk 추가 ([913fa1e](https://github.com/Nexters/landlords-server/commit/913fa1e7b7dc79df94826197fc4da6c10d9bf6cf))
+
+## [1.7.0](https://github.com/Nexters/landlords-server/compare/v1.6.3...v1.7.0) (2020-07-30)
+
+
+### Features
+
+* **deploy:** gcp cloud 자동 배포 추가 ([0e73321](https://github.com/Nexters/landlords-server/commit/0e7332102b89328e02ba0d27755a0b349e90d993))
+
+### [1.6.3](https://github.com/Nexters/landlords-server/compare/v1.6.2...v1.6.3) (2020-07-30)
+
+
+### Bug Fixes
+
+* **choices:** 페르소나 설문 내역이 없는 경우 list에 none을 담아 반환되는 버그 수정 ([#23](https://github.com/Nexters/landlords-server/issues/23)) ([88429f2](https://github.com/Nexters/landlords-server/commit/88429f2178155a057c61c4acc73ca28f3a6db954))
+
+### [1.6.2](https://github.com/Nexters/landlords-server/compare/v1.6.1...v1.6.2) (2020-07-27)
+
+### [1.6.1](https://github.com/Nexters/landlords-server/compare/v1.6.0...v1.6.1) (2020-07-27)
+
+## [1.6.0](https://github.com/Nexters/landlords-server/compare/v1.5.2...v1.6.0) (2020-07-26)
+
+
+### Features
+
+* **persona:** 임차인 페르소나 분석을 위한 API 추가 (질문 리스트, 응답 저장, 페르소나 반환) ([#20](https://github.com/Nexters/landlords-server/issues/20)) ([f69c564](https://github.com/Nexters/landlords-server/commit/f69c56487ffb9f161990286e30bdf80b2de4fc9b))
+
 ### [1.5.2](https://github.com/Nexters/landlords-server/compare/v1.5.1...v1.5.2) (2020-07-24)
 
 

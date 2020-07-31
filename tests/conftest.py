@@ -1,10 +1,10 @@
 import pytest
-from starlette.testclient import TestClient
 from fastapi.applications import FastAPI
+from starlette.testclient import TestClient
 
+from src.core.config import settings
 from src.main import create_app
 from src.routes import api_v1
-from src.core.config import settings
 
 
 @pytest.fixture

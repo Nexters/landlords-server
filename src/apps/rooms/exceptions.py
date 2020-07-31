@@ -7,3 +7,7 @@ class NoneTypeError(CrawlingException):
 
 class RoomNotFoundException(RepositoryException):
     """ 방 매물 정보 없음 """
+
+
+class AnswerNotFoundException(RepositoryException):
+    """체크리스트에 응답한 목록이 없습니다. """
