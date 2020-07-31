@@ -11,6 +11,8 @@ from ...core.database import get_database_session
 from ...core.exceptions import CrawlingException
 from ..checklist.models.domain import CheckItem as CheckItemDto
 from ..checklist.models.entity import CheckAnswer, CheckItem
+from ..checklist.models.requests import AnswerCreateRequest
+from ..checklist.models.responses import CheckItemResponse, CheckItemsResponse
 from ..oauth.entity import User
 from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
@@ -66,13 +68,13 @@ async def get_rooms(
     path="/{room_id}/answers",
     name="체크리스트 응답리스트 불러오기",
     status_code=status.HTTP_200_OK,
-    response_model=List[CheckItemDto],
+    response_model=CheckItemsResponse,
 )
 async def get_checklist_answers(
     room_id: str = __valid_uid,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
-) -> List[CheckItemDto]:
+) -> CheckItemsResponse:
     results = (
         session.query(CheckAnswer, User, Room, CheckItem)
         .filter_by(user_id=current_user.uid)
@@ -85,10 +87,15 @@ async def get_checklist_answers(
     if not results:
         raise AnswerNotFoundException("체크리스트에 응답한 목록이 없습니다.")
 
-    check_items: List[CheckItemDto] = []
-    for _, _, _, check_item in results:
-        check_items.append(CheckItemDto.from_orm(check_item))
-    return check_items
+    return CheckItemsResponse(
+        check_items=[
+            CheckItemDto.from_orm(check_item) for _, _, _, check_item in results
+        ]
+    )
+    # check_items: List[CheckItemDto] = []
+    # for _, _, _, check_item in results:
+    #     check_items.append(CheckItemDto.from_orm(check_item))
+    # return check_items
 
 
 @router.post(
@@ -116,20 +123,20 @@ async def post_room(
     response_model=CheckItemDto,
 )
 async def post_checklist_answer(
+    request: AnswerCreateRequest,
     room_id: str = __valid_uid,
-    check_id: int = 0,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
-) -> CheckItemDto:
+) -> CheckItemResponse:
 
     answer_orm = CheckAnswer(
-        user_id=current_user.uid, room_id=room_id, check_id=check_id
+        user_id=current_user.uid, room_id=room_id, check_id=request.check_id
     )
 
     session.add(answer_orm)
     session.commit()
     session.refresh(answer_orm)
-    return CheckItemDto.from_orm(answer_orm.check)
+    return CheckItemResponse.from_orm(answer_orm.check)
 
 
 @router.patch(
@@ -179,19 +186,17 @@ async def delete_room(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_checklist_answer(
+    check_id: int,
     room_id: str = __valid_uid,
-    check_id: int = 0,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
     answer_orm = (
         session.query(CheckAnswer)
         .filter(
-            and_(
-                CheckAnswer.check_id == check_id,
-                User.uid == current_user.uid,
-                CheckAnswer.room_id == room_id,
-            )
+            (CheckAnswer.check_id == check_id)
+            & (User.uid == current_user.uid)
+            & (CheckAnswer.room_id == room_id)
         )
         .first()
     )

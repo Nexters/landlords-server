@@ -2,11 +2,15 @@ from typing import List
 
 from pydantic import BaseModel
 
-from .domain import CheckQuestion
+from .domain import CheckItem, CheckQuestion
 
 
-class ChecklistAnswersResponse(BaseModel):
-    check_ids: List[int]
+class CheckItemResponse(CheckItem):
+    """체크항목 정보 response"""
+
+
+class CheckItemsResponse(BaseModel):
+    check_items: List[CheckItem]
 
 
 class ChecklistResponse(BaseModel):
