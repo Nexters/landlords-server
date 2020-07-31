@@ -4,7 +4,6 @@ from fastapi import BackgroundTasks, status
 from fastapi.logger import logger
 from fastapi.param_functions import Depends, Path, Security
 from fastapi.routing import APIRouter
-from sqlalchemy import and_
 from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
@@ -92,10 +91,6 @@ async def get_checklist_answers(
             CheckItemDto.from_orm(check_item) for _, _, _, check_item in results
         ]
     )
-    # check_items: List[CheckItemDto] = []
-    # for _, _, _, check_item in results:
-    #     check_items.append(CheckItemDto.from_orm(check_item))
-    # return check_items
 
 
 @router.post(

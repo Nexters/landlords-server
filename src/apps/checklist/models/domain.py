@@ -1,8 +1,9 @@
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ...persona.models.domain import QuestionCategory, QuestionType
+from .entity import Contents, Label, Title
 
 
 class OrmModel(BaseModel):
@@ -15,7 +16,7 @@ class CheckItem(OrmModel):
 
     uid: int
     question_id: int
-    contents: str
+    contents: str = Field(max_length=Contents.max_length)
 
 
 class CheckAnswer(OrmModel):
@@ -30,9 +31,9 @@ class CheckQuestion(OrmModel):
     """ 체크리스트 질문 """
 
     uid: int
-    title: str
+    title: str = Field(max_length=Title.max_length)
     type_: QuestionType
-    label: str
+    label: str = Field(max_length=Label.max_length)
     category: QuestionCategory
     checks: List[CheckItem]
 
