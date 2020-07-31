@@ -75,10 +75,11 @@ async def get_checklist_answers(
     session: Session = Depends(get_database_session),
 ) -> CheckItemsResponse:
     results = (
-        session.query(CheckAnswer, User, Room, CheckItem)
-        .filter_by(user_id=current_user.uid)
-        .join(User, User.uid == CheckAnswer.user_id)
-        .join(Room, Room.uid == room_id)
+        session.query(CheckAnswer, CheckItem)
+        .filter(
+            (CheckAnswer.user_id == current_user.uid)
+            & (CheckAnswer.room_id == room_id)
+        )
         .join(CheckItem, CheckItem.uid == CheckAnswer.check_id)
         .all()
     )
@@ -88,7 +89,7 @@ async def get_checklist_answers(
 
     return CheckItemsResponse(
         check_items=[
-            CheckItemDto.from_orm(check_item) for _, _, _, check_item in results
+            CheckItemDto.from_orm(check_item) for _, check_item in results
         ]
     )
 

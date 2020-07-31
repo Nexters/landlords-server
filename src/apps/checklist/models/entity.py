@@ -31,8 +31,7 @@ class CheckItem(Base):
     __tablename__ = "checklist_items"
     __table_args__ = {"mysql_collate": "utf8mb4_unicode_ci"}
 
-    uid: Optional[int] = Column(
-        "uid",
+    uid: int = Column(
         mysql.BIGINT(20, unsigned=True),
         primary_key=True,
         comment="고유 식별자",
@@ -62,17 +61,17 @@ class CheckItem(Base):
 
     def __init__(
         self,
+        uid: int,
         contents: str,
         question_id: int,
         image_url: str,
         question: Optional["CheckQuestion"] = None,
-        uid: Optional[int] = None,
     ) -> None:
+        self.uid = uid
         self.contents = contents
         self.question_id = question_id
         self.image_url = image_url
         self.question = question
-        self.uid = uid
 
 
 class CheckAnswer(Base):
