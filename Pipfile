@@ -27,7 +27,6 @@ fastapi = "*"
 uvicorn = "*"
 # auth
 python-multipart = "*"
-pyjwt = "*"
 authlib = "*"
 httpx = "*"
 itsdangerous = "*"

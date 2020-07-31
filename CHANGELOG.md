@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/Nexters/landlords-server/compare/v1.7.0...v1.8.0) (2020-07-30)
+
+
+### Features
+
+* **jwk:** jwk 추가 ([913fa1e](https://github.com/Nexters/landlords-server/commit/913fa1e7b7dc79df94826197fc4da6c10d9bf6cf))
+
+## [1.7.0](https://github.com/Nexters/landlords-server/compare/v1.6.3...v1.7.0) (2020-07-30)
+
+
+### Features
+
+* **deploy:** gcp cloud 자동 배포 추가 ([0e73321](https://github.com/Nexters/landlords-server/commit/0e7332102b89328e02ba0d27755a0b349e90d993))
+
+### [1.6.3](https://github.com/Nexters/landlords-server/compare/v1.6.2...v1.6.3) (2020-07-30)
+
+
+### Bug Fixes
+
+* **choices:** 페르소나 설문 내역이 없는 경우 list에 none을 담아 반환되는 버그 수정 ([#23](https://github.com/Nexters/landlords-server/issues/23)) ([88429f2](https://github.com/Nexters/landlords-server/commit/88429f2178155a057c61c4acc73ca28f3a6db954))
+
 ### [1.6.2](https://github.com/Nexters/landlords-server/compare/v1.6.1...v1.6.2) (2020-07-27)
 
 ### [1.6.1](https://github.com/Nexters/landlords-server/compare/v1.6.0...v1.6.1) (2020-07-27)
