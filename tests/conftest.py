@@ -10,7 +10,7 @@ from src.routes import api_v1
 @pytest.fixture
 def app() -> FastAPI:
     """ test app """
-    app = create_app()
+    app = create_app(title="테스트")
     app.include_router(api_v1, prefix=f"{settings.API_VERSION_PREFIX}")
     return app
 
