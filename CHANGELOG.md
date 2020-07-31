@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.9.0](https://github.com/Nexters/landlords-server/compare/v1.8.0...v1.9.0) (2020-07-31)
+
+
+### Features
+
+* **checklist:** 체크리스트 생성, 응답내역 불러오기 및 체크삭제 api 추가 ([#26](https://github.com/Nexters/landlords-server/issues/26)) ([2faec56](https://github.com/Nexters/landlords-server/commit/2faec561d1678bf3c510bd7942482a92941ff956))
+
 ## [1.8.0](https://github.com/Nexters/landlords-server/compare/v1.7.0...v1.8.0) (2020-07-30)
 
 
