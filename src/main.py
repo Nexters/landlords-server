@@ -17,9 +17,9 @@ from .core.handlers import (
 )
 
 
-def create_app() -> FastAPI:
+def create_app(title: str) -> FastAPI:
     """ app factory method """
-    app = FastAPI()
+    app = FastAPI(title=title)
 
     app.add_exception_handler(
         ValidationError, handler=validation_exception_handler
