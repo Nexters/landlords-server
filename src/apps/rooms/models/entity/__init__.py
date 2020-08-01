@@ -2,10 +2,13 @@ from enum import IntEnum
 
 from sqlalchemy import Column, text
 from sqlalchemy.dialects import mysql
+from sqlalchemy.orm import relationship
+from sqlalchemy.schema import ForeignKey
 from sqlalchemy.sql import func
 from sqlalchemy.types import Enum
 
 from .....core.database import Base
+from ....oauth.entity import User
 
 
 class Description(IntEnum):
@@ -47,6 +50,16 @@ class Room(Base):
         mysql.VARCHAR(Uid.max_length),
         primary_key=True,
         comment="방의 고유ID",
+    )
+    user_id: int = Column(
+        "user_id",
+        ForeignKey("users.uid", ondelete="CASCADE", onupdate="CASCADE"),
+    )
+    user: User = relationship(
+        "User",
+        uselist=False,
+        primaryjoin="Room.user_id==User.uid",
+        backref="user_rooms",
     )
 
     deposit = Column(
@@ -127,6 +140,7 @@ class Room(Base):
     def __init__(
         self,
         uid: str,
+        user_id: int,
         deposit: int,
         monthly_rent: int,
         is_jeonse: bool,
@@ -136,6 +150,7 @@ class Room(Base):
         building_type: BuildingType,
     ) -> None:
         self.uid = uid
+        self.user_id = user_id
         self.deposit = deposit
         self.monthly_rent = monthly_rent
         self.is_jeonse = int(is_jeonse)
