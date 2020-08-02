@@ -26,7 +26,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  GCE_INSTANCE: checkhaebang-group-4767
+  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE }}
   DOCKER_IMAGE: landlords-server
   GCE_INSTANCE_ZONE: asia-northeast3-a
 
