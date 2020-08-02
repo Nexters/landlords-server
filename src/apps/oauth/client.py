@@ -1,5 +1,5 @@
 from http import HTTPStatus
-from typing import Dict, Optional
+from typing import Optional
 
 from authlib.common.errors import AuthlibBaseError
 from authlib.integrations.starlette_client import OAuth
@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 from starlette.config import Config
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, RedirectResponse
 
 from ...core.config import settings
 from ...core.database import get_database_session
@@ -51,7 +51,7 @@ async def google_login(request: Request):  # type: ignore
 @oauth_client.get("/sign_in")
 async def sign_in(
     request: Request, session: Session = Depends(get_database_session)
-) -> Dict[str, str]:
+) -> RedirectResponse:
     google_user_info = GoogleUserInfo.parse_obj(
         await oauth.google.parse_id_token(
             request, await oauth.google.authorize_access_token(request)
@@ -72,4 +72,6 @@ async def sign_in(
         session.add(user)
         session.commit()
     app_token = create_access_token(google_user_info)
-    return {"token": app_token}
+    response = RedirectResponse(url=settings.WEB_URI)
+    response.set_cookie(key="token", value=app_token)
+    return response
