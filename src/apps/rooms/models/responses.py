@@ -2,14 +2,14 @@ from typing import List
 
 from pydantic import BaseModel
 
-from .domain.landlords import RoomItem
+from .domain.landlords import RoomItemInDB
 
 
-class RoomItemResponse(RoomItem):
+class RoomItemResponse(RoomItemInDB):
     """ 방 매물 정보 response """
 
 
 class RoomItemsResponse(BaseModel):
     """ 방 매물 정보 리스트 response """
 
-    rooms: List[RoomItem]
+    rooms: List[RoomItemInDB]

@@ -39,7 +39,11 @@ async def get_room(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
-    room_orm = session.query(Room).filter(Room.uid == uid).first()
+    room_orm = (
+        session.query(Room)
+        .filter((Room.uid == uid) & (Room.user_id == current_user.uid))
+        .first()
+    )
     if not room_orm:
         raise RoomNotFoundException("등록된 방이 아닙니다")
     return RoomItemResponse.from_orm(room_orm)
@@ -55,7 +59,9 @@ async def get_rooms(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemsResponse:
-    rooms_orm: List[Room] = session.query(Room).all()
+    rooms_orm: List[Room] = session.query(Room).filter(
+        Room.user_id == current_user.uid
+    ).all()
     if not rooms_orm:
         raise RoomNotFoundException("등록된 방 매물이 없습니다")
     return RoomItemsResponse(
@@ -105,7 +111,7 @@ async def post_room(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
-    room_orm = Room(**request.dict())
+    room_orm = Room(user_id=current_user.uid, **request.dict())
     session.add(room_orm)
     session.commit()
     session.refresh(room_orm)
@@ -147,7 +153,11 @@ async def update_room(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
-    room = session.query(Room).filter(Room.uid == uid).first()
+    room = (
+        session.query(Room)
+        .filter((Room.uid == uid) & (Room.user_id == current_user.uid))
+        .first()
+    )
     if not room:
         raise RoomNotFoundException(f"{uid}에 해당하는 방 매물이 없습니다")
     old_room = RoomItemResponse.from_orm(room)
@@ -169,7 +179,11 @@ async def delete_room(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
-    room = session.query(Room).filter(Room.uid == uid).first()
+    room = (
+        session.query(Room)
+        .filter((Room.uid == uid) & (Room.user_id == current_user.uid))
+        .first()
+    )
     if not room:
         raise RoomNotFoundException(f"{uid}에 해당하는 방 매물이 없습니다")
     session.delete(room)
@@ -226,13 +240,17 @@ async def crawling_room(
         background_tasks.add_task(
             __crawling_room,
             room_id=room_id,
+            user_id=current_user.uid,
             crawling_target=crawling_target,
             session=session,
         )
 
 
 def __crawling_room(
-    room_id: str, crawling_target: CrawlingTarget, session: Session
+    room_id: str,
+    user_id: int,
+    crawling_target: CrawlingTarget,
+    session: Session,
 ) -> None:
     uid = f"{crawling_target.value}::{room_id}"
     try:
@@ -243,6 +261,6 @@ def __crawling_room(
         logger.error(f"{type(err).__name__}: {err}")
     else:
         room = bang.to_room()
-        room_orm = Room(**room.dict())
+        room_orm = Room(user_id=user_id, **room.dict())
         session.add(room_orm)
         session.commit()
