@@ -10,6 +10,7 @@ on:
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   GCE_INSTANCE: checkhaebang-group-4767
+  DOCKER_IMAGE: landlords-server
   GCE_INSTANCE_ZONE: asia-northeast3-a
 
 jobs:
@@ -92,17 +93,17 @@ jobs:
       # Build the Docker image
       - name: Build
         run: |-
-          docker build --tag "asia.gcr.io/$PROJECT_ID/$GCE_INSTANCE:${{ env.VERSION }}" .
-          docker build --tag "asia.gcr.io/$PROJECT_ID/$GCE_INSTANCE:latest" .
+          docker build --tag "asia.gcr.io/$PROJECT_ID/$DOCKER_IMAGE:${{ env.VERSION }}" .
+          docker build --tag "asia.gcr.io/$PROJECT_ID/$DOCKER_IMAGE:latest" .
 
       # Push the Docker image to Google Container Registry
       - name: Publish
         run: |-
-          docker push "asia.gcr.io/$PROJECT_ID/$GCE_INSTANCE:${{ env.VERSION }}"
-          docker push "asia.gcr.io/$PROJECT_ID/$GCE_INSTANCE:latest"
+          docker push "asia.gcr.io/$PROJECT_ID/$DOCKER_IMAGE:${{ env.VERSION }}"
+          docker push "asia.gcr.io/$PROJECT_ID/$DOCKER_IMAGE:latest"
 
       - name: Deploy
         run: |-
           gcloud compute instances update-container "$GCE_INSTANCE" \
             --zone "$GCE_INSTANCE_ZONE" \
-            --container-image "asia.gcr.io/$PROJECT_ID/$GCE_INSTANCE:latest"
+            --container-image "asia.gcr.io/$PROJECT_ID/$DOCKER_IMAGE:${{ env.VERSION }}"
