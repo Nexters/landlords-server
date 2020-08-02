@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/Nexters/landlords-server/compare/v1.10.0...v1.11.0) (2020-08-02)
+
+
+### Features
+
+* **cors:** cors 처리 추가 ([b47f2cb](https://github.com/Nexters/landlords-server/commit/b47f2cb8b801cefb8da54bac963d86857a4d3f1b))
+
+## [1.10.0](https://github.com/Nexters/landlords-server/compare/v1.9.2...v1.10.0) (2020-08-02)
+
+
+### Features
+
+* **token-cookie:** web과 통합을 위한 token 처리 ([ec433bc](https://github.com/Nexters/landlords-server/commit/ec433bce5ac9e68ac97980c5146d843b30252866))
+
+### [1.9.2](https://github.com/Nexters/landlords-server/compare/v1.9.1...v1.9.2) (2020-08-02)
+
+
+### Bug Fixes
+
+* **rooms:** 방 리소스 유저 연결 및 response 수정 ([dbec589](https://github.com/Nexters/landlords-server/commit/dbec5898d46993d23c84dca2435ab4cfa57c925f))
+
 ### [1.9.1](https://github.com/Nexters/landlords-server/compare/v1.9.0...v1.9.1) (2020-07-31)
 
 ## [1.9.0](https://github.com/Nexters/landlords-server/compare/v1.8.0...v1.9.0) (2020-07-31)

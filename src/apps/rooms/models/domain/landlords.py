@@ -25,3 +25,7 @@ class RoomItem(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class RoomItemInDB(RoomItem):
+    user_id: int = Field(...)
