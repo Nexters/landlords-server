@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/Nexters/landlords-server/compare/v1.9.2...v1.10.0) (2020-08-02)
+
+
+### Features
+
+* **token-cookie:** web과 통합을 위한 token 처리 ([ec433bc](https://github.com/Nexters/landlords-server/commit/ec433bce5ac9e68ac97980c5146d843b30252866))
+
 ### [1.9.2](https://github.com/Nexters/landlords-server/compare/v1.9.1...v1.9.2) (2020-08-02)
 
 
