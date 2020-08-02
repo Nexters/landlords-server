@@ -9,6 +9,8 @@ from ...exceptions import NoneTypeError
 from ..entity import BuildingType
 from .landlords import RoomItem
 
+image_url = "http://d1774jszgerdmk.cloudfront.net/512/{image_key}"
+
 
 class SellingType(IntEnum):
     MonthlyRent = 0  # 월세
@@ -420,7 +422,11 @@ class Dabang:
             raise NoneTypeError("방 유형이 없습니다")
         if self.room.price_info is None:
             raise NoneTypeError("방 가격 정보가 없습니다")
+        if self.room.photos is None:
+            raise NoneTypeError("방 사진이 없습니다")
         deposit, monthly_rent, _ = self.room.price_info.pop()
+        image_key = self.room.photos.pop()
+
         return RoomItem(
             uid=f"Dabang::{self.room.id}",
             deposit=deposit,
@@ -429,5 +435,6 @@ class Dabang:
             address=self.room.address,
             title=self.room.title,
             description=self.room.memo,
+            image=image_url.format(image_key=image_key),
             building_type=BuildingType(self.room.room_type),
         )

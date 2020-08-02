@@ -7,6 +7,8 @@ from pydantic.dataclasses import dataclass
 from ..entity import BuildingType
 from .landlords import RoomItem
 
+image_url = "https://ic.zigbang.com/ic/items/{uid}/1.jpg?w={width}&h={height}"
+
 
 @dataclass
 class RoomTypeTitle:
@@ -85,5 +87,6 @@ class Zigbang:
             address=item.address,
             title=item.title,
             description=item.description,
+            image=image_url.format(uid=item.item_id, width=800, height=600),
             building_type=mapper[ZigbangBuildingType(item.service_type)],
         )

@@ -27,6 +27,10 @@ class Title(IntEnum):
     max_length = 100
 
 
+class Image(IntEnum):
+    max_length = 300
+
+
 class BuildingType(IntEnum):
     OneRoom = 0
     TwoRoom = 1
@@ -120,6 +124,13 @@ class Room(Base):
         "building_type", Enum(BuildingType), nullable=False, comment="방 유형"
     )
 
+    image = Column(
+        "image",
+        mysql.VARCHAR(Image.max_length),
+        nullable=True,
+        comment="방의 Image URL",
+    )
+
     created = Column(
         "Created",
         mysql.DATETIME(),
@@ -147,6 +158,7 @@ class Room(Base):
         address: str,
         title: str,
         description: str,
+        image: str,
         building_type: BuildingType,
     ) -> None:
         self.uid = uid
@@ -157,4 +169,5 @@ class Room(Base):
         self.address = address
         self.title = title
         self.description = description
+        self.image = image
         self.building_type = building_type

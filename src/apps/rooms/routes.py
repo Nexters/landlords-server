@@ -1,6 +1,6 @@
-from typing import Any, List, Union
+from typing import List, Union
 
-from fastapi import BackgroundTasks, status
+from fastapi import status
 from fastapi.logger import logger
 from fastapi.param_functions import Depends, Path, Security
 from fastapi.routing import APIRouter
@@ -224,21 +224,18 @@ async def delete_checklist_answer(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def crawling_room(
-    background_tasks: BackgroundTasks,
     room_id: str = __valid_uid,
     crawling_target: CrawlingTarget = CrawlingTarget.Dabang,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> None:
-    """ 추후 websocket으로 결과 notification """
     room = (
         session.query(Room)
         .filter(Room.uid == f"{crawling_target.value}::{room_id}")
         .first()
     )
     if not room:
-        background_tasks.add_task(
-            __crawling_room,
+        __crawling_room(
             room_id=room_id,
             user_id=current_user.uid,
             crawling_target=crawling_target,
