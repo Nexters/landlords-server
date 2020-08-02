@@ -9,7 +9,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  GCE_INSTANCE: landlords-server
+  GCE_INSTANCE: checkhaebang-group-4767
   GCE_INSTANCE_ZONE: asia-northeast3-a
 
 jobs:
