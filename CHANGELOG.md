@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/Nexters/landlords-server/compare/v1.10.0...v1.11.0) (2020-08-02)
+
+
+### Features
+
+* **cors:** cors 처리 추가 ([b47f2cb](https://github.com/Nexters/landlords-server/commit/b47f2cb8b801cefb8da54bac963d86857a4d3f1b))
+
 ## [1.10.0](https://github.com/Nexters/landlords-server/compare/v1.9.2...v1.10.0) (2020-08-02)
 
 
