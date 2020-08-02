@@ -1,6 +1,7 @@
 """
 """
 from fastapi.openapi.utils import get_openapi
+from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from . import service_name, version
@@ -17,6 +18,14 @@ app.include_router(api_v1, prefix=f"{settings.API_VERSION_PREFIX}")
 app.include_router(well_known_router, prefix="/.well-known", tags=["auth"])
 
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[str(origin) for origin in settings.CORS_ALLOWS],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.mount(path="/oauth", app=oauth_client, name="oauth")
 
 app.openapi_schema = get_openapi(

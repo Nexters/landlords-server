@@ -1,7 +1,7 @@
 # pylint: disable=no-self-argument
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseSettings, validator
+from pydantic import BaseSettings, HttpUrl, validator
 
 
 class SQLAlchemySettings(BaseSettings):
@@ -35,8 +35,20 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "RS256"
     SECRET_KEY: str = ""
     WEB_URI: str = "https://checkhaebang.com/"
+    CORS_ALLOWS: List[HttpUrl] = []
 
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 86400 * 7
+
+    @validator("CORS_ALLOWS", pre=True)
+    def __set_cors_allows(cls, v: Union[str, List[str]]) -> List[str]:  # noqa
+        result = v
+        if isinstance(v, str) and not v.startswith("["):
+            result = [i.strip() for i in v.split(",")]
+        elif isinstance(v, List):
+            result = v
+        else:
+            raise ValueError(v)
+        return result
 
     @validator("PRIVATE_KEY", pre=True)
     def __set_private_key(cls, value: str) -> str:  # noqa
