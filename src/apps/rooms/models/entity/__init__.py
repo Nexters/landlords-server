@@ -40,6 +40,12 @@ class BuildingType(IntEnum):
     Villa = 5
 
 
+class SellingType(IntEnum):
+    MonthlyRent = 0  # 월세
+    Jeonse = 1  # 전세
+    Selling = 2  # 매매
+
+
 class Room(Base):
     """ 방 entity
 
@@ -84,13 +90,8 @@ class Room(Base):
         comment="월세",
     )
 
-    is_jeonse = Column(
-        "is_jeonse",
-        mysql.TINYINT(unsigned=True),
-        nullable=False,
-        default="0",
-        server_default=text("0"),
-        comment="전세유무",
+    selling_type = Column(
+        "selling_type", Enum(SellingType), nullable=False, comment="매매타입"
     )
 
     address = Column(
@@ -154,7 +155,7 @@ class Room(Base):
         user_id: int,
         deposit: int,
         monthly_rent: int,
-        is_jeonse: bool,
+        selling_type: SellingType,
         address: str,
         title: str,
         description: str,
@@ -165,7 +166,7 @@ class Room(Base):
         self.user_id = user_id
         self.deposit = deposit
         self.monthly_rent = monthly_rent
-        self.is_jeonse = int(is_jeonse)
+        self.selling_type = selling_type
         self.address = address
         self.title = title
         self.description = description

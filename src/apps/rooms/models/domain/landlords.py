@@ -3,7 +3,15 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from ..entity import Address, BuildingType, Description, Image, Title, Uid
+from ..entity import (
+    Address,
+    BuildingType,
+    Description,
+    Image,
+    SellingType,
+    Title,
+    Uid,
+)
 
 
 class CrawlingTarget(str, Enum):
@@ -17,7 +25,7 @@ class RoomItem(BaseModel):
     uid: str = Field(max_length=Uid.max_length)
     deposit: int = Field(...)
     monthly_rent: int = Field(...)
-    is_jeonse: bool = Field(...)
+    selling_type: SellingType = Field(...)
     address: Optional[str] = Field(max_length=Address.max_length)
     title: Optional[str] = Field(max_length=Title.max_length)
     description: Optional[str] = Field(max_length=Description.max_length)
