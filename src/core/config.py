@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     PUBLIC_KEY: str = ""
     JWT_ALGORITHM: str = "RS256"
     SECRET_KEY: str = ""
-    WEB_URI: str = "https://checkhaebang.com/"
+    WEB_URI: HttpUrl = "https://checkhaebang.com"  # type: ignore
     CORS_ALLOWS: List[HttpUrl] = []
 
     ACCESS_TOKEN_EXPIRE_SECONDS: int = 86400 * 7
