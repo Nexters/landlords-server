@@ -17,11 +17,15 @@ from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
 from .exceptions import AnswerNotFoundException, RoomNotFoundException
 from .models.domain.dabang import Dabang
-from .models.domain.landlords import CrawlingTarget
+from .models.domain.landlords import CrawlingTarget, RoomItemInDB
 from .models.domain.zigbang import Zigbang
 from .models.entity import Room
 from .models.requests import RoomItemCreateRequest, RoomItemUpdateRequest
-from .models.responses import RoomItemResponse, RoomItemsResponse
+from .models.responses import (
+    RoomItemHTTPResponse,
+    RoomItemResponse,
+    RoomItemsResponse,
+)
 from .services import get_room_detail
 
 router = APIRouter()
@@ -219,28 +223,37 @@ async def delete_checklist_answer(
 
 
 @router.put(
-    path="/{room_id}",
-    name="방 매물 정보 크롤링",
-    status_code=status.HTTP_204_NO_CONTENT,
+    path="/{room_id}", name="방 매물 정보 크롤링", status_code=status.HTTP_201_CREATED
 )
 async def crawling_room(
     room_id: str = __valid_uid,
     crawling_target: CrawlingTarget = CrawlingTarget.Dabang,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
-) -> None:
+) -> RoomItemHTTPResponse:
     room = (
         session.query(Room)
         .filter(Room.uid == f"{crawling_target.value}::{room_id}")
         .first()
     )
+
     if not room:
-        __crawling_room(
+        room = __crawling_room(
             room_id=room_id,
             user_id=current_user.uid,
             crawling_target=crawling_target,
             session=session,
         )
+        response = RoomItemHTTPResponse(
+            content=RoomItemInDB.from_orm(room).dict(),
+            status_code=status.HTTP_201_CREATED,
+        )
+    else:
+        response = RoomItemHTTPResponse(
+            content=RoomItemInDB.from_orm(room).dict(),
+            status_code=status.HTTP_200_OK,
+        )
+    return response
 
 
 def __crawling_room(
@@ -248,7 +261,7 @@ def __crawling_room(
     user_id: int,
     crawling_target: CrawlingTarget,
     session: Session,
-) -> None:
+) -> Room:
     uid = f"{crawling_target.value}::{room_id}"
     try:
         bang: Union[Zigbang, Dabang] = get_room_detail(
@@ -261,3 +274,5 @@ def __crawling_room(
         room_orm = Room(user_id=user_id, **room.dict())
         session.add(room_orm)
         session.commit()
+
+    return room_orm
