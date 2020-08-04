@@ -73,5 +73,7 @@ async def sign_in(
         session.commit()
     app_token = create_access_token(google_user_info)
     response = RedirectResponse(url=settings.WEB_URI)
-    response.set_cookie(key="token", value=app_token)
+    response.set_cookie(
+        key="token", value=app_token, domain=settings.WEB_URI.host
+    )
     return response
