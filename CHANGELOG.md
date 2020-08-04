@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.11.3](https://github.com/Nexters/landlords-server/compare/v1.11.2...v1.11.3) (2020-08-04)
+
+
+### Bug Fixes
+
+* **cookie:** cookie 생성 시 domain 추가 ([#36](https://github.com/Nexters/landlords-server/issues/36)) ([0b41e86](https://github.com/Nexters/landlords-server/commit/0b41e86bc85ed58abc995f3d2e33d03f1ef5ee8b))
+
 ### [1.11.2](https://github.com/Nexters/landlords-server/compare/v1.11.1...v1.11.2) (2020-08-02)
 
 ### [1.11.1](https://github.com/Nexters/landlords-server/compare/v1.11.0...v1.11.1) (2020-08-02)
