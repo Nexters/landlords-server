@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.11.4](https://github.com/Nexters/landlords-server/compare/v1.11.3...v1.11.4) (2020-08-05)
+
+
+### Bug Fixes
+
+* **room:** 이미지 컬럼 추가 및 SalesType 반환 ([#35](https://github.com/Nexters/landlords-server/issues/35)) ([d69473a](https://github.com/Nexters/landlords-server/commit/d69473a8c0eee26aa3310d0e446d6191f74d65f3))
+
 ### [1.11.3](https://github.com/Nexters/landlords-server/compare/v1.11.2...v1.11.3) (2020-08-04)
 
 
