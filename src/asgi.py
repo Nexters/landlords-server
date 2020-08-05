@@ -1,8 +1,8 @@
 """
 """
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from . import service_name, version
