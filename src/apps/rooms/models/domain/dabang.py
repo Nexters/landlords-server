@@ -1,19 +1,14 @@
 from datetime import datetime
-from enum import IntEnum
 from typing import Any, List, Optional
 
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
 from ...exceptions import NoneTypeError
-from ..entity import BuildingType
+from ..entity import BuildingType, SellingType
 from .landlords import RoomItem
 
-
-class SellingType(IntEnum):
-    MonthlyRent = 0  # 월세
-    Jeonse = 1  # 전세
-    Selling = 2  # 매매
+image_url = "http://d1774jszgerdmk.cloudfront.net/512/{image_key}"
 
 
 @dataclass
@@ -180,7 +175,7 @@ class OtherRoom:
     img_urls: Optional[List[str]]
     is_pano: Optional[bool]
     price_title: Optional[str]
-    selling_type: SellingType
+    selling_type: Optional[int]
     is_confirm: Optional[bool]
     confirm_type: Optional[Any]
     confirm_date_str: Optional[str]
@@ -420,14 +415,19 @@ class Dabang:
             raise NoneTypeError("방 유형이 없습니다")
         if self.room.price_info is None:
             raise NoneTypeError("방 가격 정보가 없습니다")
+        if self.room.photos is None:
+            raise NoneTypeError("방 사진이 없습니다")
         deposit, monthly_rent, _ = self.room.price_info.pop()
+        image_key = self.room.photos.pop()
+
         return RoomItem(
             uid=f"Dabang::{self.room.id}",
             deposit=deposit,
             monthly_rent=monthly_rent,
-            is_jeonse=(self.room.selling_type == SellingType.Jeonse),
+            selling_type=SellingType(self.room.selling_type),
             address=self.room.address,
             title=self.room.title,
             description=self.room.memo,
+            image=image_url.format(image_key=image_key),
             building_type=BuildingType(self.room.room_type),
         )

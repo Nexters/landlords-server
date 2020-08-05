@@ -4,8 +4,10 @@ from typing import Any, List, Optional
 
 from pydantic.dataclasses import dataclass
 
-from ..entity import BuildingType
+from ..entity import BuildingType, SellingType
 from .landlords import RoomItem
+
+image_url = "https://ic.zigbang.com/ic/items/{uid}/1.jpg?w={width}&h={height}"
 
 
 @dataclass
@@ -62,11 +64,20 @@ class ZigbangBuildingType(str, Enum):
     Villa = "빌라"
 
 
+class ZigbangSellingType(str, Enum):
+    MonthlyRent = "월세"
+    Jeonse = "전세"
+    Selling = "매매"
+
+
 mapper = {
     ZigbangBuildingType.Apartment: BuildingType.Apartment,
     ZigbangBuildingType.OneRoom: BuildingType.OneRoom,
     ZigbangBuildingType.Officetel: BuildingType.Officetel,
     ZigbangBuildingType.Villa: BuildingType.Villa,
+    ZigbangSellingType.MonthlyRent: SellingType.MonthlyRent,
+    ZigbangSellingType.Jeonse: SellingType.Jeonse,
+    ZigbangSellingType.Selling: SellingType.Selling
 }
 
 
@@ -76,14 +87,17 @@ class Zigbang:
 
     def to_room(self) -> RoomItem:
         item = self.items.pop()
+        zigbang_selling_type = ZigbangSellingType(item.sales_type)
+        zigbang_building_type = ZigbangBuildingType(item.service_type)
 
         return RoomItem(
             uid=f"Zigbang::{item.item_id}",
             deposit=item.deposit,
             monthly_rent=item.rent,
-            is_jeonse=(item.sales_type == "전세"),
+            selling_type=SellingType(mapper[zigbang_selling_type]),
             address=item.address,
             title=item.title,
             description=item.description,
-            building_type=mapper[ZigbangBuildingType(item.service_type)],
+            image=image_url.format(uid=item.item_id, width=800, height=600),
+            building_type=BuildingType(mapper[zigbang_building_type]),
         )
