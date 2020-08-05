@@ -2,6 +2,7 @@
 """
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
+from starlette.middleware.httpsredirect import HTTPSRedirectMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 
 from . import service_name, version
@@ -17,6 +18,7 @@ app = create_app(title=service_name)
 app.include_router(api_v1, prefix=f"{settings.API_VERSION_PREFIX}")
 app.include_router(well_known_router, prefix="/.well-known", tags=["auth"])
 
+app.add_middleware(HTTPSRedirectMiddleware)
 app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
 app.add_middleware(
     CORSMiddleware,
