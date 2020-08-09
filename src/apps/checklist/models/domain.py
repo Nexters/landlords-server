@@ -1,9 +1,29 @@
+from enum import Enum, IntEnum
 from typing import List
 
 from pydantic import BaseModel, Field
 
 from ...persona.models.domain import QuestionCategory, QuestionType
-from .entity import Contents, Label, Title
+
+
+class Contents(IntEnum):
+    max_length = 100
+
+
+class Title(IntEnum):
+    max_length = 50
+
+
+class Label(IntEnum):
+    max_length = 50
+
+
+class StateCategory(str, Enum):
+    """ 문제 유형 """
+
+    Looking = "Looking"
+    Contracting = "Contracting"
+    Moving = "Moving"
 
 
 class OrmModel(BaseModel):
@@ -35,6 +55,7 @@ class CheckQuestion(OrmModel):
     type_: QuestionType
     label: str = Field(max_length=Label.max_length)
     category: QuestionCategory
+    state: StateCategory
     checks: List[CheckItem]
 
 

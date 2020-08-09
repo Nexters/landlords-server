@@ -10,6 +10,7 @@ from ..oauth.models import UserInDB
 from ..oauth.services import get_current_user
 from . import services
 from .models.domain import CheckQuestion as CheckQuestionDto
+from .models.domain import StateCategory
 from .models.responses import ChecklistResponse
 
 router = APIRouter()
@@ -22,12 +23,13 @@ router = APIRouter()
     response_model=ChecklistResponse,
 )
 async def get_checklist(
+    state: StateCategory,
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> ChecklistResponse:
 
     checklist: List[CheckQuestionDto] = services.get_checklist(
-        user_info=current_user, session=session
+        user_info=current_user, session=session, state=state
     )
 
     return ChecklistResponse(
