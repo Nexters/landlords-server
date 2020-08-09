@@ -8,7 +8,7 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Enum
 
 from ....core.database import Base
-from ...oauth.entity import User
+from ...oauth.models.entity import User
 from ...persona.models.domain import QuestionCategory, QuestionType
 from ...rooms.models.entity import Room
 
@@ -32,9 +32,7 @@ class CheckItem(Base):
     __table_args__ = {"mysql_collate": "utf8mb4_unicode_ci"}
 
     uid: int = Column(
-        mysql.BIGINT(20, unsigned=True),
-        primary_key=True,
-        comment="고유 식별자",
+        mysql.BIGINT(20, unsigned=True), primary_key=True, comment="고유 식별자"
     )
 
     contents: str = Column(
