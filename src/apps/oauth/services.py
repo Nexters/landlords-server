@@ -63,7 +63,6 @@ async def get_current_user(
     return UserInDB(
         uid=user.uid,
         oauth_type=user.oauth_type,
-        sub=user.sub,
         disabled=user.disabled,
         **user_info.dict(),
     )
