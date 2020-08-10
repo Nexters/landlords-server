@@ -1,15 +1,10 @@
-from enum import IntEnum
-
 from sqlalchemy import Column, text
 from sqlalchemy.dialects import mysql
 from sqlalchemy.sql import func
 from sqlalchemy.types import Enum
 
-from ...core.database import Base
-
-
-class OAuthType(IntEnum):
-    Google = 0
+from ....core.database import Base
+from .domain.landlords import OAuthType
 
 
 class User(Base):
@@ -26,7 +21,7 @@ class User(Base):
     oauth_type = Column(
         "oauth_type", Enum(OAuthType), nullable=False, comment="인증 서비스 유형"
     )
-    at_hash = Column("at_hash", mysql.VARCHAR(100), comment="구글 hash")
+    sub = Column("sub", mysql.VARCHAR(100), comment="구글 uid")
     email = Column(
         "Email",
         mysql.VARCHAR(50),
@@ -81,16 +76,16 @@ class User(Base):
 
     def __init__(
         self,
-        at_hash: str,
+        sub: str,
         oauth_type: OAuthType,
         email: str,
-        full_name: str,
-        profile: str,
+        name: str,
+        picture: str,
         disabled: bool,
     ) -> None:
-        self.at_hash = at_hash
+        self.sub = sub
         self.oauth_type = oauth_type
         self.email = email
-        self.full_name = full_name
-        self.profile = profile
+        self.full_name = name
+        self.profile = picture
         self.disabled = int(disabled)

@@ -6,7 +6,7 @@ from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
-from ..oauth.models import UserInDB
+from ..oauth.models.domain.landlords import UserInDB
 from ..oauth.services import get_current_user
 from . import services
 from .models.domain import ChoiceItem as ChoiceItemDto

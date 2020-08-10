@@ -1,41 +1,24 @@
-from typing import List, Optional
+from enum import Enum
+from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from .entity import OAuthType
 
-
-class GoogleUserInfo(BaseModel):
-    iss: str
-    azp: str
-    aud: str
-    sub: str
-    email_verified: bool
-    at_hash: str
-    nonce: str
-
-    email: str
-    name: str
-    picture: str
-    given_name: str
-    family_name: str
-    iat: int
-    exp: int
-    locale: str
+class OAuthType(str, Enum):
+    Google = "Google"
 
 
 class UserInfo(BaseModel):
-    email: str
-    name: str
-    given_name: str
-    family_name: str
-    picture: str
+    sub: str = Field(..., description="구글 jwt sub")
+    email: str = Field(..., description="이메일")
+    name: str = Field(..., description="전체 이름")
+    picture: str = Field(..., description="프로필 이미지")
 
 
 class UserInDB(UserInfo):
     uid: int
     oauth_type: OAuthType
-    at_hash: str
+    sub: str
     disabled: bool
 
     class Config:
@@ -56,7 +39,3 @@ class JsonWebKey(BaseModel):
     use: Optional[str] = Field(
         default="sig", description="용도 (sig: signature, verify 검증)"
     )
-
-
-class JsonWebKeyResponse(BaseModel):
-    keys: List[JsonWebKey]

@@ -2,7 +2,7 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..oauth.models import UserInDB
+from ..oauth.models.domain.landlords import UserInDB
 from ..persona.models.domain import ChoiceItem
 from ..persona.services import get_user_choices
 from .models.domain import CheckQuestion as CheckQuestionDto
