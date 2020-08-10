@@ -11,7 +11,7 @@ from .models.domain.google import GoogleUserInfo
 from .models.domain.landlords import OAuthType, UserInfo
 from .models.requests import CreateTokenRequest
 from .models.responses import AppTokenResponse, JsonWebKeyResponse
-from .services import create_access_token, get_jwk, sign_up
+from .services import create_access_token, get_jwk, sign_up_if_not_signed
 
 router = APIRouter()
 
@@ -55,6 +55,6 @@ async def get_token(
         if response.status_code != status.HTTP_200_OK:
             raise InvalidToken
         google_user_info = GoogleUserInfo(**response.json())
-        sign_up(session, UserInfo(**google_user_info.dict()))
+        sign_up_if_not_signed(session, UserInfo(**google_user_info.dict()))
         app_token = create_access_token(google_user_info)
     return AppTokenResponse(token=app_token)

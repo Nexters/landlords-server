@@ -69,7 +69,7 @@ async def get_current_user(
     )
 
 
-def sign_up(session: Session, user_info: UserInfo) -> None:
+def sign_up_if_not_signed(session: Session, user_info: UserInfo) -> None:
     user: Optional[User] = (
         session.query(User).filter(User.email == user_info.email).first()
     )
