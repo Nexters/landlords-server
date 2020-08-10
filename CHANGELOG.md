@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/Nexters/landlords-server/compare/v1.11.5...v1.12.0) (2020-08-10)
+
+
+### Features
+
+* **token:** oauth 토큰을 검증하여 app token 발급하기 ([#38](https://github.com/Nexters/landlords-server/issues/38)) ([e10cc18](https://github.com/Nexters/landlords-server/commit/e10cc18467cce2e1e8f51c528e8c758738402401))
+
 ### [1.11.5](https://github.com/Nexters/landlords-server/compare/v1.11.4...v1.11.5) (2020-08-05)
 
 ### [1.11.4](https://github.com/Nexters/landlords-server/compare/v1.11.3...v1.11.4) (2020-08-05)
