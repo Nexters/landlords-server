@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.types import Enum
 
 from .....core.database import Base
-from ....oauth.entity import User
+from ....oauth.models.entity import User
 
 
 class Description(IntEnum):

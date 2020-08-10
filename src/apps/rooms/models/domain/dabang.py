@@ -40,6 +40,7 @@ class Agent:
     is_awards: Optional[bool]
     emails: Optional[List[str]]
     role_type: Optional[str]
+    agent_tel: Optional[str]
 
 
 @dataclass

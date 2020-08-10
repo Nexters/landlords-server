@@ -12,8 +12,8 @@ from ..checklist.models.domain import CheckItem as CheckItemDto
 from ..checklist.models.entity import CheckAnswer, CheckItem
 from ..checklist.models.requests import AnswerCreateRequest
 from ..checklist.models.responses import CheckItemResponse, CheckItemsResponse
-from ..oauth.entity import User
-from ..oauth.models import UserInDB
+from ..oauth.models.domain.landlords import UserInDB
+from ..oauth.models.entity import User
 from ..oauth.services import get_current_user
 from .exceptions import AnswerNotFoundException, RoomNotFoundException
 from .models.domain.dabang import Dabang
@@ -21,11 +21,8 @@ from .models.domain.landlords import CrawlingTarget, RoomItemInDB
 from .models.domain.zigbang import Zigbang
 from .models.entity import Room
 from .models.requests import RoomItemCreateRequest, RoomItemUpdateRequest
-from .models.responses import (
-    RoomItemHTTPResponse,
-    RoomItemResponse,
-    RoomItemsResponse,
-)
+from .models.responses import (RoomItemHTTPResponse, RoomItemResponse,
+                               RoomItemsResponse)
 from .services import get_room_detail
 
 router = APIRouter()

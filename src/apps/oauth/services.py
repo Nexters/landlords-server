@@ -9,9 +9,9 @@ from sqlalchemy.orm import Session
 
 from ...core.config import settings
 from ...core.database import get_database_session
-from .entity import User
 from .exceptions import UserNotFound
-from .models import GoogleUserInfo, JsonWebKey, UserInDB, UserInfo
+from .models.domain.landlords import JsonWebKey, OAuthType, UserInDB, UserInfo
+from .models.entity import User
 
 
 def get_jwk(key: str) -> JsonWebKey:
@@ -25,24 +25,13 @@ def get_public_key() -> Generator[_RSAPublicKey, None, None]:
 
 
 def create_access_token(
-    google_user_info: GoogleUserInfo,
-    expiration: int = settings.ACCESS_TOKEN_EXPIRE_SECONDS,
+    user_info: UserInfo, expiration: int = settings.ACCESS_TOKEN_EXPIRE_SECONDS
 ) -> str:
     """ 액세스 토큰 생성 (JWT) """
     iat = int(time.time())
     exp = iat + expiration
     headers = {"alg": "RS256", "kid": "landlords-1"}
-    jwt_body = google_user_info.dict(
-        exclude={
-            "iss",
-            "azp",
-            "aud",
-            "sub",
-            "email_verified",
-            "at_hash",
-            "nonce",
-        }
-    )
+    jwt_body = user_info.dict()
     jwt_body.update({"iat": iat, "exp": exp})
     token = jwt.encode(
         header=headers, payload=jwt_body, key=settings.PRIVATE_KEY
@@ -74,7 +63,19 @@ async def get_current_user(
     return UserInDB(
         uid=user.uid,
         oauth_type=user.oauth_type,
-        at_hash=user.at_hash,
+        sub=user.sub,
         disabled=user.disabled,
-        **user_info.dict()
+        **user_info.dict(),
     )
+
+
+def sign_up_if_not_signed(session: Session, user_info: UserInfo) -> None:
+    user: Optional[User] = (
+        session.query(User).filter(User.email == user_info.email).first()
+    )
+    if not user:
+        user = User(
+            oauth_type=OAuthType.Google, disabled=False, **user_info.dict()
+        )
+        session.add(user)
+        session.commit()
