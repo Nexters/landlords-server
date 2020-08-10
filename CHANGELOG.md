@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.1](https://github.com/Nexters/landlords-server/compare/v1.12.0...v1.12.1) (2020-08-10)
+
+
+### Bug Fixes
+
+* **checklist:** 체크리스트 방 계약상태 컬럼 추가 ([#39](https://github.com/Nexters/landlords-server/issues/39)) ([2704b8b](https://github.com/Nexters/landlords-server/commit/2704b8bcb0bd7c9c771c5062c7d52c550119eafc))
+
 ## [1.12.0](https://github.com/Nexters/landlords-server/compare/v1.11.5...v1.12.0) (2020-08-10)
 
 
