@@ -132,6 +132,25 @@ class Room(Base):
         comment="방의 Image URL",
     )
 
+    room_size = Column(
+        "room_size", mysql.DOUBLE(5, 2, unsigned=True), comment="방 크기 (㎡)"
+    )
+
+    floor = Column("floor", mysql.VARCHAR(5), comment="층/건물층수")
+
+    has_elevator = Column(
+        "has_elevator",
+        mysql.TINYINT(1),
+        nullable=True,
+        comment="엘리베이터 유무",
+    )
+
+    administrative_expenses = Column(
+        "administrative_expenses",
+        mysql.TINYINT(2, unsigned=True),
+        comment="관리비",
+    )
+
     created = Column(
         "Created",
         mysql.DATETIME(),

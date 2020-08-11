@@ -31,6 +31,10 @@ class RoomItem(BaseModel):
     description: Optional[str] = Field(max_length=Description.max_length)
     image: Optional[str] = Field(max_length=Image.max_length)
     building_type: BuildingType = Field(...)
+    room_size: float = Field(..., description="방 크기(㎡)")
+    floor: str = Field(..., description="층/건물층수")
+    has_elevator: Optional[bool] = Field(default=None, description="엘리베이터 유무")
+    administrative_expenses: int = Field(..., description="관리비")
 
     class Config:
         orm_mode = True
