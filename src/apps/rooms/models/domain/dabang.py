@@ -418,6 +418,14 @@ class Dabang:
             raise NoneTypeError("방 가격 정보가 없습니다")
         if self.room.photos is None:
             raise NoneTypeError("방 사진이 없습니다")
+        if self.room.room_size is None:
+            raise NoneTypeError("방 면적이 없습니다")
+        if self.room.room_floor_str is None:
+            raise NoneTypeError("층이 없습니다")
+        if self.room.building_floor_str is None:
+            raise NoneTypeError("건물층수가 없습니다")
+        if self.room.maintenance_cost_str is None:
+            raise NoneTypeError("관리비가 없습니다")
         deposit, monthly_rent, _ = self.room.price_info.pop()
         image_key = self.room.photos.pop()
 
@@ -431,4 +439,10 @@ class Dabang:
             description=self.room.memo,
             image=image_url.format(image_key=image_key),
             building_type=BuildingType(self.room.room_type),
+            room_size=self.room.room_size,
+            floor=f"{self.room.room_floor_str}/{self.room.building_floor_str}",
+            has_elevator=(self.room.elevator_str == "있음"),
+            administrative_expenses=int(
+                self.room.maintenance_cost_str.replace("만 원", "")
+            ),
         )

@@ -2,6 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, List, Optional
 
+from pydantic import Field
 from pydantic.dataclasses import dataclass
 
 from ..entity import BuildingType, SellingType
@@ -24,8 +25,8 @@ class Area:
 
 @dataclass
 class Item:
-    size_m2: Optional[int] = None
-    building_floor: Optional[int] = None
+    size_m2: int = Field(...)
+    building_floor: int = Field(...)
     section_type: Optional[str] = None
     item_id: Optional[int] = None
     images_thumbnail: Optional[str] = None
@@ -37,7 +38,7 @@ class Item:
     전용면적: Optional[Area] = None
     계약면적: Optional[Area] = None
     room_type_title: Optional[RoomTypeTitle] = None
-    floor: Optional[str] = None
+    floor: int = Field(...)
     floor_string: Optional[str] = None
     title: Optional[str] = None
     address: Optional[str] = None
@@ -77,7 +78,7 @@ mapper = {
     ZigbangBuildingType.Villa: BuildingType.Villa,
     ZigbangSellingType.MonthlyRent: SellingType.MonthlyRent,
     ZigbangSellingType.Jeonse: SellingType.Jeonse,
-    ZigbangSellingType.Selling: SellingType.Selling
+    ZigbangSellingType.Selling: SellingType.Selling,
 }
 
 
@@ -100,4 +101,10 @@ class Zigbang:
             description=item.description,
             image=image_url.format(uid=item.item_id, width=800, height=600),
             building_type=BuildingType(mapper[zigbang_building_type]),
+            room_size=item.size_m2,
+            floor=f"{item.floor}/{item.building_floor}",
+            has_elevator=None,
+            administrative_expenses=int(item.manage_cost)
+            if item.manage_cost
+            else 0,
         )
