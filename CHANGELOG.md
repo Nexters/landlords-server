@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.3](https://github.com/Nexters/landlords-server/compare/v1.12.2...v1.12.3) (2020-08-11)
+
+
+### Bug Fixes
+
+* **room:** 전용면적, 층, 엘리베이터, 관리비 항목 추가 ([#41](https://github.com/Nexters/landlords-server/issues/41)) ([0533780](https://github.com/Nexters/landlords-server/commit/05337801af279107a593c9257f0e37973d52874c))
+
 ### [1.12.2](https://github.com/Nexters/landlords-server/compare/v1.12.1...v1.12.2) (2020-08-10)
 
 
