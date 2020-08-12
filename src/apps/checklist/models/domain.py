@@ -1,5 +1,5 @@
 from enum import Enum, IntEnum
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -36,7 +36,9 @@ class CheckItem(OrmModel):
 
     uid: int
     question_id: int
-    contents: str = Field(max_length=Contents.max_length)
+    contents: Optional[str] = Field(
+        default=None, max_length=Contents.max_length
+    )
 
 
 class CheckAnswer(OrmModel):

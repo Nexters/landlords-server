@@ -26,7 +26,7 @@ class CheckItem(Base):
     contents: str = Column(
         "contents",
         mysql.VARCHAR(Contents.max_length),
-        nullable=False,
+        nullable=True,
         comment="선택지 내용",
     )
 
