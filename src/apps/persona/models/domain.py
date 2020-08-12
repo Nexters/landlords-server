@@ -17,7 +17,7 @@ class QuestionType(str, Enum):
     """ 문제 유형 """
 
     SingleChoice = "SingleChoice"
-    MultipleChocie = "MultipleChocie"
+    MultipleChoice = "MultipleChoice"
 
 
 class QuestionCategory(str, Enum):

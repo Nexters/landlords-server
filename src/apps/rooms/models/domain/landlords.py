@@ -5,9 +5,12 @@ from pydantic import BaseModel, Field
 
 from ..entity import (
     Address,
+    AdministrativeExpenses,
     BuildingType,
     Description,
+    Floor,
     Image,
+    RoomSize,
     SellingType,
     Title,
     Uid,
@@ -31,10 +34,15 @@ class RoomItem(BaseModel):
     description: Optional[str] = Field(max_length=Description.max_length)
     image: Optional[str] = Field(max_length=Image.max_length)
     building_type: BuildingType = Field(...)
-    room_size: float = Field(..., description="방 크기(㎡)")
-    floor: str = Field(..., description="층/건물층수")
+    room_size: float = Field(
+        maximum=(10 ** (RoomSize.max_precision - RoomSize.max_scale)) - 1,
+        description="방 크기(㎡)",
+    )
+    floor: str = Field(max_length=Floor.max_length, description="층/건물층수")
     has_elevator: Optional[bool] = Field(default=None, description="엘리베이터 유무")
-    administrative_expenses: int = Field(..., description="관리비")
+    administrative_expenses: int = Field(
+        maximum=(10 ** AdministrativeExpenses.max_length) - 1, description="관리비"
+    )
 
     class Config:
         orm_mode = True

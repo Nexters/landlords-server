@@ -46,6 +46,19 @@ class SellingType(IntEnum):
     Selling = 2  # 매매
 
 
+class Floor(IntEnum):
+    max_length = 20
+
+
+class AdministrativeExpenses(IntEnum):
+    max_length = 20
+
+
+class RoomSize(IntEnum):
+    max_precision = 7
+    max_scale = 2
+
+
 class Room(Base):
     """ 방 entity
 
@@ -133,21 +146,22 @@ class Room(Base):
     )
 
     room_size = Column(
-        "room_size", mysql.DOUBLE(5, 2, unsigned=True), comment="방 크기 (㎡)"
+        "room_size",
+        mysql.DOUBLE(
+            int(RoomSize.max_precision), int(RoomSize.max_scale), unsigned=True
+        ),
+        comment="방 크기 (㎡)",
     )
 
-    floor = Column("floor", mysql.VARCHAR(5), comment="층/건물층수")
+    floor = Column("floor", mysql.VARCHAR(Floor.max_length), comment="층/건물층수")
 
     has_elevator = Column(
-        "has_elevator",
-        mysql.TINYINT(1),
-        nullable=True,
-        comment="엘리베이터 유무",
+        "has_elevator", mysql.TINYINT(1), nullable=True, comment="엘리베이터 유무"
     )
 
     administrative_expenses = Column(
         "administrative_expenses",
-        mysql.TINYINT(2, unsigned=True),
+        mysql.TINYINT(int(AdministrativeExpenses.max_length), unsigned=True),
         comment="관리비",
     )
 
@@ -180,6 +194,10 @@ class Room(Base):
         description: str,
         image: str,
         building_type: BuildingType,
+        room_size: float,
+        floor: str,
+        has_elevator: bool,
+        administrative_expenses: int,
     ) -> None:
         self.uid = uid
         self.user_id = user_id
@@ -191,3 +209,7 @@ class Room(Base):
         self.description = description
         self.image = image
         self.building_type = building_type
+        self.room_size = room_size
+        self.floor = floor
+        self.has_elevator = has_elevator
+        self.administrative_expenses = administrative_expenses
