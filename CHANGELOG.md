@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.5](https://github.com/Nexters/landlords-server/compare/v1.12.4...v1.12.5) (2020-08-14)
+
+
+### Bug Fixes
+
+* **room, checklist:** 매매, 주거타입 str로 반환, 크롤링 데이터 수정, state를 status로 변경 ([#43](https://github.com/Nexters/landlords-server/issues/43)) ([dd8d103](https://github.com/Nexters/landlords-server/commit/dd8d1030c8eabbf9c455644889d64a5200186889))
+
 ### [1.12.4](https://github.com/Nexters/landlords-server/compare/v1.12.3...v1.12.4) (2020-08-12)
 
 
