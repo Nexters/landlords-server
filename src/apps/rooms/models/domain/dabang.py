@@ -1,11 +1,12 @@
 from datetime import datetime
+from enum import IntEnum
 from typing import Any, List, Optional
 
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
 from ...exceptions import NoneTypeError
-from ..entity import BuildingType, SellingType
+from ..domain.landlords import BuildingType, SellingType
 from .landlords import RoomItem
 
 image_url = "http://d1774jszgerdmk.cloudfront.net/512/{image_key}"
@@ -245,7 +246,7 @@ class RoomOption:
 
 @dataclass
 class Room:
-    selling_type: SellingType
+    selling_type: Optional[int] = None
     is_favorited: Optional[Any] = None
     favorited_count: Optional[int] = None
     seq: Optional[int] = None
@@ -387,6 +388,21 @@ class User:
     role_type: Optional[str] = None
 
 
+class DabangBuildingType(IntEnum):
+    OneRoom = 0
+    TwoRoom = 1
+    ThreeRoom = 2
+    Officetel = 3
+    Apartment = 4
+    Villa = 5
+
+
+class DabangSellingType(IntEnum):
+    MonthlyRent = 0
+    Jeonse = 1
+    Selling = 2
+
+
 @dataclass
 class Dabang:
     is_messenger_sender_agented: Optional[bool] = None
@@ -426,6 +442,8 @@ class Dabang:
             raise NoneTypeError("건물층수가 없습니다")
         if self.room.maintenance_cost_str is None:
             raise NoneTypeError("관리비가 없습니다")
+        if self.room.selling_type is None:
+            raise NoneTypeError("매매타입이 없습니다")
         deposit, monthly_rent, _ = self.room.price_info.pop()
         image_key = self.room.photos.pop()
 
@@ -433,16 +451,16 @@ class Dabang:
             uid=f"Dabang::{self.room.id}",
             deposit=deposit,
             monthly_rent=monthly_rent,
-            selling_type=SellingType(self.room.selling_type),
+            selling_type=SellingType(DabangSellingType(self.room.selling_type)),
             address=self.room.address,
             title=self.room.title,
             description=self.room.memo,
             image=image_url.format(image_key=image_key),
-            building_type=BuildingType(self.room.room_type),
+            building_type=BuildingType(DabangBuildingType(self.room.room_type)),
             room_size=self.room.room_size,
             floor=f"{self.room.room_floor_str}/{self.room.building_floor_str}",
             has_elevator=(self.room.elevator_str == "있음"),
-            administrative_expenses=int(
-                self.room.maintenance_cost_str.replace("만 원", "")
-            ),
+            administrative_expenses=0
+            if self.room.maintenance_cost_str == "없음"
+            else int(self.room.maintenance_cost_str.replace("만 원", "")),
         )
