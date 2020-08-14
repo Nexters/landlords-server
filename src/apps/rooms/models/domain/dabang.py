@@ -451,12 +451,16 @@ class Dabang:
             uid=f"Dabang::{self.room.id}",
             deposit=deposit,
             monthly_rent=monthly_rent,
-            selling_type=SellingType(DabangSellingType(self.room.selling_type)),
+            selling_type=SellingType(
+                DabangSellingType(self.room.selling_type).name
+            ),
             address=self.room.address,
             title=self.room.title,
             description=self.room.memo,
             image=image_url.format(image_key=image_key),
-            building_type=BuildingType(DabangBuildingType(self.room.room_type)),
+            building_type=BuildingType(
+                DabangBuildingType(self.room.room_type).name
+            ),
             room_size=self.room.room_size,
             floor=f"{self.room.room_floor_str}/{self.room.building_floor_str}",
             has_elevator=(self.room.elevator_str == "있음"),
