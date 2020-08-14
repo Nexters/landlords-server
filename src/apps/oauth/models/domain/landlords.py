@@ -8,23 +8,6 @@ class OAuthType(str, Enum):
     Google = "Google"
 
 
-class UserInfo(BaseModel):
-    sub: str = Field(..., description="구글 jwt sub")
-    email: str = Field(..., description="이메일")
-    name: str = Field(..., description="전체 이름")
-    picture: str = Field(..., description="프로필 이미지")
-
-
-class UserInDB(UserInfo):
-    uid: int
-    oauth_type: OAuthType
-    sub: str
-    disabled: bool
-
-    class Config:
-        orm_mode = True
-
-
 class JsonWebKey(BaseModel):
     """ JWKS - [RFC 7571](https://tools.ietf.org/html/rfc7517) """
 

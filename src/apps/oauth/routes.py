@@ -6,12 +6,14 @@ from starlette import status
 
 from ...core.config import settings
 from ...core.database import get_database_session
-from .exceptions import InvalidToken
+from ..users.exceptions import InvalidToken
+from ..users.models.domain import UserInfo
+from ..users.services import sign_up_if_not_signed
 from .models.domain.google import GoogleUserInfo
-from .models.domain.landlords import OAuthType, UserInfo
+from .models.domain.landlords import OAuthType
 from .models.requests import CreateTokenRequest
 from .models.responses import AppTokenResponse, JsonWebKeyResponse
-from .services import create_access_token, get_jwk, sign_up_if_not_signed
+from .services import create_access_token, get_jwk
 
 router = APIRouter()
 
@@ -55,6 +57,10 @@ async def get_token(
         if response.status_code != status.HTTP_200_OK:
             raise InvalidToken
         google_user_info = GoogleUserInfo(**response.json())
-        sign_up_if_not_signed(session, UserInfo(**google_user_info.dict()))
+        sign_up_if_not_signed(
+            session=session,
+            oauth_type=body.oauth_type,
+            user_info=UserInfo(**google_user_info.dict()),
+        )
         app_token = create_access_token(google_user_info)
     return AppTokenResponse(token=app_token)

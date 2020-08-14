@@ -4,7 +4,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.types import Enum
 
 from ....core.database import Base
-from .domain.landlords import OAuthType
+from ...oauth.models.domain.landlords import OAuthType
 
 
 class User(Base):

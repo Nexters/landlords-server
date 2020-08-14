@@ -4,7 +4,7 @@ https://accounts.google.com/.well-known/openid-configuration
 
 from pydantic import BaseModel, Field
 
-from .landlords import UserInfo
+from ....users.models.domain import UserInfo
 
 
 class GoogleUserInfo(UserInfo):
