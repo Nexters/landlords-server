@@ -5,8 +5,7 @@ from typing import Any, List, Optional
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
-from ..entity import BuildingType, SellingType
-from .landlords import RoomItem
+from .landlords import BuildingType, RoomItem, SellingType
 
 image_url = "https://ic.zigbang.com/ic/items/{uid}/1.jpg?w={width}&h={height}"
 
@@ -38,7 +37,7 @@ class Item:
     전용면적: Optional[Area] = None
     계약면적: Optional[Area] = None
     room_type_title: Optional[RoomTypeTitle] = None
-    floor: int = Field(...)
+    floor: Optional[str] = None
     floor_string: Optional[str] = None
     title: Optional[str] = None
     address: Optional[str] = None

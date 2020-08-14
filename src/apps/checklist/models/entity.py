@@ -10,7 +10,7 @@ from ....core.database import Base
 from ...oauth.models.entity import User
 from ...persona.models.domain import QuestionCategory, QuestionType
 from ...rooms.models.entity import Room
-from .domain import Contents, Label, StateCategory, Title
+from .domain import Contents, Label, StatusCategory, Title
 
 
 class CheckItem(Base):
@@ -151,8 +151,8 @@ class CheckQuestion(Base):
         nullable=False,
         comment="페르소나 결과와 연결되는 카테고리",
     )
-    state: str = Column(
-        "state", Enum(StateCategory), nullable=False, comment="방 계약 상태"
+    status: str = Column(
+        "status", Enum(StatusCategory), nullable=False, comment="방 계약 상태"
     )
     checks: List[CheckItem] = relationship(
         "CheckItem",
@@ -167,13 +167,13 @@ class CheckQuestion(Base):
         type_: QuestionType,
         label: str,
         category: QuestionCategory,
-        state: StateCategory,
+        status: StatusCategory,
     ) -> None:
         self.title = title
         self.type_ = type_
         self.label = label
         self.category = category
-        self.state = state
+        self.status = status
 
 
 class UserChecklist(Base):
