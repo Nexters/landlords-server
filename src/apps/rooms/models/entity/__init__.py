@@ -9,54 +9,18 @@ from sqlalchemy.types import Enum
 
 from .....core.database import Base
 from ....oauth.models.entity import User
-
-
-class Description(IntEnum):
-    max_length = 1000
-
-
-class Uid(IntEnum):
-    max_length = 100
-
-
-class Address(IntEnum):
-    max_length = 100
-
-
-class Title(IntEnum):
-    max_length = 100
-
-
-class Image(IntEnum):
-    max_length = 300
-
-
-class BuildingType(IntEnum):
-    OneRoom = 0
-    TwoRoom = 1
-    ThreeRoom = 2
-    Officetel = 3
-    Apartment = 4
-    Villa = 5
-
-
-class SellingType(IntEnum):
-    MonthlyRent = 0  # 월세
-    Jeonse = 1  # 전세
-    Selling = 2  # 매매
-
-
-class Floor(IntEnum):
-    max_length = 20
-
-
-class AdministrativeExpenses(IntEnum):
-    max_length = 20
-
-
-class RoomSize(IntEnum):
-    max_precision = 7
-    max_scale = 2
+from ..domain.landlords import (
+    Address,
+    AdministrativeExpenses,
+    BuildingType,
+    Description,
+    Floor,
+    Image,
+    RoomSize,
+    SellingType,
+    Title,
+    Uid,
+)
 
 
 class Room(Base):

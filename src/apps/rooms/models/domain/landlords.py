@@ -1,20 +1,40 @@
-from enum import Enum
+from enum import Enum, IntEnum
 from typing import Optional
 
 from pydantic import BaseModel, Field
 
-from ..entity import (
-    Address,
-    AdministrativeExpenses,
-    BuildingType,
-    Description,
-    Floor,
-    Image,
-    RoomSize,
-    SellingType,
-    Title,
-    Uid,
-)
+
+class Description(IntEnum):
+    max_length = 3000
+
+
+class Uid(IntEnum):
+    max_length = 100
+
+
+class Address(IntEnum):
+    max_length = 100
+
+
+class Title(IntEnum):
+    max_length = 100
+
+
+class Image(IntEnum):
+    max_length = 300
+
+
+class Floor(IntEnum):
+    max_length = 20
+
+
+class AdministrativeExpenses(IntEnum):
+    max_length = 20
+
+
+class RoomSize(IntEnum):
+    max_precision = 7
+    max_scale = 2
 
 
 class CrawlingTarget(str, Enum):
@@ -22,6 +42,21 @@ class CrawlingTarget(str, Enum):
 
     Dabang = "Dabang"
     Zigbang = "Zigbang"
+
+
+class BuildingType(str, Enum):
+    OneRoom = "OneRoom"
+    TwoRoom = "TwoRoom"
+    ThreeRoom = "ThreeRoom"
+    Officetel = "Officetel"
+    Apartment = "Apartment"
+    Villa = "Villa"
+
+
+class SellingType(str, Enum):
+    MonthlyRent = "MonthlyRent"  # 월세
+    Jeonse = "Jeonse"  # 전세
+    Selling = "Selling"  # 매매
 
 
 class RoomItem(BaseModel):

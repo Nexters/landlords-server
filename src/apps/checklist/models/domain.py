@@ -18,7 +18,7 @@ class Label(IntEnum):
     max_length = 50
 
 
-class StateCategory(str, Enum):
+class StatusCategory(str, Enum):
     """ 문제 유형 """
 
     Looking = "Looking"
@@ -57,7 +57,7 @@ class CheckQuestion(OrmModel):
     type_: QuestionType
     label: str = Field(max_length=Label.max_length)
     category: QuestionCategory
-    state: StateCategory
+    status: StatusCategory
     checks: List[CheckItem]
 
 
