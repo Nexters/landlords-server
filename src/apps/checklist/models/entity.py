@@ -160,6 +160,14 @@ class CheckQuestion(Base):
         primaryjoin="CheckQuestion.uid==CheckItem.question_id",
         backref="checklist_questions",
     )
+    persona_choice_id: int = Column(
+        "persona_choice_id",
+        ForeignKey(
+            "persona_choices.uid", ondelete="CASCADE", onupdate="CASCADE"
+        ),
+        nullable=True,
+        comment="페르소나 설문 답변",
+    )
 
     def __init__(
         self,

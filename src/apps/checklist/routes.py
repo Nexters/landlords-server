@@ -28,10 +28,8 @@ async def get_checklist(
     session: Session = Depends(get_database_session),
 ) -> ChecklistResponse:
 
-    checklist: List[CheckQuestionDto] = services.get_checklist(
+    questions: List[CheckQuestionDto] = services.get_checklist(
         user_info=current_user, session=session, status=status
     )
 
-    return ChecklistResponse(
-        questions=[CheckQuestionDto.from_orm(check) for check in checklist]
-    )
+    return ChecklistResponse(questions=questions)
