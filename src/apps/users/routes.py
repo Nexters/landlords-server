@@ -22,7 +22,8 @@ async def get_users(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> UserInfoResponse:
-    current_user.persona_answers = get_user_choices(
+    response = UserInfoResponse(**current_user.dict())
+    response.persona_answers = get_user_choices(
         session=session, user_info=current_user
     )
-    return UserInfoResponse.from_orm(current_user)
+    return response
