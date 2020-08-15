@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.7](https://github.com/Nexters/landlords-server/compare/v1.12.6...v1.12.7) (2020-08-15)
+
+
+### Bug Fixes
+
+* **persona:** get Persona API 인증 빼기, 응답리스트 PUT으로 변경 ([#45](https://github.com/Nexters/landlords-server/issues/45)) ([f7d89b8](https://github.com/Nexters/landlords-server/commit/f7d89b8c7f84151cee299101f5331b631823846a))
+
 ### [1.12.6](https://github.com/Nexters/landlords-server/compare/v1.12.5...v1.12.6) (2020-08-15)
 
 
