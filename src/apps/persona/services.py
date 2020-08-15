@@ -10,7 +10,7 @@ from .models.domain import QuestionAnswer as QuestionAnswerDto
 from .models.entity import QuestionAnswer
 
 
-def get_persona(query: Optional[List[int]]) -> Persona:
+def get_persona(check_answers: List[int]) -> Persona:
     """ 사용자 페르소나 분석 """
     return Persona.핵인싸
 

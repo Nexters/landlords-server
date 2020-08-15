@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import status
 from fastapi.param_functions import Depends, Query, Security
@@ -81,11 +81,11 @@ async def update_answers(
 )
 async def get_persona(
     session: Session = Depends(get_database_session),
-    query: Optional[List[int]] = Query(None),
+    check_answers: List[int] = Query(...),
 ) -> PersonaResponse:
     """ 나의 페르소나
 
     페르소나 분석 결과
     """
-    persona = services.get_persona(query)
+    persona = services.get_persona(check_answers)
     return PersonaResponse(title=persona.name, description=persona.value)
