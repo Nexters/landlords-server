@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.13.0](https://github.com/Nexters/landlords-server/compare/v1.12.8...v1.13.0) (2020-08-15)
+
+
+### Features
+
+* **persona_count:** 총 N명이 체크해방 사이트를 참고했습니다 ([#47](https://github.com/Nexters/landlords-server/issues/47)) ([5e7f038](https://github.com/Nexters/landlords-server/commit/5e7f03850cf0a33ed9c6c114afab098d9a6882cc))
+
 ### [1.12.8](https://github.com/Nexters/landlords-server/compare/v1.12.7...v1.12.8) (2020-08-15)
 
 ### [1.12.7](https://github.com/Nexters/landlords-server/compare/v1.12.6...v1.12.7) (2020-08-15)
