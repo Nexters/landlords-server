@@ -8,7 +8,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.types import Enum
 
 from .....core.database import Base
-from ....oauth.models.entity import User
+from ....users.models.entity import User
 from ..domain.landlords import (
     Address,
     AdministrativeExpenses,

@@ -12,9 +12,11 @@ from starlette.responses import JSONResponse, RedirectResponse
 
 from ...core.config import settings
 from ...core.database import get_database_session
+from ..users.models.domain import UserInfo
+from ..users.services import sign_up_if_not_signed
 from .models.domain.google import GoogleAuthInfo
-from .models.domain.landlords import UserInfo
-from .services import create_access_token, sign_up_if_not_signed
+from .models.domain.landlords import OAuthType
+from .services import create_access_token
 
 config = Config("google.env")
 oauth = OAuth(config)
@@ -56,7 +58,11 @@ async def sign_in(
             request, await oauth.google.authorize_access_token(request)
         )
     )
-    sign_up_if_not_signed(session, UserInfo(**google_auth_info.dict()))
+    sign_up_if_not_signed(
+        session=session,
+        oauth_type=OAuthType.Google,
+        user_info=UserInfo(**google_auth_info.dict()),
+    )
     app_token = create_access_token(google_auth_info)
     response = RedirectResponse(url=settings.WEB_URI)
     response.set_cookie(

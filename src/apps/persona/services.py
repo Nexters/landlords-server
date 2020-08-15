@@ -2,8 +2,8 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from ..oauth.models.domain.landlords import UserInfo
-from ..oauth.models.entity import User
+from ..users.models.domain import UserInfo
+from ..users.models.entity import User
 from .models.domain import ChoiceItem as ChoiceItemDto
 from .models.domain import Persona
 from .models.domain import QuestionAnswer as QuestionAnswerDto
