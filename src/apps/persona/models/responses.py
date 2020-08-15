@@ -12,3 +12,7 @@ class PersonaQuestionsResponse(BaseModel):
 class PersonaResponse(BaseModel):
     title: str
     description: str
+
+
+class PersonaCountResponse(BaseModel):
+    count: int

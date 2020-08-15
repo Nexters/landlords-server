@@ -3,6 +3,7 @@ from typing import List
 from fastapi import status
 from fastapi.param_functions import Depends, Query, Security
 from fastapi.routing import APIRouter
+from sqlalchemy import distinct, func
 from sqlalchemy.orm import Session
 
 from ...core.database import get_database_session
@@ -12,7 +13,11 @@ from . import services
 from .models.domain import ChoiceItem as ChoiceItemDto
 from .models.domain import Question as QuestionDto
 from .models.entity import ChoiceItem, Question, QuestionAnswer
-from .models.responses import PersonaQuestionsResponse, PersonaResponse
+from .models.responses import (
+    PersonaCountResponse,
+    PersonaQuestionsResponse,
+    PersonaResponse,
+)
 
 router = APIRouter()
 
@@ -89,3 +94,16 @@ async def get_persona(
     """
     persona = services.get_persona(check_answers)
     return PersonaResponse(title=persona.name, description=persona.value)
+
+
+@router.get(
+    path="/count",
+    name="총 N명이 체크해방 서비스를 참고했습니다.",
+    status_code=status.HTTP_200_OK,
+    response_model=PersonaCountResponse,
+)
+async def get_persona_count(
+    session: Session = Depends(get_database_session)
+) -> PersonaCountResponse:
+    count = session.query(func.count(distinct(QuestionAnswer.user_id))).scalar()
+    return PersonaCountResponse(count=count)
