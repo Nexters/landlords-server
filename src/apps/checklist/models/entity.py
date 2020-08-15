@@ -158,9 +158,10 @@ class CheckQuestion(Base):
         uselist=True,
         primaryjoin="CheckQuestion.uid==CheckItem.question_id",
         backref="checklist_questions",
+        lazy="joined",
     )
 
-    choice_id: int = Column(
+    choice_id: Optional[int] = Column(
         "choice_id",
         ForeignKey(
             "persona_choices.uid", ondelete="CASCADE", onupdate="CASCADE"

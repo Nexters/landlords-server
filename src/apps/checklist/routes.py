@@ -1,5 +1,3 @@
-from typing import List
-
 from fastapi import status
 from fastapi.param_functions import Depends, Security
 from fastapi.routing import APIRouter
@@ -9,7 +7,6 @@ from ...core.database import get_database_session
 from ..oauth.services import get_current_user
 from ..users.models.domain import UserInDB
 from . import services
-from .models.domain import CheckQuestion as CheckQuestionDto
 from .models.domain import StatusCategory
 from .models.responses import ChecklistResponse
 
@@ -28,10 +25,8 @@ async def get_checklist(
     session: Session = Depends(get_database_session),
 ) -> ChecklistResponse:
 
-    checklist: List[CheckQuestionDto] = services.get_checklist(
-        user_info=current_user, session=session, status=status
-    )
-
     return ChecklistResponse(
-        questions=[CheckQuestionDto.from_orm(check) for check in checklist]
+        questions=services.get_checklist(
+            user_info=current_user, session=session, status=status
+        )
     )
