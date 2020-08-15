@@ -2,9 +2,9 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..oauth.models.domain.landlords import UserInDB
 from ..persona.models.domain import ChoiceItem
 from ..persona.services import get_user_choices
+from ..users.models.domain import UserInDB
 from .models.domain import CheckQuestion as CheckQuestionDto
 from .models.domain import StatusCategory
 from .models.entity import CheckQuestion, UserChecklist

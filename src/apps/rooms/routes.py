@@ -12,9 +12,9 @@ from ..checklist.models.domain import CheckItem as CheckItemDto
 from ..checklist.models.entity import CheckAnswer, CheckItem
 from ..checklist.models.requests import AnswerCreateRequest
 from ..checklist.models.responses import CheckItemResponse, CheckItemsResponse
-from ..oauth.models.domain.landlords import UserInDB
-from ..oauth.models.entity import User
 from ..oauth.services import get_current_user
+from ..users.models.domain import UserInDB
+from ..users.models.entity import User
 from .exceptions import AnswerNotFoundException, RoomNotFoundException
 from .models.domain.dabang import Dabang
 from .models.domain.landlords import CrawlingTarget

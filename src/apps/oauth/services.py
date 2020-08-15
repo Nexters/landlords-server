@@ -9,9 +9,10 @@ from sqlalchemy.orm import Session
 
 from ...core.config import settings
 from ...core.database import get_database_session
+from ..users.models.domain import UserInDB, UserInfo
+from ..users.models.entity import User
 from .exceptions import UserNotFound
-from .models.domain.landlords import JsonWebKey, OAuthType, UserInDB, UserInfo
-from .models.entity import User
+from .models.domain.landlords import JsonWebKey
 
 
 def get_jwk(key: str) -> JsonWebKey:
@@ -66,15 +67,3 @@ async def get_current_user(
         disabled=user.disabled,
         **user_info.dict(),
     )
-
-
-def sign_up_if_not_signed(session: Session, user_info: UserInfo) -> None:
-    user: Optional[User] = (
-        session.query(User).filter(User.email == user_info.email).first()
-    )
-    if not user:
-        user = User(
-            oauth_type=OAuthType.Google, disabled=False, **user_info.dict()
-        )
-        session.add(user)
-        session.commit()
