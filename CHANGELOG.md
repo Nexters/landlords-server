@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.12.6](https://github.com/Nexters/landlords-server/compare/v1.12.5...v1.12.6) (2020-08-15)
+
+
+### Bug Fixes
+
+* **rooms:** 크롤링 시 유저의 방 리스트에서 검사하도록 수정 ([#44](https://github.com/Nexters/landlords-server/issues/44)) ([f7e8fe5](https://github.com/Nexters/landlords-server/commit/f7e8fe56b113cadd9552efa206ffb797bc542f55))
+
 ### [1.12.5](https://github.com/Nexters/landlords-server/compare/v1.12.4...v1.12.5) (2020-08-14)
 
 
