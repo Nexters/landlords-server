@@ -100,6 +100,7 @@ async def get_persona(
     path="/count",
     name="총 N명이 체크해방 서비스를 참고했습니다.",
     status_code=status.HTTP_200_OK,
+    response_model=PersonaCountResponse,
 )
 async def get_persona_count(
     session: Session = Depends(get_database_session)
