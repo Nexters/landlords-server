@@ -1,3 +1,4 @@
+import uuid
 from enum import Enum, IntEnum
 from typing import Optional
 
@@ -29,7 +30,7 @@ class Floor(IntEnum):
 
 
 class AdministrativeExpenses(IntEnum):
-    max_length = 20
+    max_length = 3
 
 
 class RoomSize(IntEnum):
@@ -60,7 +61,10 @@ class SellingType(str, Enum):
 
 
 class RoomItem(BaseModel):
-    uid: str = Field(max_length=Uid.max_length)
+    uid: Optional[str] = Field(
+        default_factory=lambda: str(uuid.uuid4()).replace("-", ""),
+        max_length=Uid.max_length,
+    )
     deposit: int = Field(...)
     monthly_rent: int = Field(...)
     selling_type: SellingType = Field(...)
@@ -76,7 +80,8 @@ class RoomItem(BaseModel):
     floor: str = Field(max_length=Floor.max_length, description="층/건물층수")
     has_elevator: Optional[bool] = Field(default=None, description="엘리베이터 유무")
     administrative_expenses: int = Field(
-        maximum=(10 ** AdministrativeExpenses.max_length) - 1, description="관리비"
+        maximum=(10 ** AdministrativeExpenses.max_length) - 1,
+        description="관리비 (단위: 만 원)",
     )
 
     class Config:
