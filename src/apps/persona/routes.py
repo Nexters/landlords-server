@@ -1,7 +1,7 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import status
-from fastapi.param_functions import Depends, Security
+from fastapi.param_functions import Depends, Query, Security
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
@@ -24,7 +24,6 @@ router = APIRouter()
     response_model=PersonaQuestionsResponse,
 )
 async def get_questions(
-    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> PersonaQuestionsResponse:
     """ 페르소나 분석 질문 리스트 """
@@ -38,26 +37,39 @@ async def get_questions(
     )
 
 
-@router.post(
+@router.put(
     path="/answers",
     name="페르소나 질문 응답 저장",
     status_code=status.HTTP_201_CREATED,
     response_model=List[ChoiceItemDto],
 )
-async def post_answers(
+async def update_answers(
     choices: List[int],
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> List[ChoiceItemDto]:
+
     answers = [
         QuestionAnswer(user_id=current_user.uid, choice_id=choice_id)
         for choice_id in choices
     ]
+
+    user_answers: QuestionAnswer = (
+        session.query(QuestionAnswer)
+        .filter(QuestionAnswer.user_id == current_user.uid)
+        .all()
+    )
+
+    if user_answers:
+        for user_answer in user_answers:
+            session.delete(user_answer)
+
     for answer in answers:
         session.add(answer)
         session.flush()
         session.refresh(answer)
     session.commit()
+
     return [ChoiceItemDto.from_orm(answer.choice) for answer in answers]
 
 
@@ -68,16 +80,12 @@ async def post_answers(
     response_model=PersonaResponse,
 )
 async def get_persona(
-    current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
+    query: Optional[List[int]] = Query(None),
 ) -> PersonaResponse:
     """ 나의 페르소나
 
     페르소나 분석 결과
     """
-    persona = services.get_persona(
-        answers=services.get_user_choices(
-            user_info=current_user, session=session
-        )
-    )
+    persona = services.get_persona(query)
     return PersonaResponse(title=persona.name, description=persona.value)
