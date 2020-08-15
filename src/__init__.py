@@ -1,3 +1,3 @@
-__version__ = "1.12.8"
+__version__ = "1.13.0"
 version = __version__
 service_name = "체크해방"
