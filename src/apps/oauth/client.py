@@ -61,7 +61,7 @@ async def sign_in(
     sign_up_if_not_signed(
         session=session,
         oauth_type=OAuthType.Google,
-        user_info=UserInfo(**google_auth_info.dict()),
+        user_info=UserInfo(**google_auth_info.dict(by_alias=True)),
     )
     app_token = create_access_token(google_auth_info)
     response = RedirectResponse(url=settings.WEB_URI)
