@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.1](https://github.com/Nexters/landlords-server/compare/v1.13.0...v1.13.1) (2020-08-15)
+
+
+### Bug Fixes
+
+* **rooms:** 기본 room uid 수정, 관리비 최대 값 수정 ([#48](https://github.com/Nexters/landlords-server/issues/48)) ([d251bf3](https://github.com/Nexters/landlords-server/commit/d251bf3451c4dab006aec7eee85db64c69973777))
+
 ## [1.13.0](https://github.com/Nexters/landlords-server/compare/v1.12.8...v1.13.0) (2020-08-15)
 
 
