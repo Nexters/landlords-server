@@ -26,7 +26,11 @@ def find_by_email(session: Session, email: str) -> Optional[User]:
 def sign_up(
     session: Session, oauth_type: OAuthType, user_info: UserInfo
 ) -> UserInDB:
-    user = User(oauth_type=oauth_type, disabled=False, **user_info.dict())
+    user = User(
+        oauth_type=oauth_type,
+        disabled=False,
+        **user_info.dict(exclude={"persona_answers"})
+    )
     session.add(user)
     session.commit()
     return UserInDB.from_orm(user)
