@@ -5,7 +5,7 @@ from typing import Any, List, Optional
 from pydantic import Field
 from pydantic.dataclasses import dataclass
 
-from .landlords import BuildingType, RoomItem, SellingType
+from .landlords import BuildingType, RoomItemInDB, SellingType
 
 image_url = "https://ic.zigbang.com/ic/items/{uid}/1.jpg?w={width}&h={height}"
 
@@ -85,13 +85,14 @@ mapper = {
 class Zigbang:
     items: List[Item]
 
-    def to_room(self) -> RoomItem:
+    def to_room(self, user_id: int) -> RoomItemInDB:
         item = self.items.pop()
         zigbang_selling_type = ZigbangSellingType(item.sales_type)
         zigbang_building_type = ZigbangBuildingType(item.service_type)
 
-        return RoomItem(
+        return RoomItemInDB(
             uid=f"Zigbang::{item.item_id}",
+            user_id=user_id,
             deposit=item.deposit,
             monthly_rent=item.rent,
             selling_type=SellingType(mapper[zigbang_selling_type]),

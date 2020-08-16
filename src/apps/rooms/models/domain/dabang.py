@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 
 from ...exceptions import NoneTypeError
 from ..domain.landlords import BuildingType, SellingType
-from .landlords import RoomItem
+from .landlords import RoomItemInDB
 
 image_url = "http://d1774jszgerdmk.cloudfront.net/512/{image_key}"
 
@@ -425,7 +425,7 @@ class Dabang:
     complex: Optional[Complex] = None
     space: Optional[Space] = None
 
-    def to_room(self) -> RoomItem:
+    def to_room(self, user_id: int) -> RoomItemInDB:
         if self.room is None:
             raise NoneTypeError("방 정보가 없습니다")
         if self.room.room_type is None:
@@ -447,8 +447,9 @@ class Dabang:
         deposit, monthly_rent, _ = self.room.price_info.pop()
         image_key = self.room.photos.pop()
 
-        return RoomItem(
+        return RoomItemInDB(
             uid=f"Dabang::{self.room.id}",
+            user_id=user_id,
             deposit=deposit,
             monthly_rent=monthly_rent,
             selling_type=SellingType(
