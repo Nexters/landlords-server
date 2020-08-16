@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.2](https://github.com/Nexters/landlords-server/compare/v1.13.1...v1.13.2) (2020-08-16)
+
+
+### Bug Fixes
+
+* **users:** google oauth 로그인 버그 수정 ([#49](https://github.com/Nexters/landlords-server/issues/49)) ([b8c3d68](https://github.com/Nexters/landlords-server/commit/b8c3d685fdbdfd65d619e0ba5c9a23001ea87d0e))
+
 ### [1.13.1](https://github.com/Nexters/landlords-server/compare/v1.13.0...v1.13.1) (2020-08-15)
 
 
