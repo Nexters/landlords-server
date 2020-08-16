@@ -23,6 +23,9 @@ class GoogleAuthInfo(GoogleUserInfo):
     iat: int
     exp: int
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class GoogleAccessToken(BaseModel):
     issued_to: str
