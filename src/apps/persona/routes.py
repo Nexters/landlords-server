@@ -93,7 +93,11 @@ async def get_persona(
     페르소나 분석 결과
     """
     persona = services.get_persona(check_answers)
-    return PersonaResponse(title=persona.name, description=persona.value)
+    return PersonaResponse(
+        type=persona.value["type"],
+        description=persona.value["description"],
+        recommended_place=persona.value["recommended_place"],
+    )
 
 
 @router.get(

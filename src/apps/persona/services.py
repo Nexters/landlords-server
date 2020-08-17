@@ -12,7 +12,25 @@ from .models.entity import QuestionAnswer
 
 def get_persona(check_answers: List[int]) -> Persona:
     """ 사용자 페르소나 분석 """
-    return Persona.핵인싸
+
+    question1 = check_answers[0]
+    question2 = check_answers[5]
+    question3 = check_answers[8]
+
+    if (question1 == 1) & (question2 == 1) & (question3 == 1):
+        result = Persona.PRO_LIVING_ALONE
+    elif (question1 == 1) & (question2 == 1) & (question3 == 2):
+        result = Persona.INSIDER
+    elif (question1 == 1) & (question2 == 2) & (question3 == 2):
+        result = Persona.SMART
+    elif (question1 == 2) & (question2 == 1) & (question3 == 1):
+        result = Persona.PLAYPLAY_DODO
+    elif (question1 == 2) & (question2 == 2) & (question3 == 1):
+        result = Persona.HOMEBODY
+    elif (question1 == 2) & (question2 == 2) & (question3 == 2):
+        result = Persona.IM_FIRST
+
+    return result
 
 
 def get_user_choices(
