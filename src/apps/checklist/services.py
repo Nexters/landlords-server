@@ -45,7 +45,8 @@ def get_checklist_by_persona(
     answers: List[ChoiceItem], session: Session, status: StatusCategory
 ) -> List[CheckQuestionDto]:
     """페르소나 태그를 통해 체크리스트 질문 필터링"""
+    choice_ids = [answer.uid for answer in answers]
     checklist: List[CheckQuestionDto] = session.query(CheckQuestion).filter(
-        CheckQuestion.status == status
+        (CheckQuestion.status == status)
     ).all()
     return checklist

@@ -105,7 +105,7 @@ class QuestionAnswer(Base):
         "User",
         uselist=False,
         primaryjoin="QuestionAnswer.user_id==User.uid",
-        backref="persona_answer",
+        backref="persona_answers",
     )
 
     choice_id: int = Column(
@@ -119,7 +119,7 @@ class QuestionAnswer(Base):
         "ChoiceItem",
         uselist=False,
         primaryjoin="QuestionAnswer.choice_id==ChoiceItem.uid",
-        backref="persona_answer",
+        backref="persona_answers",
         lazy="joined",
     )
 

@@ -7,7 +7,8 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Enum
 
 from ....core.database import Base
-from ...persona.models.domain import QuestionCategory, QuestionType
+from ...persona.models.domain import QuestionType
+from ...persona.models.entity import ChoiceItem
 from ...rooms.models.entity import Room
 from ...users.models.entity import User
 from .domain import Contents, Label, StatusCategory, Title
@@ -130,34 +131,49 @@ class CheckQuestion(Base):
         primary_key=True,
         comment="고유 식별자",
     )
+
     title: str = Column(
         "title",
         mysql.VARCHAR(Title.max_length),
         nullable=False,
         comment="체크리스트 질문",
     )
+
     type_: QuestionType = Column(
         "type_", Enum(QuestionType), nullable=False, comment="질문 유형"
     )
+
     label: str = Column(
         "label",
         mysql.VARCHAR(Label.max_length),
         nullable=False,
         comment="질문 라벨",
     )
-    category: QuestionCategory = Column(
-        "category",
-        Enum(QuestionCategory),
-        nullable=False,
-        comment="페르소나 결과와 연결되는 카테고리",
-    )
+
     status: str = Column(
         "status", Enum(StatusCategory), nullable=False, comment="방 계약 상태"
     )
+
     checks: List[CheckItem] = relationship(
         "CheckItem",
         uselist=True,
         primaryjoin="CheckQuestion.uid==CheckItem.question_id",
+        backref="checklist_questions",
+    )
+
+    choice_id: int = Column(
+        "choice_id",
+        ForeignKey(
+            "persona_choices.uid", ondelete="CASCADE", onupdate="CASCADE"
+        ),
+        nullable=True,
+        comment="체크리스트 질문과 맵핑되는 페르소나 선택지",
+    )
+
+    choice: Optional[ChoiceItem] = relationship(
+        "ChoiceItem",
+        uselist=False,
+        primaryjoin="CheckQuestion.choice_id==ChoiceItem.uid",
         backref="checklist_questions",
     )
 
@@ -166,14 +182,14 @@ class CheckQuestion(Base):
         title: str,
         type_: QuestionType,
         label: str,
-        category: QuestionCategory,
         status: StatusCategory,
+        choice_id: int,
     ) -> None:
         self.title = title
         self.type_ = type_
         self.label = label
-        self.category = category
         self.status = status
+        self.choice_id = choice_id
 
 
 class UserChecklist(Base):

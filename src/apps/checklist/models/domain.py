@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
-from ...persona.models.domain import QuestionCategory, QuestionType
+from ...persona.models.domain import QuestionType
 
 
 class Contents(IntEnum):
@@ -56,7 +56,6 @@ class CheckQuestion(OrmModel):
     title: str = Field(max_length=Title.max_length)
     type_: QuestionType
     label: str = Field(max_length=Label.max_length)
-    category: QuestionCategory
     status: StatusCategory
     checks: List[CheckItem]
 
