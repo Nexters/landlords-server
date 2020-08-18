@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.4](https://github.com/Nexters/landlords-server/compare/v1.13.3...v1.13.4) (2020-08-18)
+
+
+### Bug Fixes
+
+* **delete-rooms:** 방 삭제 버그 수정 ([#53](https://github.com/Nexters/landlords-server/issues/53)) ([9b7f8a1](https://github.com/Nexters/landlords-server/commit/9b7f8a194bc88f866e4ad0aa6b6a84eebacbd752))
+
 ### [1.13.3](https://github.com/Nexters/landlords-server/compare/v1.13.2...v1.13.3) (2020-08-16)
 
 
