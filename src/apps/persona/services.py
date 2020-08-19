@@ -15,24 +15,50 @@ from .models.entity import QuestionAnswer
 def get_persona(check_answers: List[int]) -> Persona:
     """ 사용자 페르소나 분석 """
 
-    question1 = check_answers[0]
-    question2 = check_answers[5]
-    question3 = check_answers[8]
+    question1 = is_first_or_second(check_answers[0])
+    question2 = is_first_or_second(check_answers[5])
+    question3 = is_first_or_second(check_answers[8])
 
-    if (question1 == 1) & (question2 == 1) & (question3 == 1):
+    result = Persona.INSIDER
+
+    if (question1 == "FIRST") & (question2 == "FIRST") & (question3 == "FIRST"):
         result = Persona.PRO_LIVING_ALONE
-    elif (question1 == 1) & (question2 == 1) & (question3 == 2):
+    elif (
+        (question1 == "FIRST")
+        & (question2 == "FIRST")
+        & (question3 == "SECOND")
+    ):
         result = Persona.INSIDER
-    elif (question1 == 1) & (question2 == 2) & (question3 == 2):
+    elif (
+        (question1 == "FIRST")
+        & (question2 == "SECOND")
+        & (question3 == "SECOND")
+    ):
         result = Persona.SMART
-    elif (question1 == 2) & (question2 == 1) & (question3 == 1):
+    elif (
+        (question1 == "SECOND")
+        & (question2 == "FIRST")
+        & (question3 == "FIRST")
+    ):
         result = Persona.PLAYPLAY_DODO
-    elif (question1 == 2) & (question2 == 2) & (question3 == 1):
+    elif (
+        (question1 == "SECOND")
+        & (question2 == "SECOND")
+        & (question3 == "FIRST")
+    ):
         result = Persona.HOMEBODY
-    elif (question1 == 2) & (question2 == 2) & (question3 == 2):
+    elif (
+        (question1 == "FIRST")
+        & (question2 == "SECOND")
+        & (question3 == "SECOND")
+    ):
         result = Persona.IM_FIRST
 
     return result
+
+
+def is_first_or_second(choice_id: int) -> str:
+    return "FIRST" if choice_id <= 10 else "SECOND"
 
 
 def get_user_choices(
