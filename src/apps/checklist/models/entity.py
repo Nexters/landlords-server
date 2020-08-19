@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from sqlalchemy import Column, text
 from sqlalchemy.dialects import mysql
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import backref, relationship
 from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Enum
 
@@ -87,7 +87,7 @@ class CheckAnswer(Base):
         "Room",
         uselist=False,
         primaryjoin="CheckAnswer.room_id==Room.uid",
-        backref="checklist_answers",
+        backref=backref("checklist_answers", cascade="all, delete-orphan"),
     )
 
     check_id: int = Column(

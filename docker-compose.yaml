@@ -17,7 +17,11 @@ services:
       - type: bind
         source: ./infra/mysql/my.cnf
         target: /etc/mysql/my.cnf
+<<<<<<< HEAD
     - type: bind
+=======
+      - type: bind
+>>>>>>> eedc3bf49c01d8c464df493dbddbecb58bb9fed2
         source: ./infra/mysql/initdb
         target: /docker-entrypoint-initdb.d
   app:
