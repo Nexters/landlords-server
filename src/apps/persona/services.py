@@ -2,7 +2,9 @@ from typing import List, Optional
 
 from sqlalchemy.orm import Session
 
-from ..users.models.domain import UserInfo
+from ..checklist.models.entity import CheckAnswer
+from ..rooms.models.entity import Room
+from ..users.models.domain import UserInDB, UserInfo
 from ..users.models.entity import User
 from .models.domain import ChoiceItem as ChoiceItemDto
 from .models.domain import Persona
@@ -49,3 +51,33 @@ def get_user_choices(
         else [QuestionAnswerDto.from_orm(answer).choice for answer in answers]
     )
     return answers_
+
+
+def delete_if_existed(current_user: UserInDB, session: Session) -> None:
+    persona_answers: QuestionAnswer = (
+        session.query(QuestionAnswer)
+        .filter(QuestionAnswer.user_id == current_user.uid)
+        .all()
+    )
+
+    if persona_answers:
+        for answer in persona_answers:
+            session.delete(answer)
+
+    checklist_answers: CheckAnswer = (
+        session.query(CheckAnswer)
+        .filter(CheckAnswer.user_id == current_user.uid)
+        .all()
+    )
+
+    if checklist_answers:
+        for answer in checklist_answers:
+            session.delete(answer)
+
+    rooms: Room = (
+        session.query(Room).filter(Room.user_id == current_user.uid).all()
+    )
+
+    if rooms:
+        for room in rooms:
+            session.delete(room)
