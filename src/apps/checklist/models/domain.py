@@ -58,8 +58,3 @@ class CheckQuestion(OrmModel):
     label: str = Field(max_length=Label.max_length)
     status: StatusCategory
     checks: List[CheckItem]
-
-
-class UserChecklist(OrmModel):
-    user_id: int
-    questions: List[CheckQuestion]

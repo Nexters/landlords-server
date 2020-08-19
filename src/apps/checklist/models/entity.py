@@ -182,37 +182,3 @@ class CheckQuestion(Base):
         self.label = label
         self.status = status
         self.choice_id = choice_id
-
-
-class UserChecklist(Base):
-    __tablename__ = "users_checklist"
-    __table_args__ = {"mysql_collate": "utf8mb4_unicode_ci"}
-
-    user_id: int = Column(
-        "user_id",
-        ForeignKey("users.uid", ondelete="CASCADE", onupdate="CASCADE"),
-        primary_key=True,
-    )
-    user: User = relationship(
-        "User",
-        uselist=False,
-        primaryjoin="UserChecklist.user_id==User.uid",
-        backref="users_checklist",
-    )
-
-    question_id: int = Column(
-        "question_id",
-        ForeignKey(CheckQuestion.uid, ondelete="CASCADE", onupdate="CASCADE"),
-        primary_key=True,
-    )
-
-    question: CheckQuestion = relationship(
-        "CheckQuestion",
-        uselist=False,
-        primaryjoin="UserChecklist.question_id==CheckQuestion.uid",
-        backref="users_checklist",
-    )
-
-    def __init__(self, user_id: int, question_id: int) -> None:
-        self.user_id = user_id
-        self.question_id = question_id
