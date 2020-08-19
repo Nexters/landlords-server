@@ -79,13 +79,13 @@ async def update_answers(
 )
 async def get_persona(
     session: Session = Depends(get_database_session),
-    check_answers: List[int] = Query(...),
+    choice_answers: List[int] = Query(...),
 ) -> PersonaResponse:
     """ 나의 페르소나
 
     페르소나 분석 결과
     """
-    persona = services.get_persona(check_answers)
+    persona = services.get_persona(choice_answers)
     return PersonaResponse(
         type=persona.value["type"],
         description=persona.value["description"],
