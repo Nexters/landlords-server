@@ -2,50 +2,48 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..persona.models.domain import ChoiceItem
-from ..persona.services import get_user_choices
+from ..persona.models.entity import ChoiceItem
+from ..persona.models.entity import QuestionAnswer as PersonaQuestionAnswer
+from ..persona.services import delete_if_existed
 from ..users.models.domain import UserInDB
 from .models.domain import CheckQuestion as CheckQuestionDto
 from .models.domain import StatusCategory
-from .models.entity import CheckQuestion, UserChecklist
+from .models.entity import CheckItem, CheckQuestion
 
 
 def get_checklist(
     user_info: UserInDB, session: Session, status: StatusCategory
 ) -> List[CheckQuestionDto]:
     """사용자의 체크리스트 가져오기"""
-    user_checklist: List[CheckQuestionDto] = (
-        session.query(CheckQuestion)
-        .join(UserChecklist, CheckQuestion.uid == UserChecklist.question_id)
+    delete_if_existed(user_info, session)
+    checklist_from_answers_query = (
+        session.query(
+            PersonaQuestionAnswer, ChoiceItem, CheckQuestion, CheckItem
+        )
+        .join(PersonaQuestionAnswer.choice)
+        .join(ChoiceItem.check_questions, isouter=True)
         .filter(
-            (UserChecklist.user_id == user_info.uid)
+            (PersonaQuestionAnswer.user_id == user_info.uid)
             & (CheckQuestion.status == status)
         )
-        .all()
+        .with_entities(CheckQuestion)
     )
-
-    if not user_checklist:
-        user_checklist = get_checklist_by_persona(
-            answers=get_user_choices(user_info=user_info, session=session),
-            session=session,
-            status=status,
+    common_questions_query = (
+        session.query(
+            PersonaQuestionAnswer, ChoiceItem, CheckQuestion, CheckItem
         )
-
-        for question in user_checklist:
-            user_checklist_: UserChecklist = UserChecklist(
-                user_id=user_info.uid, question_id=question.uid
-            )
-            session.add(user_checklist_)
-        session.commit()
-
-    return user_checklist
-
-
-def get_checklist_by_persona(
-    answers: List[ChoiceItem], session: Session, status: StatusCategory
-) -> List[CheckQuestionDto]:
-    """페르소나 태그를 통해 체크리스트 질문 필터링"""
-    checklist: List[CheckQuestionDto] = session.query(CheckQuestion).filter(
-        CheckQuestion.status == status
+        .filter(
+            (CheckQuestion.choice_id == (None))
+            & (CheckQuestion.status == status)
+        )
+        .with_entities(CheckQuestion)
+    )
+    checklists: List[CheckQuestion] = checklist_from_answers_query.union_all(
+        common_questions_query
     ).all()
-    return checklist
+
+    return [
+        CheckQuestionDto.from_orm(checklist)
+        for checklist in checklists
+        if checklist
+    ]

@@ -3,14 +3,62 @@ from typing import List
 
 from pydantic import BaseModel
 
+from . import const
 
-class Persona(str, Enum):
+
+class RecommendedPlace(str, Enum):
+    """추천 공간"""
+
+    ONEROOM = "원룸"
+    OFFICETEL = "오피스텔"
+    MIXED_USE_BUILDING = "주상복합"
+    SEPERATED_ONEROOM = "분리형 원룸"
+    SIA_ONEROOM = "초역세권 원룸"
+    NEW_ONEROOM = "신축 원룸"
+
+
+class Persona(Enum):
     """ 페르소나 """
 
-    핵인싸 = "일주일에 4번 이상 약속있는"
-    밖순이 = "나가서 노는걸 좋아하는"
-    부르면_나감 = "굳이 약속을 잡진 않지만"
-    집순이 = "웬만하면 잘 안나가는"
+    HOMEBODY = {
+        "type": const.PERSONA_RESULT_HOMEBODY,
+        "description": const.PERSONA_DESCRIPTION_HOMEBODY,
+        "recommended_place": [
+            RecommendedPlace.OFFICETEL,
+            RecommendedPlace.MIXED_USE_BUILDING,
+        ],
+    }
+    PRO_LIVING_ALONE = {
+        "type": const.PERSONA_RESULT_PRO_LIVING_ALONE,
+        "description": const.PERSONA_DESCRIPTION_PRO_LIVING_ALONE,
+        "recommended_place": [RecommendedPlace.SEPERATED_ONEROOM],
+    }
+    SMART = {
+        "type": const.PERSONA_RESULT_SMART,
+        "description": const.PERSONA_DESCRIPTION_SMART,
+        "recommended_place": [
+            RecommendedPlace.ONEROOM,
+            RecommendedPlace.MIXED_USE_BUILDING,
+        ],
+    }
+    PLAYPLAY_DODO = {
+        "type": const.PERSONA_RESULT_PLAYPLAY_DODO,
+        "description": const.PERSONA_DESCRIPTION_PLAYPLAY_DODO,
+        "recommended_place": [
+            RecommendedPlace.NEW_ONEROOM,
+            RecommendedPlace.OFFICETEL,
+        ],
+    }
+    IM_FIRST = {
+        "type": const.PERSONA_RESULT_IM_FIRST,
+        "description": const.PERSONA_DESCRIPTION_IM_FIRST,
+        "recommended_place": [RecommendedPlace.OFFICETEL],
+    }
+    INSIDER = {
+        "type": const.PERSONA_RESULT_INSIDER,
+        "description": const.PERSONA_DESCRIPTION_INSIDER,
+        "recommended_place": [RecommendedPlace.SIA_ONEROOM],
+    }
 
 
 class QuestionType(str, Enum):

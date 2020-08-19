@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from .domain import Question
+from .domain import Question, RecommendedPlace
 
 
 class PersonaQuestionsResponse(BaseModel):
@@ -10,8 +10,9 @@ class PersonaQuestionsResponse(BaseModel):
 
 
 class PersonaResponse(BaseModel):
-    title: str
+    type: str
     description: str
+    recommended_place: List[RecommendedPlace]
 
 
 class PersonaCountResponse(BaseModel):

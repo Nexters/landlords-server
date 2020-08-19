@@ -18,6 +18,7 @@ from .models.responses import (
     PersonaQuestionsResponse,
     PersonaResponse,
 )
+from .services import delete_if_existed
 
 router = APIRouter()
 
@@ -54,20 +55,12 @@ async def update_answers(
     session: Session = Depends(get_database_session),
 ) -> List[ChoiceItemDto]:
 
+    delete_if_existed(current_user=current_user, session=session)
+
     answers = [
         QuestionAnswer(user_id=current_user.uid, choice_id=choice_id)
         for choice_id in choices
     ]
-
-    user_answers: QuestionAnswer = (
-        session.query(QuestionAnswer)
-        .filter(QuestionAnswer.user_id == current_user.uid)
-        .all()
-    )
-
-    if user_answers:
-        for user_answer in user_answers:
-            session.delete(user_answer)
 
     for answer in answers:
         session.add(answer)
@@ -93,7 +86,11 @@ async def get_persona(
     페르소나 분석 결과
     """
     persona = services.get_persona(check_answers)
-    return PersonaResponse(title=persona.name, description=persona.value)
+    return PersonaResponse(
+        type=persona.value["type"],
+        description=persona.value["description"],
+        recommended_place=persona.value["recommended_place"],
+    )
 
 
 @router.get(
