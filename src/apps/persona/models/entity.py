@@ -8,6 +8,7 @@ from sqlalchemy.schema import ForeignKey
 from sqlalchemy.types import Enum
 
 from ....core.database import Base
+from ...checklist.models.entity import CheckQuestion
 from ...users.models.entity import User
 from .domain import QuestionCategory, QuestionType
 
@@ -71,6 +72,13 @@ class ChoiceItem(Base):
         mysql.VARCHAR(Url.max_length),
         nullable=False,
         comment="일러스트 url",
+    )
+
+    check_questions: List[CheckQuestion] = relationship(
+        "CheckQuestion",
+        uselist=True,
+        primaryjoin="ChoiceItem.uid==CheckQuestion.choice_id",
+        backref="persona_choices",
     )
 
     def __init__(

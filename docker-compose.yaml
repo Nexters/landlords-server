@@ -17,6 +17,9 @@ services:
       - type: bind
         source: ./infra/mysql/my.cnf
         target: /etc/mysql/my.cnf
+    - type: bind
+        source: ./infra/mysql/initdb
+        target: /docker-entrypoint-initdb.d
   app:
     image: nexters/landlords-server:latest
     build:

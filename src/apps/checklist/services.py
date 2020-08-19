@@ -2,7 +2,8 @@ from typing import List
 
 from sqlalchemy.orm import Session
 
-from ..persona.models.domain import ChoiceItem
+from ..persona.models.domain import ChoiceItem as ChoiceItemDto
+from ..persona.models.entity import QuestionAnswer
 from ..persona.services import get_user_choices
 from ..users.models.domain import UserInDB
 from .models.domain import CheckQuestion as CheckQuestionDto
@@ -42,11 +43,17 @@ def get_checklist(
 
 
 def get_checklist_by_persona(
-    answers: List[ChoiceItem], session: Session, status: StatusCategory
+    answers: List[ChoiceItemDto], session: Session, status: StatusCategory
 ) -> List[CheckQuestionDto]:
     """페르소나 태그를 통해 체크리스트 질문 필터링"""
-    choice_ids = [answer.uid for answer in answers]
+
     checklist: List[CheckQuestionDto] = session.query(CheckQuestion).filter(
         (CheckQuestion.status == status)
+        & (
+            (QuestionAnswer.choice_id == CheckQuestion.choice_id)
+            | (CheckQuestion.choice_id == (None))
+        )
+    ).outerjoin(
+        QuestionAnswer, QuestionAnswer.choice_id == CheckQuestion.choice_id
     ).all()
     return checklist

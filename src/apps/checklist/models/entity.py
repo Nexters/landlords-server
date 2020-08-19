@@ -8,7 +8,6 @@ from sqlalchemy.types import Enum
 
 from ....core.database import Base
 from ...persona.models.domain import QuestionType
-from ...persona.models.entity import ChoiceItem
 from ...rooms.models.entity import Room
 from ...users.models.entity import User
 from .domain import Contents, Label, StatusCategory, Title
@@ -168,13 +167,6 @@ class CheckQuestion(Base):
         ),
         nullable=True,
         comment="체크리스트 질문과 맵핑되는 페르소나 선택지",
-    )
-
-    choice: Optional[ChoiceItem] = relationship(
-        "ChoiceItem",
-        uselist=False,
-        primaryjoin="CheckQuestion.choice_id==ChoiceItem.uid",
-        backref="checklist_questions",
     )
 
     def __init__(
