@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.13.5](https://github.com/Nexters/landlords-server/compare/v1.13.4...v1.13.5) (2020-08-19)
+
+
+### Bug Fixes
+
+* **persona:** 페르소나 로직 추가 및 체크리스트 항목 매핑 ([7e1e00b](https://github.com/Nexters/landlords-server/commit/7e1e00b6c372e955ad8294823d1acbb667f09d51))
+
 ### [1.13.4](https://github.com/Nexters/landlords-server/compare/v1.13.3...v1.13.4) (2020-08-18)
 
 
