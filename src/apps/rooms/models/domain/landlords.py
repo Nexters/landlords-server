@@ -1,4 +1,3 @@
-import uuid
 from enum import Enum, IntEnum
 from typing import Optional
 
@@ -61,10 +60,6 @@ class SellingType(str, Enum):
 
 
 class RoomItem(BaseModel):
-    uid: Optional[str] = Field(
-        default_factory=lambda: str(uuid.uuid4()).replace("-", ""),
-        max_length=Uid.max_length,
-    )
     deposit: int = Field(...)
     monthly_rent: int = Field(...)
     selling_type: SellingType = Field(...)
@@ -89,4 +84,5 @@ class RoomItem(BaseModel):
 
 
 class RoomItemInDB(RoomItem):
-    user_id: int = Field(...)
+    uid: str = Field(..., description="방 고유번호")
+    user_id: int = Field(..., description="유저 고유번호")

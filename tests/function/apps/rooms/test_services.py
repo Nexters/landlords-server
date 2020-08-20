@@ -12,7 +12,7 @@ def test_get_dabang() -> None:
         dabang: Dabang = get_dabang_room_detail(
             room_id="5f2ce8637601ce75301269cf"
         )
-        room_item = dabang.to_room()
+        room_item = dabang.to_room(user_id=1)
     except CrawlingException as err:
         assert err
     else:
@@ -22,7 +22,7 @@ def test_get_dabang() -> None:
 def test_get_zigbang() -> None:
     try:
         zigbang: Zigbang = get_zigbang_room_detail(room_id=23126067)
-        room_item = zigbang.to_room()
+        room_item = zigbang.to_room(user_id=1)
     except CrawlingException as err:
         assert err
     else:
