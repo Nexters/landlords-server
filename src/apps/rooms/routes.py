@@ -1,3 +1,4 @@
+import uuid
 from typing import List, Union
 
 from fastapi import Response, status
@@ -111,7 +112,12 @@ async def post_room(
     current_user: UserInDB = Security(get_current_user),
     session: Session = Depends(get_database_session),
 ) -> RoomItemResponse:
-    room_orm = Room(user_id=current_user.uid, **request.dict())
+
+    room_orm = Room(
+        uid=str(uuid.uuid4()).replace("-", ""),
+        user_id=current_user.uid,
+        **request.dict(),
+    )
     session.add(room_orm)
     session.commit()
     session.refresh(room_orm)
@@ -270,8 +276,8 @@ def __crawling_room(
     except CrawlingException as err:
         logger.error(f"{type(err).__name__}: {err}")
     else:
-        room = bang.to_room()
-        room_orm = Room(user_id=user_id, **room.dict())
+        room = bang.to_room(user_id=user_id)
+        room_orm = Room(**room.dict())
         session.add(room_orm)
         session.commit()
 
