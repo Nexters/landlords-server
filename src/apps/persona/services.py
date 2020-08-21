@@ -21,7 +21,13 @@ def get_persona(check_answers: List[int]) -> Persona:
 
     result = Persona.INSIDER
 
-    if (question1 == "FIRST") & (question2 == "FIRST") & (question3 == "FIRST"):
+    if (
+        (question1 == "FIRST") & (question2 == "FIRST") & (question3 == "FIRST")
+    ) | (
+        (question1 == "FIRST")
+        & (question2 == "SECOND")
+        & (question3 == "FIRST")
+    ):
         result = Persona.PRO_LIVING_ALONE
     elif (
         (question1 == "FIRST")
@@ -48,7 +54,7 @@ def get_persona(check_answers: List[int]) -> Persona:
     ):
         result = Persona.HOMEBODY
     elif (
-        (question1 == "FIRST")
+        (question1 == "SECOND")
         & (question2 == "SECOND")
         & (question3 == "SECOND")
     ):
