@@ -11,7 +11,7 @@ class Contents(IntEnum):
 
 
 class Title(IntEnum):
-    max_length = 50
+    max_length = 200
 
 
 class Label(IntEnum):
