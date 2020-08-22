@@ -30,7 +30,7 @@ class Room(Base):
     """
 
     __tablename__ = "rooms"
-    __table_args__ = ({"mysql_collate": "utf8mb4_unicode_ci"},)
+    __table_args__ = {"mysql_collate": "utf8mb4_unicode_ci"}
 
     uid = Column(
         "uid",
