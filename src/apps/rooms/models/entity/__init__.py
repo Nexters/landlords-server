@@ -41,6 +41,7 @@ class Room(Base):
     user_id: int = Column(
         "user_id",
         ForeignKey("users.uid", ondelete="CASCADE", onupdate="CASCADE"),
+        primary_key=True,
     )
     user: User = relationship(
         "User",
