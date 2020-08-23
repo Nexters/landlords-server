@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/Nexters/landlords-server/compare/v1.13.9...v1.14.0) (2020-08-23)
+
+
+### Features
+
+* **proxy-redirect:** proxy redirect 추가 ([#58](https://github.com/Nexters/landlords-server/issues/58)) ([cf2f8a1](https://github.com/Nexters/landlords-server/commit/cf2f8a12d35f8d81ecd59109bf2efe6d9578592f))
+
 ### [1.13.9](https://github.com/Nexters/landlords-server/compare/v1.13.8...v1.13.9) (2020-08-22)
 
 
