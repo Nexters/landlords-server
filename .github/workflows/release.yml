@@ -49,9 +49,11 @@ jobs:
           echo "::set-env name=VERSION::$VERSION"
           sed -i "s/__version__ = .*/__version__ = \"${VERSION}\"/g" src/__init__.py
           git add src/__init__.py
-          git commit --no-verify -m "chore: change version"
-          yarn release
-          git push --follow-tags origin master
+          git commit --no-verify -m "chore(release): ${VERSION}"
+          npm run release
+          git tag -d v$VERSION
+          git reset --soft HEAD~~ && git commit --no-verify --no-edit -m "chore(release): ${VERSION}"
+          git tag v$VERSION
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
