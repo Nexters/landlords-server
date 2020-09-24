@@ -42,6 +42,7 @@ class Agent:
     emails: Optional[List[str]]
     role_type: Optional[str]
     agent_tel: Optional[str]
+    is_verify_agent_tel: Optional[bool]
 
 
 @dataclass
@@ -184,6 +185,7 @@ class OtherRoom:
     is_quick: Optional[bool]
     is_messenger_actived: Optional[bool]
     complex_name: Optional[str]
+    is_extend_ui: Optional[bool]
 
 
 @dataclass
