@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.14.2](https://github.com/Nexters/landlords-server/compare/v1.14.1...v1.14.2) (2020-09-24)
+
+
+### Bug Fixes
+
+* **google-oauth:** family_name is nullable ([#60](https://github.com/Nexters/landlords-server/issues/60)) ([930e622](https://github.com/Nexters/landlords-server/commit/930e6220c652aa7e8bde29be37c43bd8a301a07a))
+
 ### [1.14.1](https://github.com/Nexters/landlords-server/compare/v1.14.0...v1.14.1) (2020-09-03)
 
 ## [1.14.0](https://github.com/Nexters/landlords-server/compare/v1.13.9...v1.14.0) (2020-08-23)
