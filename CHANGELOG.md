@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.14.3](https://github.com/Nexters/landlords-server/compare/v1.14.2...v1.14.3) (2020-09-24)
+
+
+### Bug Fixes
+
+* **dabang:** agent field 추가(is_verify_agent_tel, is_extend_ui) ([#61](https://github.com/Nexters/landlords-server/issues/61)) ([3c65110](https://github.com/Nexters/landlords-server/commit/3c6511044910da72ac184e117e8ab6f064f763e4))
+
 ### [1.14.2](https://github.com/Nexters/landlords-server/compare/v1.14.1...v1.14.2) (2020-09-24)
 
 
