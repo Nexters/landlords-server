@@ -1,6 +1,6 @@
 {
     "name": "landlord-server",
-    "version": "1.14.3",
+    "version": "1.14.4",
     "description": "NEXTERS 17th - 건물주들 서버",
     "repository": "https://github.com/Nexters/landlords-server.git",
     "author": "Mincheol Kim<mcauto@naver.com>",
@@ -35,6 +35,6 @@
         }
     },
     "dependencies": {
-        "yarn": "^1.22.5"
+        "yarn": "^1.22.10"
     }
 }
