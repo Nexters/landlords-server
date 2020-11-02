@@ -28,7 +28,7 @@ class MapType(str, Enum):
 def get_room_detail(
     room_id: str, crawling_target: CrawlingTarget
 ) -> Union[Zigbang, Dabang]:
-    result: Union[Zigbang, Dabang]
+    result: Union[Zigbang, Dabang] = Zigbang(items=[])
     if crawling_target == CrawlingTarget.Dabang:
         result = get_dabang_room_detail(room_id)
     elif crawling_target == CrawlingTarget.Zigbang:
@@ -52,7 +52,7 @@ def get_dabang_room_detail(
 def get_zigbang_room_detail(room_id: int) -> Zigbang:
     response = requests.post(zigbang_api, json={"item_ids": [room_id]})
     zigbang = Zigbang(**response.json())
-    if response.status_code != HTTPStatus.OK:
+    if response.status_code != HTTPStatus.OK or len(zigbang.items) == 0:
         raise CrawlingException(f"error: {response.reason}")
 
     description_response = requests.get(
