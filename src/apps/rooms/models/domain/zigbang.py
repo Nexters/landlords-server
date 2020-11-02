@@ -3,7 +3,6 @@ from enum import Enum
 from typing import Any, List, Optional
 
 from pydantic import BaseModel, Extra, Field
-from pydantic.dataclasses import dataclass
 
 from .landlords import BuildingType, RoomItemInDB, SellingType
 

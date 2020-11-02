@@ -3,7 +3,6 @@ from enum import IntEnum
 from typing import Any, List, Optional
 
 from pydantic import BaseModel, Extra, Field
-from pydantic.dataclasses import dataclass
 
 from ...exceptions import NoneTypeError
 from ..domain.landlords import BuildingType, SellingType
