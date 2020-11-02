@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import IntEnum
 from typing import Any, List, Optional
 
-from pydantic import Field
+from pydantic import BaseModel, Extra, Field
 from pydantic.dataclasses import dataclass
 
 from ...exceptions import NoneTypeError
@@ -12,8 +12,7 @@ from .landlords import RoomItemInDB
 image_url = "http://d1774jszgerdmk.cloudfront.net/512/{image_key}"
 
 
-@dataclass
-class Agent:
+class Agent(BaseModel):
     id: Optional[str]
     email: Optional[str]
     name: Optional[str]
@@ -44,9 +43,11 @@ class Agent:
     agent_tel: Optional[str]
     is_verify_agent_tel: Optional[bool]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class School:
+
+class School(BaseModel):
     code: Optional[str] = None
     hakgudo_name: Optional[str] = None
     name: Optional[str] = None
@@ -56,9 +57,11 @@ class School:
     enter_seoul_university: Optional[str] = None
     enter_university: Optional[str] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class MiddleSchool:
+
+class MiddleSchool(BaseModel):
     code: Optional[str] = None
     hakgudo_name: Optional[str] = None
     establish_divide: Optional[str] = None
@@ -70,9 +73,11 @@ class MiddleSchool:
     total_enter_autonomous_high_school2: Optional[str] = None
     distance: Optional[int] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class NurserySchool:
+
+class NurserySchool(BaseModel):
     code: Optional[str] = None
     type: Optional[str] = None
     name: Optional[str] = None
@@ -80,26 +85,32 @@ class NurserySchool:
     certification_score: Optional[str] = None
     distance: Optional[int] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Education:
+
+class Education(BaseModel):
     elementary_school: Optional[List[School]] = None
     nursery_school: Optional[List[NurserySchool]] = None
     middle_school: Optional[List[MiddleSchool]] = None
     high_school: Optional[List[School]] = None
     kinder_school: Optional[List[Any]] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Image:
+
+class Image(BaseModel):
     image: Optional[str]
     image_title: Optional[str]
     image_desc: Optional[Any]
     location: Optional[List[float]]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Complex:
+
+class Complex(BaseModel):
     complex_id: Optional[str]
     complex_type: Optional[int]
     complex_name: Optional[str]
@@ -142,23 +153,29 @@ class Complex:
     lease_average_pyeong_price: Optional[Any]
     images: Optional[List[Image]]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Contact:
+
+class Contact(BaseModel):
     call_number: Optional[str]
     sms_message: Optional[str]
     show_number: Optional[str]
     sms_number: Optional[str]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class DetailShop:
+
+class DetailShop(BaseModel):
     use: Optional[bool]
     link: Optional[str]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class OtherRoom:
+
+class OtherRoom(BaseModel):
     is_favorited: Optional[Any]
     seq: Optional[int]
     id: Optional[str]
@@ -187,9 +204,11 @@ class OtherRoom:
     complex_name: Optional[str]
     is_extend_ui: Optional[bool]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class ReviewElement:
+
+class ReviewElement(BaseModel):
     id: Optional[int]
     room_id: Optional[Any]
     agent_id: Optional[str]
@@ -212,16 +231,20 @@ class ReviewElement:
     agent_profile_url: Optional[str]
     user_profile_url: Optional[str]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class DabangReview:
+
+class DabangReview(BaseModel):
     review_count_good: Optional[int]
     reviews: Optional[List[ReviewElement]]
     review_count: Optional[int]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class DeungbonSummary:
+
+class DeungbonSummary(BaseModel):
     detailScore: Optional[str] = Field(
         ..., title="detail_score", alias="detailScore"
     )  # noqa
@@ -233,21 +256,27 @@ class DeungbonSummary:
     report_url: Optional[Any] = Field(...)
     report_date: Optional[str] = Field(...)
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Photo:
+
+class Photo(BaseModel):
     key: Optional[str]
     desc: Optional[str]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class RoomOption:
+
+class RoomOption(BaseModel):
     seq: Optional[int]
     name: Optional[str]
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Room:
+
+class Room(BaseModel):
     selling_type: Optional[int] = None
     is_favorited: Optional[Any] = None
     favorited_count: Optional[int] = None
@@ -321,32 +350,40 @@ class Room:
     room_options: Optional[List[RoomOption]] = None
     safeties: Optional[List[RoomOption]] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Average:
+
+class Average(BaseModel):
     price: Optional[float] = None
     options: Optional[int] = None
     near: Optional[int] = None
     maintenance: Optional[int] = None
     traffic: Optional[int] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Score:
+
+class Score(BaseModel):
     average: Optional[Average] = None
     total: Optional[float] = None
     message: Optional[str] = None
     room: Optional[Average] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Shinhanbank:
+
+class Shinhanbank(BaseModel):
     deposit: Optional[int] = None
     location: Optional[int] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Space:
+
+class Space(BaseModel):
     space_seq: Optional[int] = None
     pyeong_type: Optional[str] = None
     pyeong: Optional[int] = None
@@ -371,9 +408,11 @@ class Space:
     layout_image: Optional[str] = None
     extend_layout_image: Optional[Any] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class User:
+
+class User(BaseModel):
     idx: Optional[int] = None
     email: Optional[str] = None
     name: Optional[str] = None
@@ -388,6 +427,9 @@ class User:
     profile_url: Optional[str] = None
     message: Optional[str] = None
     role_type: Optional[str] = None
+
+    class Config:
+        extra = Extra.allow
 
 
 class DabangBuildingType(IntEnum):
@@ -405,8 +447,7 @@ class DabangSellingType(IntEnum):
     Selling = 2
 
 
-@dataclass
-class Dabang:
+class Dabang(BaseModel):
     is_messenger_sender_agented: Optional[bool] = None
     ios_score_height: Optional[int] = None
     agent: Optional[Agent] = None
@@ -426,6 +467,9 @@ class Dabang:
     messenger_bubble_contents: Optional[str] = None
     complex: Optional[Complex] = None
     space: Optional[Space] = None
+
+    class Config:
+        extra = Extra.allow
 
     def to_room(self, user_id: int) -> RoomItemInDB:
         if self.room is None:

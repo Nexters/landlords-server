@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, List, Optional
 
-from pydantic import Field
+from pydantic import BaseModel, Extra, Field
 from pydantic.dataclasses import dataclass
 
 from .landlords import BuildingType, RoomItemInDB, SellingType
@@ -10,20 +10,23 @@ from .landlords import BuildingType, RoomItemInDB, SellingType
 image_url = "https://ic.zigbang.com/ic/items/{uid}/1.jpg?w={width}&h={height}"
 
 
-@dataclass
-class RoomTypeTitle:
+class RoomTypeTitle(BaseModel):
     p: Optional[int] = None
     m2: Optional[int] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Area:
+
+class Area(BaseModel):
     p: Optional[float] = None
     m2: Optional[float] = None
 
+    class Config:
+        extra = Extra.allow
 
-@dataclass
-class Item:
+
+class Item(BaseModel):
     size_m2: int = Field(...)
     building_floor: int = Field(...)
     section_type: Optional[str] = None
@@ -56,6 +59,9 @@ class Item:
     is_new: Optional[bool] = None
     description: Optional[str] = None
 
+    class Config:
+        extra = Extra.allow
+
 
 class ZigbangBuildingType(str, Enum):
     Apartment = "아파트"
@@ -63,11 +69,17 @@ class ZigbangBuildingType(str, Enum):
     Officetel = "오피스텔"
     Villa = "빌라"
 
+    class Config:
+        extra = Extra.allow
+
 
 class ZigbangSellingType(str, Enum):
     MonthlyRent = "월세"
     Jeonse = "전세"
     Selling = "매매"
+
+    class Config:
+        extra = Extra.allow
 
 
 mapper = {
@@ -81,9 +93,11 @@ mapper = {
 }
 
 
-@dataclass
-class Zigbang:
+class Zigbang(BaseModel):
     items: List[Item]
+
+    class Config:
+        extra = Extra.allow
 
     def to_room(self, user_id: int) -> RoomItemInDB:
         item = self.items.pop()
