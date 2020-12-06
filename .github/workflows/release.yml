@@ -42,11 +42,8 @@ jobs:
           git config --local user.name "GitHub Action"
           VERSION=$(npm run next-version | tail -1)
           DESCRIPTION=$(yarn run standard-version --dry-run --silent | grep -v yarn | grep -v Done | grep -v "\-\-\-" | grep -v standard-version)
-          DESCRIPTION="${DESCRIPTION//'%'/'%25'}"
-          DESCRIPTION="${DESCRIPTION//$'\n'/'%0A'}"
-          DESCRIPTION="${DESCRIPTION//$'\r'/'%0D'}"
-          echo "::set-env name=DESCRIPTION::$DESCRIPTION"
-          echo "::set-env name=VERSION::$VERSION"
+          echo >>$GITHUB_ENV DESCRIPTION=$DESCRIPTION
+          echo >>$GITHUB_ENV VERSION=$VERSION
           sed -i "s/__version__ = .*/__version__ = \"${VERSION}\"/g" src/__init__.py
           git add src/__init__.py
           git commit --no-verify -m "chore(release): ${VERSION}"
