@@ -2,18 +2,16 @@ from typing import Optional
 
 from sqlalchemy.orm import Session
 
-from ..oauth.models.domain.landlords import OAuthType
-from .models.domain import UserInDB, UserInfo
-from .models.entity import User
+from ...oauth.models.domain.landlords import OAuthType
+from ..models.domain import UserInDB, UserInfo
+from ..models.entity import User
 
 
 def sign_up_if_not_signed(
     session: Session, oauth_type: OAuthType, user_info: UserInfo
 ) -> None:
     if not find_by_email(session=session, email=user_info.email):
-        sign_up(
-            oauth_type=OAuthType.Google, session=session, user_info=user_info
-        )
+        sign_up(oauth_type=oauth_type, session=session, user_info=user_info)
 
 
 def find_by_email(session: Session, email: str) -> Optional[User]:

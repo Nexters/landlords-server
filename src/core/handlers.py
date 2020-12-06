@@ -5,6 +5,7 @@ from typing import Union
 
 from authlib.common.errors import AuthlibBaseError
 from fastapi import status
+from fastapi.applications import FastAPI
 from fastapi.exceptions import HTTPException, RequestValidationError
 from fastapi.openapi.constants import REF_PREFIX
 from fastapi.openapi.utils import validation_error_response_definition
@@ -73,3 +74,22 @@ validation_error_response_definition["properties"] = {
         "items": {"$ref": "{0}ValidationError".format(REF_PREFIX)},
     }
 }
+
+
+def set_exception_handlers(app: FastAPI) -> None:
+    app.add_exception_handler(
+        ValidationError, handler=validation_exception_handler
+    )
+
+    app.add_exception_handler(
+        RequestValidationError, handler=validation_exception_handler
+    )
+
+    app.add_exception_handler(
+        SQLAlchemyError, handler=database_exception_handler
+    )
+    app.add_exception_handler(
+        RepositoryException, handler=database_exception_handler
+    )
+    app.add_exception_handler(HTTPException, handler=http_exception_handler)
+    app.add_exception_handler(AuthlibBaseError, handler=auth_exception_handler)
