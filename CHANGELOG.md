@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](https://github.com/Nexters/landlords-server/compare/v1.14.5...v1.15.0) (2020-12-06)
+
+
+### Features
+
+* **kakao-auto:** 카카오 로그인 및 토큰 발급 추가 ([#64](https://github.com/Nexters/landlords-server/issues/64)) ([ed9e124](https://github.com/Nexters/landlords-server/commit/ed9e124b1b8eb0e4ccaebdc2203d5409095ac84a))
+
 ### [1.14.5](https://github.com/Nexters/landlords-server/compare/v1.14.4...v1.14.5) (2020-11-02)
 
 ### [1.14.4](https://github.com/Nexters/landlords-server/compare/v1.14.3...v1.14.4) (2020-11-02)
