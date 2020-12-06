@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 class OAuthType(str, Enum):
     Google = "Google"
+    Kakao = "Kakao"
 
 
 class JsonWebKey(BaseModel):

@@ -1,7 +1,14 @@
 # pylint: disable=no-self-argument
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseSettings, HttpUrl, validator
+from fastapi.logger import logger
+from pydantic import BaseSettings, HttpUrl, ValidationError, validator
+
+
+class OAuthSettings(BaseSettings):
+    KAKAO_REST_API_KEY: str = ""
+    KAKAO_CLIENT_SECRET: str = ""
+    KAKAO_AUTH_REDIRECT_URI: str = ""
 
 
 class SQLAlchemySettings(BaseSettings):
@@ -64,5 +71,9 @@ class Settings(BaseSettings):
         case_sensitive = True
 
 
-settings = Settings()
-sqlalchemy_settings = SQLAlchemySettings()
+try:
+    settings = Settings()
+    sqlalchemy_settings = SQLAlchemySettings()
+    oauth_settings = OAuthSettings()
+except ValidationError as err:
+    logger.error(err)

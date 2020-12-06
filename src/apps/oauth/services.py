@@ -26,7 +26,9 @@ def get_public_key() -> Generator[_RSAPublicKey, None, None]:
 
 
 def create_access_token(
-    user_info: UserInfo, expiration: int = settings.ACCESS_TOKEN_EXPIRE_SECONDS
+    user_info: UserInfo,
+    refresh_token: str = "",
+    expiration: int = settings.ACCESS_TOKEN_EXPIRE_SECONDS,
 ) -> str:
     """ 액세스 토큰 생성 (JWT) """
     iat = int(time.time())
@@ -34,6 +36,7 @@ def create_access_token(
     headers = {"alg": "RS256", "kid": "landlords-1"}
     jwt_body = user_info.dict()
     jwt_body.update({"iat": iat, "exp": exp})
+    jwt_body["refresh_token"] = refresh_token
     token = jwt.encode(
         header=headers, payload=jwt_body, key=settings.PRIVATE_KEY
     )
