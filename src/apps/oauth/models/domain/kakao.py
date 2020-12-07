@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import BaseModel, Extra
 
 
@@ -22,12 +24,13 @@ class Profile(BaseModel):
 class KakaoAccount(BaseModel):
     profile_needs_agreement: bool
     profile: Profile
-    has_age_range: bool
-    age_range_needs_agreement: bool
-    age_range: str
-    has_gender: bool
-    gender_needs_agreement: bool
-    gender: str
+
+    has_age_range: Optional[bool]
+    age_range_needs_agreement: Optional[bool]
+    age_range: Optional[str]
+    has_gender: Optional[bool]
+    gender_needs_agreement: Optional[bool]
+    gender: Optional[str]
 
     class Config:
         extra = Extra.allow
