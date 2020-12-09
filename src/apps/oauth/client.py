@@ -103,6 +103,7 @@ async def kakao_sign_in(
             "client_id": oauth_settings.KAKAO_REST_API_KEY,
             "redirect_uri": oauth_settings.KAKAO_AUTH_REDIRECT_URI,
             "code": request.query_params["code"],
+            "state": "nexters_17th_landlords",
             "client_secret": oauth_settings.KAKAO_CLIENT_SECRET,
         },
     )
@@ -112,7 +113,7 @@ async def kakao_sign_in(
     )
     user_info = UserInfo(
         sub="",
-        email="",
+        email=kakao_auth_info.kakao_account.email,
         name=kakao_auth_info.properties.nickname,
         picture=kakao_auth_info.properties.profile_image,
     )
