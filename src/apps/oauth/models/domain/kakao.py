@@ -31,6 +31,9 @@ class KakaoAccount(BaseModel):
     has_gender: Optional[bool]
     gender_needs_agreement: Optional[bool]
     gender: Optional[str]
+    email: str
+    email_needs_agreement: Optional[bool]
+    has_email: Optional[bool]
 
     class Config:
         extra = Extra.allow
