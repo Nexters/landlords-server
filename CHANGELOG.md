@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.15.2](https://github.com/Nexters/landlords-server/compare/v1.15.1...v1.15.2) (2020-12-09)
+
+
+### Bug Fixes
+
+* **oauth-email:** 카카오 로그인 이메일 필수 수집 변경 ([#68](https://github.com/Nexters/landlords-server/issues/68)) ([782bfde](https://github.com/Nexters/landlords-server/commit/782bfde31a91eed9b6bdae8dc26b6ec33a22ddd8))
+
 ### [1.15.1](https://github.com/Nexters/landlords-server/compare/v1.15.0...v1.15.1) (2020-12-07)
 
 
