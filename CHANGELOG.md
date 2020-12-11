@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.15.3](https://github.com/Nexters/landlords-server/compare/v1.15.2...v1.15.3) (2020-12-11)
+
+
+### Bug Fixes
+
+* **auth:** 미등록 유저 http status code 수정 ([#69](https://github.com/Nexters/landlords-server/issues/69)) ([ff9a04c](https://github.com/Nexters/landlords-server/commit/ff9a04c087af1b44176753e093fa102068d490b2))
+
 ### [1.15.2](https://github.com/Nexters/landlords-server/compare/v1.15.1...v1.15.2) (2020-12-09)
 
 
