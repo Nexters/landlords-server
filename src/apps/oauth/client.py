@@ -89,7 +89,7 @@ def kakao_login(request: Request):  # type: ignore
     return RedirectResponse(response.history[0].headers["location"])
 
 
-@oauth_client.get("/kakao/sign_in")
+@oauth_client.get("/kakao/sign_in", response_class=RedirectResponse)
 async def kakao_sign_in(
     request: Request, session: Session = Depends(get_database_session)
 ) -> RedirectResponse:
@@ -123,7 +123,7 @@ async def kakao_sign_in(
     app_token = create_access_token(
         user_info, refresh_token=kakao_auth_response.refresh_token
     )
-    redirect = RedirectResponse(url=settings.WEB_URI)
+    redirect = RedirectResponse(url=str(settings.WEB_URI))
     redirect.set_cookie(
         key="token", value=app_token, domain=settings.WEB_URI.host
     )
